@@ -1,16 +1,22 @@
-# cmsc23_project
+##Git Conventional Commit Messages
 
-A new Flutter project.
+1. `feat` - used when adding a new feature to the project.
+2. `fix` - used when fixing a bug.
+3. `docu` - used when adding documentation to the project.
+4. `chore` - used when making changes to the build process or auxiliary tools.
 
-## Getting Started
+* Examples
+- feat: added donation screen
+- fix: fixed bug in login screen
+- docu: edited README.md
+- chore: updated dependencies
 
-This project is a starting point for a Flutter application.
+##Color Palette
 
-A few resources to get you started if this is your first Flutter project:
+*Note*: The colors mentioned here uses the `Colors` class from Flutter.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**Primary Color**: Colors.lightBlue[300]
+**Secondary Color**: Colors.grey[350]
+**Text Color**: Colors.white
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
