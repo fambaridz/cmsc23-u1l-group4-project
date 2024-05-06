@@ -1,4 +1,4 @@
-##Git Conventional Commit Messages
+## Git Conventional Commit Messages
 
 1. `feat` - used when adding a new feature to the project.
 2. `fix` - used when fixing a bug.
@@ -11,7 +11,7 @@
 - docu: edited README.md
 - chore: updated dependencies
 
-##Color Palette
+## Color Palette
 
 *Note*: The colors mentioned here uses the `Colors` class from Flutter.
 
