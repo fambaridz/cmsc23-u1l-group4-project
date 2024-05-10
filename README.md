@@ -15,8 +15,8 @@
 
 *Note*: The colors mentioned here uses the `Colors` class from Flutter.
 
-**Primary Color**: Colors.lightBlue[300]
+**Primary Color**: Colors.lightBlue[200]
 
-**Secondary Color**: Colors.grey[350]
+**Text Color**: Colors.black
 
-**Text Color**: Colors.white
+**Icon Color**: Colors.white
