@@ -9,17 +9,25 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  String? userType, name, username, password, contact;
+  String? userType = 'donor', name, username, password, contact;
   List<String?> address = [];
+  final _formKey = GlobalKey<FormState>();
+  bool filesUploaded = false;
 
   // Method that returns the title to be displayed depending
   // on the type of user that will sign up.
   Text _buildTitle() {
     switch (userType) {
       case 'organization':
-        return const Text("Sign Up as an Organization");
+        return const Text(
+          "Sign Up as an Organization",
+          style: TextStyle(fontSize: 25.0),
+        );
       default:
-        return const Text("Sign Up as a Donor");
+        return const Text(
+          "Sign Up as a Donor",
+          style: TextStyle(fontSize: 25.0),
+        );
     }
   }
 
@@ -38,7 +46,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   passwordField,
                   addressField,
                   contactField,
-                  fileUpload
+                  fileUpload,
+                  submitButton
                 ],
               ));
         }
@@ -53,6 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   passwordField,
                   addressField,
                   contactField,
+                  submitButton,
                   orgSignUp
                 ],
               ));
@@ -63,15 +73,18 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
         body: ListView(children: [
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [_buildTitle(), _buildContent(context)],
-        ),
-      ),
-    ]));
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [_buildTitle(), _buildContent(context)],
+                )),
+          ),
+        ]));
   }
 
   Widget get nameField => Padding(
@@ -159,12 +172,38 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       );
 
+  Widget get submitButton => Padding(
+      padding: const EdgeInsets.all(10),
+      child: ElevatedButton(
+          style:
+              ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[400]),
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (userType == 'donor') {
+                _formKey.currentState?.save();
+              } else if (filesUploaded == true) {
+                // if user is not a donor, check first if proof was uploaded
+                _formKey.currentState?.save();
+              }
+            }
+          },
+          child: const Text(
+            'Continue',
+            style: TextStyle(fontSize: 15.0, color: Colors.white),
+          )));
+
   Widget get orgSignUp => Padding(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: Row(children: [
-        Text('Not a donor?'),
+      padding: const EdgeInsets.all(30),
+      child: Column(children: [
+        const Text(
+          'Not a donor?',
+          style: TextStyle(fontSize: 18.0),
+        ),
         TextButton(
-          child: Text('Sign up as an organization'),
+          child: Text(
+            'Sign up as an organization',
+            style: TextStyle(fontSize: 18.0, color: Colors.lightBlue[400]),
+          ),
           onPressed: () {
             setState(() {
               userType = 'organization';
@@ -174,20 +213,45 @@ class _SignUpPageState extends State<SignUpPage> {
       ]));
 
   Widget get fileUpload => Column(children: [
-        Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Text(
-              "Please submit any proof of your organization's legitimacy.\nFile must be in pdf, jpg, or jpeg only.",
-            )),
-        ElevatedButton(
-          child: Text('Choose files'),
-          onPressed: () async {
-            final fileResult = await FilePicker.platform.pickFiles(
-                allowMultiple: true,
-                type: FileType.custom,
-                allowedExtensions: ['pdf', 'jpg', 'jpeg']);
-            if (fileResult == null) return;
-          },
-        )
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(width: 0.8, color: Colors.black)),
+          child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(children: [
+                const Text(
+                  "Please submit any proof of your organization's legitimacy.",
+                  style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                ),
+                const Text(
+                  "File must be in pdf, jpg, or jpeg format only.",
+                  style: TextStyle(
+                    fontSize: 14.0,
+                  ),
+                ),
+                Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlue[400]),
+                      child: const Text(
+                        'Choose files',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        final fileResult = await FilePicker.platform.pickFiles(
+                            allowMultiple: true,
+                            type: FileType.custom,
+                            allowedExtensions: ['pdf', 'jpg', 'jpeg']);
+                        if (fileResult == null) {
+                          return;
+                        } else {
+                          filesUploaded = true;
+                        }
+                      },
+                    ))
+              ])),
+        ),
       ]);
 }
