@@ -1,6 +1,8 @@
-import 'package:cmsc23_project/screens/donor_home.dart';
-import 'package:cmsc23_project/screens/landing.dart';
-import 'package:cmsc23_project/screens/sign_in.dart';
+import 'package:cmsc23_project/screens/sign_up.dart';
+
+import '../screens/donor_home.dart';
+import '../screens/landing.dart';
+import '../screens/sign_in.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,6 +24,7 @@ void main() {
       routes: {
         "/": (context) => const LandingPage(),
         "/sign-in": (context) => const SignInPage(),
+        "/sign-up": (context) => const SignUpPage(),
         "/donor-home": (context) => const DonorHomePage(),
       },
     ),
