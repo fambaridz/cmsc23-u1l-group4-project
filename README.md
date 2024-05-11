@@ -24,3 +24,6 @@
 ## Additional Instructions
 
 1. There is already an appbar theme defined in the `main.dart` file. You just have to declare the appbar in the screens you will create with their title.
+
+## Reminders/Comments
+- Dependencies file_picker and open_file were added to pubspec.yaml, which are used for the file upload in organization sign up page
