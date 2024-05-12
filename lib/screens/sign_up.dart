@@ -9,8 +9,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  String? userType = 'donor', name, username, password, contact;
-  List<String?> address = [];
+  String userType = 'donor';
+  String? name, username, password, contact, address;
+  // List<String?> address = [];
   final _formKey = GlobalKey<FormState>();
   bool filesUploaded = false;
 
@@ -82,7 +83,6 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [_buildTitle(), _buildContent(context)],
                 )),
           ),
@@ -90,47 +90,103 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget get nameField => Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: TextFormField(
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            label: Text("Name"),
+      padding: const EdgeInsets.only(bottom: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: userType == 'donor'
+                ? const Text(
+                    "Your name",
+                    style: TextStyle(fontSize: 16.0),
+                  )
+                : const Text("Name of organization",
+                    style: TextStyle(fontSize: 16.0)),
           ),
-          onSaved: (value) => setState(() => name = value),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Name cannot be empty.";
-            }
-            return null;
-          },
-        ),
-      );
+          TextFormField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              label: Text("Name"),
+            ),
+            onSaved: (value) => setState(() => name = value),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Name cannot be empty.";
+              }
+              return null;
+            },
+          )
+        ],
+      ));
 
   Widget get usernameField => Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: TextFormField(
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            label: Text("Username"),
+      padding: const EdgeInsets.only(bottom: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Text("Choose a username", style: TextStyle(fontSize: 16.0)),
           ),
-          onSaved: (value) => setState(() => username = value),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Username cannot be empty.";
-            }
-            return null;
-          },
-        ),
+          TextFormField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              label: Text("Username"),
+            ),
+            onSaved: (value) => setState(() => username = value),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Username cannot be empty.";
+              }
+              return null;
+            },
+          )
+        ],
+      ));
+
+  Widget get passwordField => Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Text("Choose a password", style: TextStyle(fontSize: 16.0)),
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              label: Text("Password"),
+            ),
+            onSaved: (value) => setState(() => password = value),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Password cannot be empty.";
+              }
+              return null;
+            },
+          )
+        ]),
       );
 
   Widget get addressField => Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: TextFormField(
+      padding: const EdgeInsets.only(bottom: 30),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: userType == 'donor'
+              ? const Text(
+                  "Your address",
+                  style: TextStyle(fontSize: 16.0),
+                )
+              : const Text("Organization's address/es",
+                  style: TextStyle(fontSize: 16.0)),
+        ),
+        TextFormField(
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             label: Text("Address"),
           ),
-          onSaved: (value) => setState(() => address[address.length] = value),
+          onSaved: (value) => setState(() => address = value),
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Address cannot be empty.";
@@ -138,28 +194,22 @@ class _SignUpPageState extends State<SignUpPage> {
             return null;
           },
         ),
-      );
-
-  Widget get passwordField => Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: TextFormField(
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            label: Text("Password"),
-          ),
-          onSaved: (value) => setState(() => password = value),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Password cannot be empty.";
-            }
-            return null;
-          },
-        ),
-      );
+      ]));
 
   Widget get contactField => Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: TextFormField(
+      padding: const EdgeInsets.only(bottom: 30),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: userType == 'donor'
+              ? const Text(
+                  "Your contact number",
+                  style: TextStyle(fontSize: 16.0),
+                )
+              : const Text("Organization's contact number",
+                  style: TextStyle(fontSize: 16.0)),
+        ),
+        TextFormField(
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             label: Text("Contact Number"),
@@ -172,7 +222,7 @@ class _SignUpPageState extends State<SignUpPage> {
             return null;
           },
         ),
-      );
+      ]));
 
   Widget get submitButton => Padding(
       padding: const EdgeInsets.all(10),
@@ -183,9 +233,11 @@ class _SignUpPageState extends State<SignUpPage> {
             if (_formKey.currentState!.validate()) {
               if (userType == 'donor') {
                 _formKey.currentState?.save();
+                Navigator.pushNamed(context, "/sign-in");
               } else if (filesUploaded == true) {
                 // if user is not a donor, check first if proof was uploaded
                 _formKey.currentState?.save();
+                Navigator.pushNamed(context, "/sign-in");
               }
             }
           },
@@ -208,6 +260,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           onPressed: () {
             setState(() {
+              _formKey.currentState?.reset();
               userType = 'organization';
             });
           },
@@ -233,7 +286,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.lightBlue[400]),
@@ -249,10 +302,24 @@ class _SignUpPageState extends State<SignUpPage> {
                         if (fileResult == null) {
                           return;
                         } else {
-                          filesUploaded = true;
+                          setState(() {
+                            filesUploaded = true;
+                          });
                         }
                       },
-                    ))
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: filesUploaded == false
+                      ? const Text(
+                          "No files have been uploaded yet.",
+                          style: TextStyle(color: Colors.redAccent),
+                        )
+                      : const Text(
+                          "Files have been uploaded successfully.",
+                          style: TextStyle(color: Colors.green),
+                        ),
+                )
               ])),
         ),
       ]);
