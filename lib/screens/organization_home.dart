@@ -1,3 +1,4 @@
+import 'package:cmsc23_project/model/organization.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationHomePage extends StatefulWidget {
@@ -8,6 +9,14 @@ class OrganizationHomePage extends StatefulWidget {
 }
 
 class _OrganizationHomePageState extends State<OrganizationHomePage> {
+  
+  final Organization organization = Organization(
+    id: "1",
+    name: "Organization Name",
+    aboutUs: "We are organization. We do organization things. Please donate",
+    status: true
+  );
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,9 +27,17 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Row(children: [
-                TextButton(onPressed:() {}, child: Text('Donation Drives')),
-                TextButton(onPressed:() { Navigator.pushNamed(context, "/org-home/donation"); }, child: Text('Donations')),
-                TextButton(onPressed:() {}, child: Text('Profile')),
+                TextButton(onPressed:() {  }, child: Text('Donation Drives')),
+                TextButton(onPressed:() { 
+                  Navigator.pushNamed(context, "/org-home/donation"); 
+                  }, child: Text('Donations')),
+                TextButton(
+                  onPressed:() { 
+                    Navigator.pushNamed(context, "/org-home/profile", arguments: {
+                      "details": organization
+                    });
+                  },
+                  child: Text('Profile'))
               ],)
         ),
       )
