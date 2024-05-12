@@ -1,5 +1,6 @@
 import 'package:cmsc23_project/screens/donor_home.dart';
 import 'package:cmsc23_project/screens/landing.dart';
+import 'package:cmsc23_project/screens/organization_home.dart';
 import 'package:cmsc23_project/screens/sign_in.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ void main() {
         "/": (context) => const LandingPage(),
         "/sign-in": (context) => const SignInPage(),
         "/donor-home": (context) => const DonorHomePage(),
+        "/org-home": (context) => const OrganizationHomePage(),
       },
     ),
   );
