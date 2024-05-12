@@ -19,14 +19,11 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              SizedBox(height: 100),
-              Text(
-                "Sign In",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Row(children: [
+                TextButton(onPressed:() {}, child: Text('Donation Drives')),
+                TextButton(onPressed:() {}, child: Text('Donations')),
+                TextButton(onPressed:() {}, child: Text('Profile')),
+              ],)
               
             ],
           ),
