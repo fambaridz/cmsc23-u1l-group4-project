@@ -31,6 +31,7 @@ class _OrganizationDonationPageState extends State<OrganizationDonationPage> {
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: ListView.builder(
+            shrinkWrap: true,
             itemCount: donationList.length,
             itemBuilder: (context, index) {
               return ListTile(
@@ -41,8 +42,9 @@ class _OrganizationDonationPageState extends State<OrganizationDonationPage> {
                   child: Text("View"),
                 ),
               );
-            })
-        ),
+            }
+          ),
+        )
       )
     );
   }
