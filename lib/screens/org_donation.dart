@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OrganizationDonationPage extends StatefulWidget {
-  const OrganizationDonationPage({Key? key}) : super(key: key);
+  const OrganizationDonationPage({super.key});
 
   @override
   State<OrganizationDonationPage> createState() => _OrganizationDonationPageState();
