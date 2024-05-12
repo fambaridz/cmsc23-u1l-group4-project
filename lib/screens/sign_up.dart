@@ -74,19 +74,16 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Sign up"),
-        ),
         body: ListView(children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [_buildTitle(), _buildContent(context)],
-                )),
-          ),
-        ]));
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+            key: _formKey,
+            child: Column(
+              children: [_buildTitle(), _buildContent(context)],
+            )),
+      ),
+    ]));
   }
 
   Widget get nameField => Padding(
@@ -282,7 +279,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 const Text(
                   "File must be in pdf, jpg, or jpeg format only.",
                   style: TextStyle(
-                    fontSize: 14.0,
+                    fontSize: 13.0,
                   ),
                 ),
                 Padding(
@@ -310,14 +307,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     )),
                 Padding(
                   padding: const EdgeInsets.all(2.0),
-                  child: filesUploaded == false
+                  child: filesUploaded
                       ? const Text(
-                          "No files have been uploaded yet.",
-                          style: TextStyle(color: Colors.redAccent),
-                        )
-                      : const Text(
                           "Files have been uploaded successfully.",
                           style: TextStyle(color: Colors.green),
+                        )
+                      : const Text(
+                          "No files have been uploaded yet.",
+                          style: TextStyle(color: Colors.redAccent),
                         ),
                 )
               ])),

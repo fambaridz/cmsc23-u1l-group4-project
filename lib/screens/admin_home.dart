@@ -12,7 +12,7 @@ class _AdminHomeState extends State<AdminHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Admin Page"),
+        title: const Text("Admin"),
       ),
       body: SingleChildScrollView(
         child: Padding(
