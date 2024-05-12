@@ -19,7 +19,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
           padding: EdgeInsets.all(16.0),
           child: Row(children: [
                 TextButton(onPressed:() {}, child: Text('Donation Drives')),
-                TextButton(onPressed:() {}, child: Text('Donations')),
+                TextButton(onPressed:() { Navigator.pushNamed(context, "/org-home/donation"); }, child: Text('Donations')),
                 TextButton(onPressed:() {}, child: Text('Profile')),
               ],)
         ),
