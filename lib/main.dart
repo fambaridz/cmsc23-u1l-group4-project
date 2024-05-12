@@ -4,6 +4,7 @@ import 'package:cmsc23_project/screens/donor_home.dart';
 import 'package:cmsc23_project/screens/landing.dart';
 import 'package:cmsc23_project/screens/org_donation.dart';
 import 'package:cmsc23_project/screens/org_donation_details.dart';
+import 'package:cmsc23_project/screens/org_donation_drive.dart';
 import 'package:cmsc23_project/screens/org_profile.dart';
 import 'package:cmsc23_project/screens/organization_home.dart';
 import 'package:cmsc23_project/screens/sign_in.dart';
@@ -35,6 +36,7 @@ void main() {
             ModalRoute.of(context)!.settings.arguments as Map<String, Donation>),
         "/org-home/profile": (context) => OrganizationDetails(
             ModalRoute.of(context)!.settings.arguments as Map<String, Organization>),
+        "/org-home/donation-drive": (context) => const OrganizationDonationDrivePage(),
       },
     ),
   );
