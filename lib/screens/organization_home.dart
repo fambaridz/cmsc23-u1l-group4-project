@@ -17,16 +17,11 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(children: [
+          child: Row(children: [
                 TextButton(onPressed:() {}, child: Text('Donation Drives')),
                 TextButton(onPressed:() {}, child: Text('Donations')),
                 TextButton(onPressed:() {}, child: Text('Profile')),
               ],)
-              
-            ],
-          ),
         ),
       )
     );
