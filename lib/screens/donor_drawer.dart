@@ -15,27 +15,26 @@ class _DonorDrawerState extends State<DonorDrawer> {
       child: ListView(
         children: [
           Container(
-            height: 120,
+            height: 100,
             child: DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.lightBlue[200],
               ),
-              child: Row(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                  ),
-                  SizedBox(width: 30), // Adjust the spacing between avatar and text
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         "John Doe",
                         style: TextStyle(
                           color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
                         ),
                       ),
-                      TextButton(
+                      ElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(context, "/donor-profile");
                         }, 
@@ -44,6 +43,14 @@ class _DonorDrawerState extends State<DonorDrawer> {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlue[400],
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                       ),
