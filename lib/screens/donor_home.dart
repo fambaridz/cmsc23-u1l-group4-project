@@ -43,7 +43,7 @@ class _DonorHomePageState extends State<DonorHomePage> {
                     ),
                     trailing: ElevatedButton(
                       onPressed: () {
-                        // Navigator.pushNamed(context, "/org-home");
+                        Navigator.pushNamed(context, "/donor-donation");
                       },
                       child: Text("Donate",
                         style: TextStyle(
