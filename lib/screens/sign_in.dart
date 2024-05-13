@@ -41,9 +41,16 @@ class _SignInPageState extends State<SignInPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
+                  Navigator.pushNamed(context, "/donor-home");
+                },
+                child: Text("Sign In Donor"),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
                   Navigator.pushNamed(context, "/org-home");
                 },
-                child: Text("Sign In"),
+                child: Text("Sign In Org"),
               ),
             ],
           ),
