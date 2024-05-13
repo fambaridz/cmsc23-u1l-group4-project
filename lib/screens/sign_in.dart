@@ -19,14 +19,16 @@ class _SignInPageState extends State<SignInPage> {
         child: Column(
           children: [
             const SizedBox(height: 100),
-            const Text(
+            Text(
               "Sign In",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 25.0,
+                color: Colors.lightBlue[400],
                 fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 70),
             const TextField(
               decoration: InputDecoration(
                 labelText: "Email",
@@ -57,13 +59,19 @@ class _SignInPageState extends State<SignInPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue[400]),
+                backgroundColor: Colors.lightBlue[200],
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               onPressed: () {
                 Navigator.pushNamed(context, "/admin-home");
               },
               child: const Text(
                 "Sign In",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 20),
