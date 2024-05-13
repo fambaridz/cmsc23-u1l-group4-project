@@ -1,3 +1,4 @@
+import 'package:cmsc23_project/screens/donor_drawer.dart';
 import 'package:flutter/material.dart';
 
 class DonorHomePage extends StatefulWidget {
@@ -11,6 +12,7 @@ class _DonorHomePageState extends State<DonorHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DonorDrawer(),
       appBar: AppBar(
         title: Text("Donor Home"),
       ),
