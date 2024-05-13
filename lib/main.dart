@@ -1,5 +1,12 @@
+import 'package:cmsc23_project/model/donation.dart';
+import 'package:cmsc23_project/model/organization.dart';
 import 'package:cmsc23_project/screens/donor_home.dart';
 import 'package:cmsc23_project/screens/landing.dart';
+import 'package:cmsc23_project/screens/org_donation.dart';
+import 'package:cmsc23_project/screens/org_donation_details.dart';
+import 'package:cmsc23_project/screens/org_donation_drive.dart';
+import 'package:cmsc23_project/screens/org_profile.dart';
+import 'package:cmsc23_project/screens/organization_home.dart';
 import 'package:cmsc23_project/screens/sign_in.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +30,13 @@ void main() {
         "/": (context) => const LandingPage(),
         "/sign-in": (context) => const SignInPage(),
         "/donor-home": (context) => const DonorHomePage(),
+        "/org-home": (context) => const OrganizationHomePage(),
+        "/org-home/donation": (context) => const OrganizationDonationPage(),
+        "/org-home/donation/details": (context) => OrganizationDonationDetails(
+            ModalRoute.of(context)!.settings.arguments as Map<String, Donation>),
+        "/org-home/profile": (context) => OrganizationDetails(
+            ModalRoute.of(context)!.settings.arguments as Map<String, Organization>),
+        "/org-home/donation-drive": (context) => const OrganizationDonationDrivePage(),
       },
     ),
   );
