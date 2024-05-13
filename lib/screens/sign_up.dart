@@ -20,14 +20,24 @@ class _SignUpPageState extends State<SignUpPage> {
   Text _buildTitle() {
     switch (userType) {
       case 'organization':
-        return const Text(
+        return Text(
           "Sign Up as an Organization",
-          style: TextStyle(fontSize: 25.0),
+          style: TextStyle(
+            fontSize: 25.0,
+            color: Colors.lightBlue[400],
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
         );
       default:
-        return const Text(
-          "Sign Up as a Donor",
-          style: TextStyle(fontSize: 25.0),
+        return Text(
+          "Sign up as a Donor",
+          style: TextStyle(
+            fontSize: 25.0,
+            color: Colors.lightBlue[400],
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
         );
     }
   }
@@ -222,10 +232,17 @@ class _SignUpPageState extends State<SignUpPage> {
       ]));
 
   Widget get submitButton => Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(12),
       child: ElevatedButton(
           style:
-              ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[400]),
+              ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue[400],
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               if (userType == 'donor') {
@@ -239,8 +256,8 @@ class _SignUpPageState extends State<SignUpPage> {
             }
           },
           child: const Text(
-            'Continue',
-            style: TextStyle(fontSize: 15.0, color: Colors.white),
+            'Sign Up',
+            style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.bold),
           )));
 
   Widget get orgSignUp => Padding(
@@ -265,6 +282,7 @@ class _SignUpPageState extends State<SignUpPage> {
       ]));
 
   Widget get fileUpload => Column(children: [
+        SizedBox(height: 20.0),
         Container(
           decoration: BoxDecoration(
               border: Border.all(width: 0.8, color: Colors.black)),
@@ -316,8 +334,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           "No files have been uploaded yet.",
                           style: TextStyle(color: Colors.redAccent),
                         ),
-                )
+                ),
               ])),
         ),
+        SizedBox(height: 20.0)
       ]);
 }

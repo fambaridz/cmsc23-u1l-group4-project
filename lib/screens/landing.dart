@@ -23,7 +23,7 @@ class _LandingPageState extends State<LandingPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlue[200],
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13),
-                  elevation: 10,
+                  elevation: 7,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
