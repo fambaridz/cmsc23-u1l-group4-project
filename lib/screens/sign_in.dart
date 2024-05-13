@@ -66,6 +66,30 @@ class _SignInPageState extends State<SignInPage> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlue[400]),
+              onPressed: () {
+                Navigator.pushNamed(context, "/donor-home");
+              },
+              child: const Text(
+                "Sign In Donor",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlue[400]),
+              onPressed: () {
+                Navigator.pushNamed(context, "/org-home");
+              },
+              child: const Text(
+                "Sign In Org",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
         ),
       ),

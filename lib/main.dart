@@ -2,7 +2,6 @@ import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/organization.dart';
 import 'package:cmsc23_project/screens/admin_home.dart';
 import 'package:cmsc23_project/screens/sign_up.dart';
-
 import '../screens/donor_home.dart';
 import '../screens/landing.dart';
 import 'package:cmsc23_project/screens/org_donation.dart';
