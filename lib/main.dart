@@ -3,6 +3,7 @@ import 'package:cmsc23_project/model/organization.dart';
 import 'package:cmsc23_project/screens/admin_home.dart';
 import 'package:cmsc23_project/screens/donor_donation.dart';
 import 'package:cmsc23_project/screens/donor_home.dart';
+import 'package:cmsc23_project/screens/donor_org_details.dart';
 import 'package:cmsc23_project/screens/donor_profile.dart';
 import 'package:cmsc23_project/screens/landing.dart';
 import 'package:cmsc23_project/screens/sign_in.dart';
@@ -39,6 +40,7 @@ void main() {
         // donor routes
         "/donor-home": (context) => const DonorHomePage(),
         "/donor-profile": (context) => const DonorProfile(),
+        "/donor-org-details": (context) => DonorOrgDetailsPage(),
         "/donor-donation": (context) => const DonorDonationPage(),
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),
