@@ -48,7 +48,7 @@ class _SignInPageState extends State<SignInPage> {
                         _passwordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
-                        color: Theme.of(context).primaryColorDark,
+                        color: Colors.lightBlue[200],
                       ),
                       onPressed: () {
                         setState(() {
@@ -71,7 +71,10 @@ class _SignInPageState extends State<SignInPage> {
               },
               child: const Text(
                 "Sign In",
-                style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 20),
