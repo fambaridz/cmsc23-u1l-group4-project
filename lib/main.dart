@@ -1,5 +1,6 @@
 import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/organization.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:cmsc23_project/screens/admin_home.dart';
 import 'package:cmsc23_project/screens/donor_donation.dart';
 import 'package:cmsc23_project/screens/donor_home.dart';
@@ -14,10 +15,33 @@ import 'package:cmsc23_project/screens/org_donation_drive.dart';
 import 'package:cmsc23_project/screens/org_profile.dart';
 import 'package:cmsc23_project/screens/organization_home.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
-    MaterialApp(
+    MultiProvider(
+      providers: [
+        // ChangeNotifierProvider(create: ((context) => TodoListProvider())),
+        ChangeNotifierProvider(create: ((context) => UserAuthProvider()))
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           color: Colors.lightBlue[200],
@@ -51,6 +75,6 @@ void main() {
           ModalRoute.of(context)!.settings.arguments as Map<String, Organization>),
         "/org-home/donation-drive": (context) => const OrganizationDonationDrivePage(),
       },
-    ),
-  );
+    );
+  }
 }
