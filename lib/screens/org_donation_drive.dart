@@ -154,6 +154,9 @@ class _OrganizationDonationDrivePageState
                     .toList(),
               ),
       ),
+      floatingActionButton: IconButton(onPressed: () {
+        Navigator.pushNamed(context, "/org-home/donation-drive/add");
+      }, icon: Icon(Icons.add),),
     );
   }
 }
