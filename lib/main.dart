@@ -12,7 +12,7 @@ import 'package:cmsc23_project/screens/org_donation.dart';
 import 'package:cmsc23_project/screens/org_donation_details.dart';
 import 'package:cmsc23_project/screens/org_donation_drive.dart';
 import 'package:cmsc23_project/screens/org_profile.dart';
-import 'package:cmsc23_project/screens/organization_home.dart';
+import 'package:cmsc23_project/screens/org_home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
