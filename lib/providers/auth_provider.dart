@@ -16,20 +16,18 @@ class UserAuthProvider with ChangeNotifier {
 
   void fetchAuthentication() {
     _uStream = authService.userSignedIn();
-
     notifyListeners();
   }
 
-  // edit the signUp method to accept firstName, lastName, email, and password
-  Future<void> signUp(String firstName, String lastName, String email, String password) async {
-    await authService.signUp(firstName, lastName, email, password);
+  Future<String?> signUpDonor(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
+    String? message = await authService.signUpDonor(user_type, name, username, email, password, address, contact_num);
     notifyListeners();
+    return message;
   }
 
   Future<String?> signIn(String email, String password) async {
     String? message = await authService.signIn(email, password);
     notifyListeners();
-
     return message;
   }
 
