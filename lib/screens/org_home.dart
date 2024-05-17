@@ -21,10 +21,10 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: OrganizationDrawer(),
       appBar: AppBar(
         title: Text("Organization Home"),
       ),
-      drawer: OrganizationDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),

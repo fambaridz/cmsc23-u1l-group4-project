@@ -64,7 +64,7 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
             leading: Icon(Icons.home),
             title: Text("Home"),
             onTap: () {
-              Navigator.pushNamed(context, "/donor-home");
+              Navigator.pushNamed(context, "/org-home");
             },
           ),
           ListTile(
