@@ -68,6 +68,7 @@ class SwitchExampleState extends State<SwitchExample> {
     );
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           'Active?',
@@ -83,7 +84,6 @@ class SwitchExampleState extends State<SwitchExample> {
           onChanged: (bool value) {
             setState(() {
               light = value;
-
             });
             widget.callback(value); // Call the callback function with the new value
           },

@@ -53,8 +53,8 @@ void main() {
         "/org-home/donation-drive": (context) => const OrganizationDonationDrivePage(),
         "/org-home/donation-drive/details": (context) => OrganizationDonationDriveDetails(
           ModalRoute.of(context)!.settings.arguments as Map<String, DonationDrive>),
-        "/org-home/donation-drive/add": (context) => const DonationDriveForm(),
-        
+        "/org-home/donation-drive/add": (context) => DonationDriveForm(
+            ModalRoute.of(context)!.settings.arguments as Organization),
       },
     ),
   );

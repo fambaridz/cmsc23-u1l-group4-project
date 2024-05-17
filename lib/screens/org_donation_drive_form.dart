@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 
 class DonationDriveForm extends StatefulWidget {
   final Organization organization;
-  const DonationDriveForm(this.organization,{super.key});
+  const DonationDriveForm(this.organization, {super.key});
+
   @override
   _DonationDriveFormState createState() => _DonationDriveFormState();
 }
 
 class _DonationDriveFormState extends State<DonationDriveForm> {
-  
   @override
   Widget build(BuildContext context) {
     String name = '';
@@ -28,27 +28,45 @@ class _DonationDriveFormState extends State<DonationDriveForm> {
         title: Text('Create a Donation Drive'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              "Donation Drive Details",
+              style: TextStyle(
+                fontSize: 25.0,
+                color: Colors.lightBlue[400],
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
           TextFieldSample(key: txtForm, (String val) {
             name = val;
           }, 'Name', 'Enter the name of the donation drive'),
-          SwitchExample(key: switchKey, (bool val) {
-                      status = val;
-                  }),
-          
+          const SizedBox(height: 20),
+          SwitchExample(
+              key: switchKey,
+              (bool val) {
+                status = val;
+              },
+            ),
+          const SizedBox(height: 40),
           ElevatedButton(
             onPressed: () {
               // Add donation drive
               final donationDrive = DonationDrive(
-                id: '',
-                name: name,
-                status: status,
-                organization: organization,
-                donationList: donationList
-              );
+                  id: '',
+                  name: name,
+                  status: status,
+                  organization: organization,
+                  donationList: donationList);
               Navigator.pop(context, donationDrive);
             },
-            child: Text('Add Donation Drive'),
+            child: Text('Finalize Donation Drive'),
           ),
         ],
       ),

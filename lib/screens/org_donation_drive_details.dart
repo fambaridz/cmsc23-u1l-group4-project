@@ -1,5 +1,6 @@
 import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/organization.dart';
+import 'package:cmsc23_project/screens/org_donation_drive_form.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDonationDriveDetails extends StatefulWidget {
@@ -111,6 +112,44 @@ class _OrganizationDonationDriveDetailsPageState
                   details.status ? "Open" : "Closed",
                   style: TextStyle(
                     fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DonationDriveForm(organization);
+                    }));
+                    setState(() {
+                      
+                    });
+                  },
+                  child: Text("Edit", style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightBlue[200],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context, {"remove": details.id});
+                  },
+                  child: Text("Remove", style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 215, 63, 63),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ],

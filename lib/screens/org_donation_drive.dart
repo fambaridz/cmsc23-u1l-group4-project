@@ -154,9 +154,18 @@ class _OrganizationDonationDrivePageState
                     .toList(),
               ),
       ),
-      floatingActionButton: IconButton(onPressed: () {
-        Navigator.pushNamed(context, "/org-home/donation-drive/add");
-      }, icon: Icon(Icons.add),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+           Navigator.pushNamed(
+              context, "/org-home/donation-drive/add",
+              arguments: donationDriveList[0].organization);
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.lightBlue[200],
+      ),
     );
   }
 }
