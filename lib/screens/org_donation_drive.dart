@@ -144,7 +144,7 @@ class _OrganizationDonationDrivePageState
                               title: Text(
                                 donationDrive.name,
                                 style: TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

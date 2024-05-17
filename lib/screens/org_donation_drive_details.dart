@@ -121,8 +121,10 @@ class _OrganizationDonationDriveDetailsPageState
           Text(
             "Donations",
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 25.0,
+              color: Colors.lightBlue[400],
               fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
             ),
           ),
           SizedBox(height: 20),
