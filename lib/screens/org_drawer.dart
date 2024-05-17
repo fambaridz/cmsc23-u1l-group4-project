@@ -10,11 +10,10 @@ class OrganizationDrawer extends StatefulWidget {
 
 class _OrganizationDrawerState extends State<OrganizationDrawer> {
   final Organization organization = Organization(
-    id: "1",
-    name: "Organization Name",
-    aboutUs: "We are organization. We do organization things. Please donate",
-    status: true
-  );
+      id: "1",
+      name: "Organization Name",
+      aboutUs: "We are organization. We do organization things. Please donate",
+      status: true);
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +32,21 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Expanded(child: Text(
-                        organization.name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                      Expanded(
+                        child: Text(
+                          organization.name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),),
-                      
+                      ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/org-home/profile", arguments: {
-                      "details": organization
-                    });
-                        }, 
+                          Navigator.pushNamed(context, "/org-home/profile",
+                              arguments: {"details": organization});
+                        },
                         child: Text(
                           "View Profile",
                           style: TextStyle(

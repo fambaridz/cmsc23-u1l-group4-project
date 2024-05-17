@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
-class OrganizationDonationDetails extends StatelessWidget{
+class OrganizationDonationDetails extends StatelessWidget {
   final Map info;
   const OrganizationDonationDetails(this.info, {super.key});
 
   @override
-  Widget build(BuildContext context){  
+  Widget build(BuildContext context) {
     print(info);
     var details = info["details"];
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Donation Details"
-        ),
+        title: Text("Donation Details"),
       ),
       body: Center(
         child: Column(
