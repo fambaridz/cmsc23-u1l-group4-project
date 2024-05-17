@@ -1,3 +1,4 @@
+import 'package:cmsc23_project/model/organization.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDrawer extends StatefulWidget {
@@ -8,6 +9,12 @@ class OrganizationDrawer extends StatefulWidget {
 }
 
 class _OrganizationDrawerState extends State<OrganizationDrawer> {
+  final Organization organization = Organization(
+    id: "1",
+    name: "Organization Name",
+    aboutUs: "We are organization. We do organization things. Please donate",
+    status: true
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +33,20 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(
-                        "John Doe",
+                      Expanded(child: Text(
+                        organization.name,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
-                      ),
+                      ),),
+                      
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/donor-profile");
+                          Navigator.pushNamed(context, "/org-home/profile", arguments: {
+                      "details": organization
+                    });
                         }, 
                         child: Text(
                           "View Profile",
@@ -61,21 +71,14 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text("Home"),
+            leading: Icon(Icons.inventory),
+            title: Text("Donations"),
             onTap: () {
               Navigator.pushNamed(context, "/org-home");
             },
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text("Donations"),
-            onTap: () {
-              Navigator.pushNamed(context, "/org-home/donation");
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.home),
+            leading: Icon(Icons.local_shipping),
             title: Text("Donation Drives"),
             onTap: () {
               Navigator.pushNamed(context, "/org-home/donation-drive");
