@@ -1,4 +1,5 @@
 import 'package:cmsc23_project/model/organization.dart';
+import 'package:cmsc23_project/screens/org_drawer.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationHomePage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
       appBar: AppBar(
         title: Text("Organization Home"),
       ),
+      drawer: OrganizationDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
