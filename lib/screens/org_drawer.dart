@@ -68,6 +68,20 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
             },
           ),
           ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Donations"),
+            onTap: () {
+              Navigator.pushNamed(context, "/org-home/donation");
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Donation Drives"),
+            onTap: () {
+              Navigator.pushNamed(context, "/org-home/donation-drive");
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () {
