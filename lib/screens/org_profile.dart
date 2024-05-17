@@ -135,10 +135,14 @@ class OrganizationDetails extends StatelessWidget {
                                   children: [
                                     Text(
                                       details.aboutUs,
+                                      textAlign: TextAlign.justify,
                                       style: TextStyle(
                                         fontSize: 20,
                                       ),
                                     ),
+                                    SizedBox(height: 20),
+                                    Divider(),
+                                    SizedBox(height: 20),
                                     Text(
                                       "Donation Drives",
                                       style: TextStyle(
@@ -146,6 +150,7 @@ class OrganizationDetails extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
+                                    SizedBox(height: 20),
                                     Expanded(
                                       child: donationDriveList.isEmpty
                                           ? const Text(
