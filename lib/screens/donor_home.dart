@@ -2,7 +2,8 @@ import 'package:cmsc23_project/screens/donor_drawer.dart';
 import 'package:flutter/material.dart';
 
 class DonorHomePage extends StatefulWidget {
-  const DonorHomePage({Key? key}) : super(key: key);
+  final Map<String, dynamic> userData;
+  const DonorHomePage({super.key, required this.userData});
 
   @override
   State<DonorHomePage> createState() => _DonorHomePageState();
@@ -18,7 +19,7 @@ class _DonorHomePageState extends State<DonorHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DonorDrawer(),
+      drawer: DonorDrawer(userData: widget.userData),
       appBar: AppBar(
         title: Text("Donor Home"),
       ),
@@ -29,6 +30,7 @@ class _DonorHomePageState extends State<DonorHomePage> {
           padding: const EdgeInsets.all(10),
           children: organizations.map((organization) => GestureDetector(
             onTap: () {
+              print(widget.userData);
               Navigator.pushNamed(context, "/donor-org-details");
             },
             child: Container(

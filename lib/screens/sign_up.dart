@@ -310,18 +310,28 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               );
 
-              String? resp = await context
+              final result = await context
                 .read<UserAuthProvider>()
                 .authService
-                .signUpDonor(user_type!, name!, username!, email!, password!, address!, contact_num!);
+                .signUpDonor(user_type, name!, username!, email!, password!, address!, contact_num!);
               
-              if (resp != null) {
+              setState(() {
+                isLoading = false;
+              });
+
+              if (result == null) {
                 setState(() {
-                  errorMessage = resp;
-                  isLoading = false;
+                  errorMessage = "Unknown error occurred.";
                 });
+              } else if (result['user_type'] == "Donor") {
+                setState(() {
+                  errorMessage = null;
+                });
+                Navigator.pushNamed(context, "/donor-home", arguments: result);
               } else {
-                Navigator.pushNamed(context, "/donor-home");
+                setState(() {
+                  errorMessage = result["error"];
+                });
               }
               
             } else if (filesUploaded == true) {

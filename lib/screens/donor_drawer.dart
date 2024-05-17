@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DonorDrawer extends StatefulWidget {
-  const DonorDrawer({Key? key}) : super(key: key);
+  final Map<String, dynamic> userData;
+
+  const DonorDrawer({super.key, required this.userData});
 
   @override
   State<DonorDrawer> createState() => _DonorDrawerState();
@@ -29,7 +31,7 @@ class _DonorDrawerState extends State<DonorDrawer> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "John Doe",
+                        widget.userData['name'],
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -38,7 +40,7 @@ class _DonorDrawerState extends State<DonorDrawer> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/donor-profile");
+                          Navigator.pushNamed(context, "/donor-profile", arguments: widget.userData);
                         }, 
                         child: Text(
                           "View Profile",

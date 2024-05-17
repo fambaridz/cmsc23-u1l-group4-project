@@ -127,7 +127,7 @@ class _SignInPageState extends State<SignInPage> {
           isLoading = true;
         });
 
-        String? result = await context
+        final result = await context
           .read<UserAuthProvider>()
           .authService
           .signIn(email!, password!);
@@ -140,21 +140,21 @@ class _SignInPageState extends State<SignInPage> {
           setState(() {
             errorMessage = "Unknown error occurred.";
           });
-        } else if (result == "Admin" || result == "Donor" || result == "Organization") {
+        } else if (result['user_type'] == "Admin" || result['user_type'] == "Donor" || result == "Organization") {
           setState(() {
             errorMessage = null;
           });
-
-          if (result == "Admin") {
+          
+          if (result['user_type'] == "Admin") {
             Navigator.pushNamed(context, "/admin-home");
-          } else if (result == "Donor") {
-            Navigator.pushNamed(context, "/donor-home");
-          } else if (result == "Organization") {
+          } else if (result['user_type'] == "Donor") {
+            Navigator.pushNamed(context, "/donor-home", arguments: result);
+          } else if (result['user_type'] == "Organization") {
             Navigator.pushNamed(context, "/org-home");
           }
         } else {
           setState(() {
-            errorMessage = result;
+            errorMessage = result["error"];
           });
         }
       }

@@ -62,8 +62,8 @@ class MyApp extends StatelessWidget {
         // admin routes
         "/admin-home": (context) => const AdminHome(),
         // donor routes
-        "/donor-home": (context) => const DonorHomePage(),
-        "/donor-profile": (context) => const DonorProfile(),
+        "/donor-home": (context) => DonorHomePage(userData: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
+        "/donor-profile": (context) => DonorProfile(userData: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
         "/donor-org-details": (context) => DonorOrgDetailsPage(),
         "/donor-donation": (context) => const DonorDonationPage(),
         // organization routes
