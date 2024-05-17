@@ -161,7 +161,8 @@ class _SignInPageState extends State<SignInPage> {
     },
     child: isLoading
       ? CircularProgressIndicator(
-          strokeWidth: 1,
+          strokeWidth: 3,
+          color: Colors.lightBlue[400],
       ) 
       : Text(
       "Sign In",
