@@ -1,6 +1,7 @@
 import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/donation_drive.dart';
 import 'package:cmsc23_project/model/organization.dart';
+import 'package:cmsc23_project/screens/org_drawer.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDonationDrivePage extends StatefulWidget {
@@ -105,6 +106,7 @@ class _OrganizationDonationDrivePageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: OrganizationDrawer(),
       appBar: AppBar(
         title: Text("Donation Drives"),
       ),
