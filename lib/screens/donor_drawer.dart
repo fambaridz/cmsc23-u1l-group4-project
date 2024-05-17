@@ -1,4 +1,6 @@
+import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DonorDrawer extends StatefulWidget {
   const DonorDrawer({Key? key}) : super(key: key);
@@ -71,6 +73,7 @@ class _DonorDrawerState extends State<DonorDrawer> {
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () {
+              context.read<UserAuthProvider>().signOut();
               Navigator.pushNamed(context, "/");
             },
           ),
