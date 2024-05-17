@@ -13,30 +13,30 @@ class FirebaseAuthAPI {
     return auth.authStateChanges();
   }
 
-  Future<String?> signIn(String email, String password) async {
+  Future<Map<String, dynamic>?> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
 
       DocumentSnapshot userDoc = await db.collection('users').doc(userCredential.user!.uid).get();
 
       if (!userDoc.exists) {
-        return "User not found.";
+        return {"error": "User not found"};
       } else {
-        return userDoc['user_type'];
+        return userDoc.data() as Map<String, dynamic>;
       }
     
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        return e.message;
+        return {"error": e.message};
       } else if (e.code == 'invalid-credential') {
-        return e.message;
+        return {"error": e.message};
       } else {
-        return "Failed at ${e.code}: ${e.message}";
+        return {"error": "Failed at ${e.code}: ${e.message}"};
       }
     }
   }
 
-  Future<String?> signUpDonor(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
+  Future<Map<String, dynamic>?> signUpDonor(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
     UserCredential credential;
     try {
 
@@ -55,15 +55,19 @@ class FirebaseAuthAPI {
         'contact_num': contact_num,
       });
 
+      // Retrieve the user data after creation and return it
+      DocumentSnapshot userDoc = await db.collection('users').doc(credential.user!.uid).get();
+      return userDoc.data() as Map<String, dynamic>;
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        return e.message;
+        return {"error": e.message};
       } else if (e.code == 'invalid-email') {
-        return e.message;
+        return {"error": e.message};
       } else if (e.code == 'invalid-password') {
-        return e.message;
+        return {"error": e.message};
       } else {
-        return "Failed at ${e.code}: ${e.message}";
+        return {"error": "Failed at ${e.code}: ${e.message}"};
       }
     }
   }

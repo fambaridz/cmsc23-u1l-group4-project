@@ -19,14 +19,14 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String?> signUpDonor(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
-    String? message = await authService.signUpDonor(user_type, name, username, email, password, address, contact_num);
+  Future<Map<String, dynamic>?> signUpDonor(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
+    Map<String, dynamic>? message = await authService.signUpDonor(user_type, name, username, email, password, address, contact_num);
     notifyListeners();
     return message;
   }
 
-  Future<String?> signIn(String email, String password) async {
-    String? message = await authService.signIn(email, password);
+  Future<Map<String, dynamic>?> signIn(String email, String password) async {
+    Map<String, dynamic>? message = await authService.signIn(email, password);
     notifyListeners();
     return message;
   }
