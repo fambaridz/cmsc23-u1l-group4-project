@@ -4,7 +4,7 @@ import 'package:cmsc23_project/model/organization.dart';
 class DonationDrive {
   String id;
   String name;
-  String status;
+  bool status;
   Organization organization;
   List<Donation> donationList;
 
