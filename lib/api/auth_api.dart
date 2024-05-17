@@ -15,8 +15,16 @@ class FirebaseAuthAPI {
 
   Future<String?> signIn(String email, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      return "";
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+
+      DocumentSnapshot userDoc = await db.collection('users').doc(userCredential.user!.uid).get();
+
+      if (!userDoc.exists) {
+        return "User not found.";
+      } else {
+        return userDoc['user_type'];
+      }
+    
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         return e.message;
@@ -28,7 +36,7 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<String?> signUp(String firstName, String lastName, String email, String password) async {
+  Future<String?> signUpDonor(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
     UserCredential credential;
     try {
 
@@ -39,9 +47,12 @@ class FirebaseAuthAPI {
 
       // add user to firestore after successful sign up in authentication by getting the user id
       await db.collection('users').doc(credential.user!.uid).set({
-        'firstName': firstName,
-        'lastName': lastName,
+        'user_type': user_type,
+        'name': name,
+        'username': username,
         'email': email,
+        'address': address,
+        'contact_num': contact_num,
       });
 
     } on FirebaseAuthException catch (e) {
