@@ -50,7 +50,7 @@ void main() {
         "/admin/donations": (context) => const AdminDonationsPage(),
         "/admin/donors": (context) => const AdminDonorsPage(),
         "/admin/approvals": (context) => const AdminApprovalsPage(),
-        "/admin/organization-info": (context) => AdminOrgDetailsPage(),
+        "/admin/organization-info": (context) => const AdminOrgDetailsPage(),
         "/admin/donation-info": (context) => const AdminDonationDetailsPage(),
         "/admin/donor-info": (context) => const AdminDonorDetailsPage(),
         "/admin/approval-info": (context) => const AdminApprovalDetailsPage(),
