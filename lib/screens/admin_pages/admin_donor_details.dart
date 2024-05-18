@@ -10,7 +10,21 @@ class AdminDonorDetailsPage extends StatelessWidget {
         title: const Text("Donor"),
       ),
       body: Center(
-        child: Text('Donor Details'),
+        child: Column(
+          children: [
+            Container(
+                height: 200,
+                width: 200,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/profile.png')))),
+            Text("Jane Smith"),
+            Text("@therealJS"),
+            Text("Address/es: "),
+            Text("Contact Number: ")
+          ],
+        ),
       ),
     );
   }
