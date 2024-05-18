@@ -32,9 +32,8 @@ class AdminDonorDetailsPage extends StatelessWidget {
             Container(
                 width: double.infinity,
                 color: Colors.lightBlue[200],
-                child: Flexible(
-                    child: Center(
-                        child: Column(
+                child: Center(
+                    child: Column(
                   children: [
                     const SizedBox(height: 20),
                     Container(
@@ -77,10 +76,10 @@ class AdminDonorDetailsPage extends StatelessWidget {
                       ),
                     )
                   ],
-                )))),
+                ))),
             const SizedBox(height: 25),
-            const Text("Donations by Donor A",
-                style: TextStyle(
+            Text("Donations by ${donor.name}",
+                style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline)),
@@ -89,7 +88,7 @@ class AdminDonorDetailsPage extends StatelessWidget {
             ),
             Flexible(
               child: ListView.builder(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: donor.donations.length,
@@ -99,7 +98,7 @@ class AdminDonorDetailsPage extends StatelessWidget {
                     return ListTile(
                       title: Text(
                         donation,
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
                     );
                   }),
