@@ -38,7 +38,10 @@ class AdminDonorDetailsPage extends StatelessWidget {
                     ),
                     const Text(
                       "@therealJS",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontStyle: FontStyle.italic),
                     ),
                     const SizedBox(
                       width: 350,
