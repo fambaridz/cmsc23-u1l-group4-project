@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DonorProfile extends StatelessWidget {
-  const DonorProfile({Key? key}) : super(key: key);
+  final Map<String, dynamic> userData;
+
+  const DonorProfile({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class DonorProfile extends StatelessWidget {
               children: [
                 SizedBox(height: 30),
                 Text(
-                  "John Doe",
+                  userData['name'],
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -27,7 +29,7 @@ class DonorProfile extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "@johndoe",
+                  "@${userData['username']}",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -90,7 +92,7 @@ class DonorProfile extends StatelessWidget {
         ),
       ),
       Text(
-        "09123456789",
+        userData['contact_num'],
         style: TextStyle(
           fontSize: 20,
         ),
@@ -111,7 +113,7 @@ class DonorProfile extends StatelessWidget {
       Flexible(
         flex: 3,
         child: Text(
-          "123 Main St., City of Manila, Metro Manila",
+          userData['address'],
           textAlign: TextAlign.right,
           style: TextStyle(
             fontSize: 20,

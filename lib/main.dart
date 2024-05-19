@@ -2,12 +2,14 @@ import '../screens/admin_pages/admin_org_details.dart';
 import '../screens/admin_pages/admin_profile.dart';
 import '../model/donation.dart';
 import '../model/organization.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'screens/admin_pages/admin_approval_details.dart';
 import 'screens/admin_pages/admin_donation_details.dart';
 import 'screens/admin_pages/admin_donor_details.dart';
 import 'screens/admin_pages/admin_home.dart';
 import '../screens/donor_donation.dart';
 import '../screens/donor_home.dart';
+import 'package:cmsc23_project/screens/donor_org_details.dart';
 import '../screens/donor_profile.dart';
 import '../screens/landing.dart';
 import '../screens/sign_in.dart';
@@ -22,10 +24,33 @@ import 'screens/admin_pages/admin_organizations.dart';
 import 'screens/admin_pages/admin_donors.dart';
 import 'screens/admin_pages/admin_donations.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
-    MaterialApp(
+    MultiProvider(
+      providers: [
+        // ChangeNotifierProvider(create: ((context) => TodoListProvider())),
+        ChangeNotifierProvider(create: ((context) => UserAuthProvider()))
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           color: Colors.lightBlue[200],
@@ -55,8 +80,9 @@ void main() {
         "/admin/donor-info": (context) => const AdminDonorDetailsPage(),
         "/admin/approval-info": (context) => const AdminApprovalDetailsPage(),
         // donor routes
-        "/donor-home": (context) => const DonorHomePage(),
-        "/donor-profile": (context) => const DonorProfile(),
+        "/donor-home": (context) => DonorHomePage(userData: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
+        "/donor-profile": (context) => DonorProfile(userData: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
+        "/donor-org-details": (context) => DonorOrgDetailsPage(),
         "/donor-donation": (context) => const DonorDonationPage(),
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),
@@ -70,6 +96,6 @@ void main() {
         "/org-home/donation-drive": (context) =>
             const OrganizationDonationDrivePage(),
       },
-    ),
-  );
+    );
+  }
 }
