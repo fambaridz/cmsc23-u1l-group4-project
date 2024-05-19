@@ -8,6 +8,7 @@ class Donation {
   String pickUpDateTime;
   String dropOffDateTime;
   String? photo;
+  int status;
 
   Donation({
     required this.id,
@@ -18,6 +19,7 @@ class Donation {
     required this.contactNo,
     required this.pickUpDateTime, 
     required this.dropOffDateTime,
-    this.photo
+    this.photo,
+    required this.status
   });
 }

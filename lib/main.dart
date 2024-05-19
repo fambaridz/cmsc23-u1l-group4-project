@@ -86,7 +86,6 @@ class MyApp extends StatelessWidget {
         "/donor-donation": (context) => const DonorDonationPage(),
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),
-        "/org-home/donation": (context) => const OrganizationDonationPage(),
         "/org-home/donation/details": (context) => OrganizationDonationDetails(
             ModalRoute.of(context)!.settings.arguments
                 as Map<String, Donation>),
