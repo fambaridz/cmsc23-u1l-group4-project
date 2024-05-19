@@ -38,7 +38,7 @@ class _OrganizationDonationDrivePageState
               id: "1",
               donor: "Juan Dela Cruz",
               category: "Clothes",
-              weight: 5,
+              weight: '5 lbs',
               address: "1234 Donations St.",
               contactNo: "09123456789",
               pickUpDateTime: "2022-12-31 23:59:59",
@@ -49,7 +49,7 @@ class _OrganizationDonationDrivePageState
               id: "2",
               donor: "Pedro Penduko",
               category: "Books",
-              weight: 10,
+              weight: '10 kg',
               address: "5678 Donations St.",
               contactNo: "09876543210",
               pickUpDateTime: "2022-12-31 23:59:59",
@@ -60,7 +60,7 @@ class _OrganizationDonationDrivePageState
               id: "3",
               donor: "Maria Makiling",
               category: "Food",
-              weight: 15,
+              weight: '15 kg',
               address: "91011 Donations St.",
               contactNo: "09123456789",
               pickUpDateTime: "2022-12-31 23:59:59",
@@ -71,7 +71,7 @@ class _OrganizationDonationDrivePageState
               id: "4",
               donor: "Juan Tamad",
               category: "Toys",
-              weight: 20,
+              weight: '20 lbs',
               address: "121314 Donations St.",
               contactNo: "09876543210",
               pickUpDateTime: "2022-12-31 23:59:59",
@@ -82,7 +82,7 @@ class _OrganizationDonationDrivePageState
               id: "5",
               donor: "Pedro Penduko",
               category: "Clothes",
-              weight: 25,
+              weight: '25 lbs',
               address: "151617 Donations St.",
               contactNo: "09123456789",
               pickUpDateTime: "2022-12-31 23:59:59",
@@ -158,8 +158,7 @@ class _OrganizationDonationDrivePageState
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-           Navigator.pushNamed(
-              context, "/org-home/donation-drive/add",
+          Navigator.pushNamed(context, "/org-home/donation-drive/add",
               arguments: donationDriveList[0].organization);
         },
         child: Icon(
