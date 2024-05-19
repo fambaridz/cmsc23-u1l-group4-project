@@ -40,11 +40,6 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
   bool _showErrorMessage = false;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _addressController.dispose();
     super.dispose();
