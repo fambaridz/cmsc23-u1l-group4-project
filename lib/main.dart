@@ -1,21 +1,28 @@
-import 'package:cmsc23_project/model/donation.dart';
-import 'package:cmsc23_project/model/donation_drive.dart';
-import 'package:cmsc23_project/model/organization.dart';
+import '../screens/admin_pages/admin_org_details.dart';
+import '../screens/admin_pages/admin_profile.dart';
+import '../model/donation.dart';
+import '../model/organization.dart';
 import 'package:cmsc23_project/providers/auth_provider.dart';
-import 'package:cmsc23_project/screens/admin_home.dart';
-import 'package:cmsc23_project/screens/donor_donation.dart';
-import 'package:cmsc23_project/screens/donor_home.dart';
+import 'screens/admin_pages/admin_approval_details.dart';
+import 'screens/admin_pages/admin_donation_details.dart';
+import 'screens/admin_pages/admin_donor_details.dart';
+import 'screens/admin_pages/admin_home.dart';
+import '../screens/donor_donation.dart';
+import '../screens/donor_home.dart';
 import 'package:cmsc23_project/screens/donor_org_details.dart';
-import 'package:cmsc23_project/screens/donor_profile.dart';
-import 'package:cmsc23_project/screens/landing.dart';
-import 'package:cmsc23_project/screens/org_donation_drive_details.dart';
-import 'package:cmsc23_project/screens/org_donation_drive_form.dart';
-import 'package:cmsc23_project/screens/sign_in.dart';
-import 'package:cmsc23_project/screens/sign_up.dart';
-import 'package:cmsc23_project/screens/org_donation_details.dart';
-import 'package:cmsc23_project/screens/org_donation_drive.dart';
-import 'package:cmsc23_project/screens/org_profile.dart';
-import 'package:cmsc23_project/screens/org_home.dart';
+import '../screens/donor_profile.dart';
+import '../screens/landing.dart';
+import '../screens/sign_in.dart';
+import '../screens/sign_up.dart';
+import '../screens/org_donation.dart';
+import '../screens/org_donation_details.dart';
+import '../screens/org_donation_drive.dart';
+import '../screens/org_profile.dart';
+import '../screens/organization_home.dart';
+import 'screens/admin_pages/admin_approvals.dart';
+import 'screens/admin_pages/admin_organizations.dart';
+import 'screens/admin_pages/admin_donors.dart';
+import 'screens/admin_pages/admin_donations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +70,15 @@ class MyApp extends StatelessWidget {
         "/sign-up": (context) => const SignUpPage(),
         // admin routes
         "/admin-home": (context) => const AdminHome(),
+        "/admin-profile": (context) => const AdminProfile(),
+        "/admin/organizations": (context) => const AdminOrganizationsPage(),
+        "/admin/donations": (context) => const AdminDonationsPage(),
+        "/admin/donors": (context) => const AdminDonorsPage(),
+        "/admin/approvals": (context) => const AdminApprovalsPage(),
+        "/admin/organization-info": (context) => const AdminOrgDetailsPage(),
+        "/admin/donation-info": (context) => const AdminDonationDetailsPage(),
+        "/admin/donor-info": (context) => const AdminDonorDetailsPage(),
+        "/admin/approval-info": (context) => const AdminApprovalDetailsPage(),
         // donor routes
         "/donor-home": (context) => DonorHomePage(userData: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
         "/donor-profile": (context) => DonorProfile(userData: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
@@ -71,14 +87,13 @@ class MyApp extends StatelessWidget {
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),
         "/org-home/donation/details": (context) => OrganizationDonationDetails(
-          ModalRoute.of(context)!.settings.arguments as Map<String, Donation>),
+            ModalRoute.of(context)!.settings.arguments
+                as Map<String, Donation>),
         "/org-home/profile": (context) => OrganizationDetails(
-          ModalRoute.of(context)!.settings.arguments as Map<String, Organization>),
-        "/org-home/donation-drive": (context) => const OrganizationDonationDrivePage(),
-        "/org-home/donation-drive/details": (context) => OrganizationDonationDriveDetails(
-          ModalRoute.of(context)!.settings.arguments as Map<String, DonationDrive>),
-        "/org-home/donation-drive/add": (context) => DonationDriveForm(
-            ModalRoute.of(context)!.settings.arguments as Organization),
+            ModalRoute.of(context)!.settings.arguments
+                as Map<String, Organization>),
+        "/org-home/donation-drive": (context) =>
+            const OrganizationDonationDrivePage(),
       },
     );
   }
