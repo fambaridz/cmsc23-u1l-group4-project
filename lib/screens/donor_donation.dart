@@ -54,7 +54,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 pickupOrDropoff,
                 itemWeight,
                 itemPhoto,
-                // submitButton,
+                submitButton,
               ],
             ),
           ),
@@ -235,4 +235,65 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
       });
     }
   }
+
+  Widget get submitButton => ElevatedButton(
+        onPressed: () async {
+          Donation newDonation;
+          if (_pickupOrDropoff == 'Pickup') {
+            // Donation for pickup
+            newDonation = Donation(
+                id: '1',
+                donor: widget.userData["name"],
+                category: _selectedCategory,
+                weight: '$_itemWeight $_selectedUnit',
+                address: 'address',
+                contactNo: 'contactNo',
+                pickUpDateTime: 'pickUpDateTime',
+                // photo: _itemPhoto,
+                status: 0);
+          } else {
+            // Donation for drop-off
+            newDonation = Donation(
+                id: '1',
+                donor: widget.userData["name"],
+                category: _selectedCategory,
+                weight: '$_itemWeight $_selectedUnit',
+                address: 'address',
+                contactNo: 'contactNo',
+                dropOffDateTime: 'dropOffDateTime',
+                // photo: _itemPhoto,
+                status: 0);
+          }
+
+          GlobalContextService.navigatorKey.currentContext!
+              .read<DonationListProvider>()
+              .addDonation(newDonation);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.lightBlue[400],
+              content: const Text(
+                'Donation is now submitted. Please wait for confirmation from organization.',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              ),
+              duration: const Duration(seconds: 5),
+            ),
+          );
+
+          _formKey.currentState?.reset();
+          setState(() {
+            _selectedCategory = null;
+            _pickupOrDropoff = 'Pickup';
+            _itemPhoto = File('');
+          });
+
+          // Not sure if it should return to donor home right after submitting
+          // if (mounted) Navigator.pushNamed(context, '/donor-home');
+        },
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[200]),
+        child: const Text(
+          "Submit",
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+      );
 }
