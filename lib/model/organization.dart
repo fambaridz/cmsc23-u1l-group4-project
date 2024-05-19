@@ -6,8 +6,9 @@ class Organization {
 
   Organization({
     required this.id,
-    required this.name, 
-    required this.aboutUs, 
+    required this.name,
+    required this.aboutUs,
     required this.status,
+    // might need to add photos of proof of legitimacy here?
   });
 }
