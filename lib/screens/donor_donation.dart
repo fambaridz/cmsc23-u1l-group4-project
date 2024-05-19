@@ -326,7 +326,12 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                   setState(() {});
                   _addressController.clear();
                 },
-                child: const Icon(Icons.add),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightBlue[200]),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
               ))
         ]),
         const SizedBox(height: 15),
