@@ -75,7 +75,7 @@ class AdminDonationDetailsPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Padding(
                       padding: const EdgeInsets.all(5),
-                      child: Text(_addresses[index]!));
+                      child: Text(_addresses[index]));
                 },
               ),
               SizedBox(height: 10),

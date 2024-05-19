@@ -339,6 +339,13 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 labelText: 'Address',
                 border: OutlineInputBorder(),
               ),
+              validator: (value) {
+                if (_addresses.isEmpty) {
+                  return "Please enter an address.";
+                } else {
+                  return null;
+                }
+              },
             ),
           ),
           Padding(
@@ -416,9 +423,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
       child: ElevatedButton(
         onPressed: () async {
           // Manual validation of selected category, item photo, and addresses
-          if (_selectedCategory == null ||
-              _itemPhoto.path.isEmpty ||
-              (_pickupOrDropoff == 'Pickup' && _addresses.isEmpty)) {
+          if (_selectedCategory == null || _itemPhoto.path.isEmpty) {
             setState(() {
               _formKey.currentState!.validate();
               _showErrorMessage = true;
