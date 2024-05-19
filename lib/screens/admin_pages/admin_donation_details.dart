@@ -11,7 +11,7 @@ class AdminDonationDetailsPage extends StatelessWidget {
         donor: 'Donor A',
         category: 'Food',
         weight: '2 kg',
-        address: '123 Sultan st., Brgy. Magiliw',
+        addresses: '123 Sultan st., Brgy. Magiliw',
         contactNo: '+63 123 123 4567',
         pickUpDateTime: 'April 4, 2030',
         dropOffDateTime: 'April 15, 2030',

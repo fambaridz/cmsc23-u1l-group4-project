@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../GlobalContextService.dart';
 import '../model/donation.dart';
 import '../providers/donation_provider.dart';
@@ -19,6 +17,7 @@ class DonorDonationPage extends StatefulWidget {
 
 class _DonorDonationPageState extends State<DonorDonationPage> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _addressController = TextEditingController();
 
   List<String> donationCategories = [
     'Food',
@@ -35,7 +34,21 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
   String? _itemWeight;
   String? _selectedUnit;
   File _itemPhoto = File('');
+  String? _dateAndTime;
+  List<String?> _addresses = [];
+  String? _contactNo;
   bool _showErrorMessage = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _addressController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +69,9 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 pickupOrDropoff,
                 _selectedCategory != 'Cash' ? itemWeight : Container(),
                 itemPhoto,
+                dateTimeField,
+                _pickupOrDropoff == 'Pickup' ? addressField : Container(),
+                _pickupOrDropoff == 'Pickup' ? contact : Container(),
                 submitButton,
                 _showErrorMessage
                     ? const Padding(
@@ -261,10 +277,120 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
     }
   }
 
-  Widget get submitButton => ElevatedButton(
+  Widget get dateTimeField => Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Row(children: [
+        Expanded(
+          flex: 3,
+          child: TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Date and Time',
+              hintText: 'MM/DD/YYYY 24:00',
+              border: OutlineInputBorder(),
+            ),
+            onSaved: (value) {
+              setState(() {
+                _dateAndTime = value;
+              });
+            },
+            validator: (text) {
+              if (text == null || text.isEmpty) {
+                return "Please enter date and time.";
+              }
+              return null;
+            },
+            keyboardType: TextInputType.datetime,
+          ),
+        )
+      ]));
+
+  Widget get addressField => Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          Expanded(
+            flex: 3,
+            child: TextFormField(
+              controller: _addressController,
+              decoration: const InputDecoration(
+                labelText: 'Address',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: ElevatedButton(
+                onPressed: () {
+                  _addresses.add(_addressController.text);
+                  setState(() {});
+                  _addressController.clear();
+                },
+                child: const Icon(Icons.add),
+              ))
+        ]),
+        const SizedBox(height: 15),
+        const Text(
+          "Address/es",
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Container(
+            height: 100,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+            ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _addresses.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Text(_addresses[index]!));
+              },
+            )),
+      ]));
+
+  Widget get contact => Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Row(children: [
+        Expanded(
+          flex: 3,
+          child: TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Contact number',
+              border: OutlineInputBorder(),
+            ),
+            onSaved: (value) {
+              setState(() {
+                _contactNo = value;
+              });
+            },
+            validator: (text) {
+              if (text == null || text.isEmpty) {
+                return "Please enter contact number.";
+              }
+              return null;
+            },
+            keyboardType: TextInputType.phone,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+          ),
+        )
+      ]));
+
+  Widget get submitButton => Padding(
+      padding: const EdgeInsets.all(10),
+      child: ElevatedButton(
         onPressed: () async {
-          // Manual validation of selected category and item photo
-          if (_selectedCategory == null || _itemPhoto.path.isEmpty) {
+          // Manual validation of selected category, item photo, and addresses
+          if (_selectedCategory == null ||
+              _itemPhoto.path.isEmpty ||
+              (_pickupOrDropoff == 'Pickup' && _addresses.isEmpty)) {
             setState(() {
               _formKey.currentState!.validate();
               _showErrorMessage = true;
@@ -283,9 +409,9 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                     weight: _itemWeight == null
                         ? 'Not applicable.'
                         : '$_itemWeight $_selectedUnit',
-                    address: 'address',
-                    contactNo: 'contactNo',
-                    pickUpDateTime: 'pickUpDateTime',
+                    addresses: _addresses,
+                    contactNo: _contactNo,
+                    pickUpDateTime: _dateAndTime,
                     // photo: _itemPhoto,
                     status: 0);
               } else {
@@ -297,9 +423,9 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                     weight: _itemWeight == null
                         ? 'Not applicable.'
                         : '$_itemWeight $_selectedUnit',
-                    address: 'address',
-                    contactNo: 'contactNo',
-                    dropOffDateTime: 'dropOffDateTime',
+                    addresses: _addresses,
+                    contactNo: _contactNo,
+                    dropOffDateTime: _dateAndTime,
                     // photo: _itemPhoto,
                     status: 0);
               }
@@ -340,5 +466,5 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
           "Submit",
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
-      );
+      ));
 }

@@ -5,8 +5,8 @@ class Donation {
   String donor;
   String? category;
   String weight;
-  String address;
-  String contactNo;
+  List<String?> addresses;
+  String? contactNo;
   String? pickUpDateTime;
   String? dropOffDateTime;
   String? photo;
@@ -17,7 +17,7 @@ class Donation {
       required this.donor,
       required this.category,
       required this.weight,
-      required this.address,
+      required this.addresses,
       required this.contactNo,
       this.pickUpDateTime,
       this.dropOffDateTime,
@@ -30,7 +30,7 @@ class Donation {
         donor: json['donor'],
         category: json['category'],
         weight: json['weight'],
-        address: json['address'],
+        addresses: json['addresses'],
         contactNo: json['contactNo'],
         pickUpDateTime: json['pickUpDateTime'],
         dropOffDateTime: json['dropOffDateTime'],
@@ -49,7 +49,7 @@ class Donation {
       'donor': donation.donor,
       'category': donation.category,
       'weight': donation.weight,
-      'address': donation.address,
+      'addresses': donation.addresses,
       'contactNo': donation.contactNo,
       'pickUpDateTime': donation.pickUpDateTime,
       'dropOffDateTime': donation.dropOffDateTime,
