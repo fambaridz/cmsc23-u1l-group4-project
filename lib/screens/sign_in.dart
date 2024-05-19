@@ -136,6 +136,13 @@ class _SignInPageState extends State<SignInPage> {
           isLoading = false;
         });
 
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Signing in...'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+
         if (result == null) {
           setState(() {
             errorMessage = "Unknown error occurred.";
