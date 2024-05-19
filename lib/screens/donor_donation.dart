@@ -61,6 +61,9 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               children: [
                 Center(child: heading),
                 donationItemCategory,
+                _selectedCategory == 'Others'
+                    ? othersItemCategory
+                    : Container(),
                 pickupOrDropoff,
                 _selectedCategory != 'Cash' ? itemWeight : Container(),
                 itemPhoto,
@@ -72,7 +75,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                     ? const Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
-                          "Please fill up all fields",
+                          "Please fill up all fields.",
                           style: TextStyle(
                               fontSize: 15,
                               color: Color.fromARGB(255, 228, 33, 19)),
@@ -136,6 +139,31 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
           ],
         ),
       );
+
+  Widget get othersItemCategory => Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Row(children: [
+        Expanded(
+          flex: 3,
+          child: TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Item Category',
+              border: OutlineInputBorder(),
+            ),
+            onSaved: (value) {
+              setState(() {
+                _selectedCategory = value;
+              });
+            },
+            validator: (text) {
+              if (text == null || text.isEmpty) {
+                return "Please enter category of item.";
+              }
+              return null;
+            },
+          ),
+        )
+      ]));
 
   Widget get pickupOrDropoff => Padding(
         padding: const EdgeInsets.only(bottom: 30),
@@ -452,6 +480,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 _pickupOrDropoff = 'Pickup';
                 _itemWeight = null;
                 _selectedUnit = null;
+                _addresses = [];
                 _itemPhoto = File('');
                 _showErrorMessage = false;
               });
