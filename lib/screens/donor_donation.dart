@@ -58,134 +58,134 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
   }
 
   Widget get heading => Padding(
-    padding: EdgeInsets.only(bottom: 30),
-    child: Text(
-      "Item Donation",
-      style: TextStyle(
-        fontSize: 25.0,
-        color: Colors.lightBlue[400],
-        fontWeight: FontWeight.bold,
-        fontStyle: FontStyle.italic,
-      ),
-    ),
-  );
+        padding: EdgeInsets.only(bottom: 30),
+        child: Text(
+          "Item Donation",
+          style: TextStyle(
+            fontSize: 25.0,
+            color: Colors.lightBlue[400],
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      );
 
   Widget get donationItemCategory => Padding(
-    padding: EdgeInsets.only(bottom: 20),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Donation Category",
-          style: TextStyle(
-            fontSize: 15.0,
-            fontWeight: FontWeight.bold,
-          ),
+        padding: EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Donation Category",
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Column(
+              children: donationCategories.map((category) {
+                return CheckboxListTile(
+                  title: Text(category,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                      )),
+                  value: _selectedCategory == category,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value!) {
+                        _selectedCategory = category;
+                      } else {
+                        _selectedCategory = null;
+                      }
+                    });
+                  },
+                  activeColor: Colors.lightBlue[400],
+                );
+              }).toList(),
+            ),
+          ],
         ),
-        SizedBox(height: 10),
-        Column(
-          children: donationCategories.map((category) {
-            return CheckboxListTile(
-              title: Text(category,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                  )),
-              value: _selectedCategory == category,
-              onChanged: (bool? value) {
-                setState(() {
-                  if (value!) {
-                    _selectedCategory = category;
-                  } else {
-                    _selectedCategory = null;
-                  }
-                });
-              },
-              activeColor: Colors.lightBlue[400],
-            );
-          }).toList(),
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget get pickupOrDropoff => Padding(
-    padding: EdgeInsets.only(bottom: 30),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text(
-          "Pickup or Drop-off",
-          style: TextStyle(
-            fontSize: 15.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        ...shippingOptions.map((option) {
-          return Row(
-            children: [
-              Radio(
-                value: option,
-                groupValue: _pickupOrDropoff,
-                onChanged: (String? value) {
-                  setState(() {
-                    _pickupOrDropoff = value!;
-                  });
-                },
-                activeColor: Colors.lightBlue[400],
+        padding: EdgeInsets.only(bottom: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "Pickup or Drop-off",
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
               ),
-              Text(option),
-            ],
-          );
-        }).toList(),
-      ],
-    ),
-  );
+            ),
+            ...shippingOptions.map((option) {
+              return Row(
+                children: [
+                  Radio(
+                    value: option,
+                    groupValue: _pickupOrDropoff,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _pickupOrDropoff = value!;
+                      });
+                    },
+                    activeColor: Colors.lightBlue[400],
+                  ),
+                  Text(option),
+                ],
+              );
+            }).toList(),
+          ],
+        ),
+      );
 
   Widget get itemWeight => Padding(
-    padding: EdgeInsets.only(bottom: 30),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 3,
-          child: TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Weight',
-              border: OutlineInputBorder(),
+        padding: EdgeInsets.only(bottom: 30),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Weight',
+                  border: OutlineInputBorder(),
+                ),
+                onSaved: (value) {
+                  setState(() {
+                    _itemWeight = double.parse(value!);
+                  });
+                },
+                keyboardType: TextInputType.number,
+              ),
             ),
-            onSaved: (value) {
-              setState(() {
-                _itemWeight = double.parse(value!);
-              });
-            },
-            keyboardType: TextInputType.number,
-          ),
-        ),
-        SizedBox(width: 10),
-        Expanded(
-          flex: 2,
-          child: DropdownButtonFormField<String>(
-            decoration: InputDecoration(
-              labelText: 'Unit',
-              border: OutlineInputBorder(),
+            SizedBox(width: 10),
+            Expanded(
+              flex: 2,
+              child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: 'Unit',
+                  border: OutlineInputBorder(),
+                ),
+                value: _selectedUnit,
+                items: ['kg', 'lbs']
+                    .map((unit) => DropdownMenuItem<String>(
+                          value: unit,
+                          child: Text(unit),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedUnit = value!;
+                  });
+                },
+              ),
             ),
-            value: _selectedUnit,
-            items: ['kg', 'lbs']
-              .map((unit) => DropdownMenuItem<String>(
-                    value: unit,
-                    child: Text(unit),
-                  ))
-              .toList(),
-            onChanged: (value) {
-              setState(() {
-                _selectedUnit = value!;
-              });
-            },
-          ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   Widget get itemPhoto => Padding(
         padding: EdgeInsets.only(bottom: 30),
@@ -207,13 +207,13 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 border: Border.all(color: Colors.grey),
               ),
               child: _itemPhoto.path.isEmpty
-                ? Center(
-                    child: IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: _takePhoto,
-                    ),
-                  )
-                : Image.file(_itemPhoto, fit: BoxFit.cover),
+                  ? Center(
+                      child: IconButton(
+                        icon: Icon(Icons.camera_alt),
+                        onPressed: _takePhoto,
+                      ),
+                    )
+                  : Image.file(_itemPhoto, fit: BoxFit.cover),
             ),
           ],
         ),
