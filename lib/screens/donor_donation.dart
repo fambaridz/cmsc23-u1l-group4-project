@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -31,15 +32,16 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
 
   String? _selectedCategory;
   String _pickupOrDropoff = 'Pickup';
-  double _itemWeight = 0.0;
+  String? _itemWeight;
   String? _selectedUnit;
-  late File _itemPhoto = File('');
+  File _itemPhoto = File('');
+  bool _showErrorMessage = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Donor Donation"),
+        title: const Text("Donor Donation"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -52,9 +54,19 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 Center(child: heading),
                 donationItemCategory,
                 pickupOrDropoff,
-                itemWeight,
+                _selectedCategory != 'Cash' ? itemWeight : Container(),
                 itemPhoto,
                 submitButton,
+                _showErrorMessage
+                    ? const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Please fill up all fields",
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 228, 33, 19)),
+                        ))
+                    : Container()
               ],
             ),
           ),
@@ -64,7 +76,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
   }
 
   Widget get heading => Padding(
-        padding: EdgeInsets.only(bottom: 30),
+        padding: const EdgeInsets.only(bottom: 30),
         child: Text(
           "Item Donation",
           style: TextStyle(
@@ -77,23 +89,23 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
       );
 
   Widget get donationItemCategory => Padding(
-        padding: EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Donation Category",
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Column(
               children: donationCategories.map((category) {
                 return CheckboxListTile(
                   title: Text(category,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15.0,
                       )),
                   value: _selectedCategory == category,
@@ -115,11 +127,11 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
       );
 
   Widget get pickupOrDropoff => Padding(
-        padding: EdgeInsets.only(bottom: 30),
+        padding: const EdgeInsets.only(bottom: 30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
+            const Text(
               "Pickup or Drop-off",
               style: TextStyle(
                 fontSize: 15.0,
@@ -142,36 +154,43 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                   Text(option),
                 ],
               );
-            }).toList(),
+            }),
           ],
         ),
       );
 
   Widget get itemWeight => Padding(
-        padding: EdgeInsets.only(bottom: 30),
+        padding: const EdgeInsets.only(bottom: 30),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               flex: 3,
               child: TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Weight',
                   border: OutlineInputBorder(),
                 ),
                 onSaved: (value) {
                   setState(() {
-                    _itemWeight = double.parse(value!);
+                    _itemWeight = value;
                   });
                 },
+                validator: (text) {
+                  if (text == null || text.isEmpty) {
+                    return "Please enter item weight.";
+                  }
+                  return null;
+                },
                 keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               flex: 2,
               child: DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Unit',
                   border: OutlineInputBorder(),
                 ),
@@ -187,6 +206,12 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                     _selectedUnit = value!;
                   });
                 },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Cannot be empty.";
+                  }
+                  return null;
+                },
               ),
             ),
           ],
@@ -194,18 +219,18 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
       );
 
   Widget get itemPhoto => Padding(
-        padding: EdgeInsets.only(bottom: 30),
+        padding: const EdgeInsets.only(bottom: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Photo of the item/s to donate",
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
               height: 200,
               width: double.infinity,
@@ -215,7 +240,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               child: _itemPhoto.path.isEmpty
                   ? Center(
                       child: IconButton(
-                        icon: Icon(Icons.camera_alt),
+                        icon: const Icon(Icons.camera_alt),
                         onPressed: _takePhoto,
                       ),
                     )
@@ -238,57 +263,77 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
 
   Widget get submitButton => ElevatedButton(
         onPressed: () async {
-          Donation newDonation;
-          if (_pickupOrDropoff == 'Pickup') {
-            // Donation for pickup
-            newDonation = Donation(
-                id: '1',
-                donor: widget.userData["name"],
-                category: _selectedCategory,
-                weight: '$_itemWeight $_selectedUnit',
-                address: 'address',
-                contactNo: 'contactNo',
-                pickUpDateTime: 'pickUpDateTime',
-                // photo: _itemPhoto,
-                status: 0);
+          // Manual validation of selected category and item photo
+          if (_selectedCategory == null || _itemPhoto.path.isEmpty) {
+            setState(() {
+              _formKey.currentState!.validate();
+              _showErrorMessage = true;
+            });
           } else {
-            // Donation for drop-off
-            newDonation = Donation(
-                id: '1',
-                donor: widget.userData["name"],
-                category: _selectedCategory,
-                weight: '$_itemWeight $_selectedUnit',
-                address: 'address',
-                contactNo: 'contactNo',
-                dropOffDateTime: 'dropOffDateTime',
-                // photo: _itemPhoto,
-                status: 0);
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState?.save();
+
+              Donation newDonation;
+              if (_pickupOrDropoff == 'Pickup') {
+                // Donation for pickup
+                newDonation = Donation(
+                    id: '1',
+                    donor: widget.userData["name"],
+                    category: _selectedCategory,
+                    weight: _itemWeight == null
+                        ? 'Not applicable.'
+                        : '$_itemWeight $_selectedUnit',
+                    address: 'address',
+                    contactNo: 'contactNo',
+                    pickUpDateTime: 'pickUpDateTime',
+                    // photo: _itemPhoto,
+                    status: 0);
+              } else {
+                // Donation for drop-off
+                newDonation = Donation(
+                    id: '1',
+                    donor: widget.userData["name"],
+                    category: _selectedCategory,
+                    weight: _itemWeight == null
+                        ? 'Not applicable.'
+                        : '$_itemWeight $_selectedUnit',
+                    address: 'address',
+                    contactNo: 'contactNo',
+                    dropOffDateTime: 'dropOffDateTime',
+                    // photo: _itemPhoto,
+                    status: 0);
+              }
+
+              GlobalContextService.navigatorKey.currentContext!
+                  .read<DonationListProvider>()
+                  .addDonation(newDonation);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.lightBlue[400],
+                  content: const Text(
+                    'Donation is now submitted. Please wait for confirmation from organization.',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  ),
+                  duration: const Duration(seconds: 5),
+                ),
+              );
+
+              // Reset form and values
+              _formKey.currentState?.reset();
+              setState(() {
+                _selectedCategory = null;
+                _pickupOrDropoff = 'Pickup';
+                _itemWeight = null;
+                _selectedUnit = null;
+                _itemPhoto = File('');
+                _showErrorMessage = false;
+              });
+
+              // Not sure if it should return to donor home right after submitting
+              // if (mounted) Navigator.pushNamed(context, '/donor-home');
+            }
           }
-
-          GlobalContextService.navigatorKey.currentContext!
-              .read<DonationListProvider>()
-              .addDonation(newDonation);
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.lightBlue[400],
-              content: const Text(
-                'Donation is now submitted. Please wait for confirmation from organization.',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-              ),
-              duration: const Duration(seconds: 5),
-            ),
-          );
-
-          _formKey.currentState?.reset();
-          setState(() {
-            _selectedCategory = null;
-            _pickupOrDropoff = 'Pickup';
-            _itemPhoto = File('');
-          });
-
-          // Not sure if it should return to donor home right after submitting
-          // if (mounted) Navigator.pushNamed(context, '/donor-home');
         },
         style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[200]),
         child: const Text(
