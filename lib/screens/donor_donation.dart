@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DonorDonationPage extends StatefulWidget {
-  const DonorDonationPage({Key? key}) : super(key: key);
+  final Map<String, dynamic> userData;
+  const DonorDonationPage({super.key, required this.userData});
 
   @override
   State<DonorDonationPage> createState() => _DonorDonationPageState();

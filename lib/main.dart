@@ -1,8 +1,8 @@
 import 'package:cmsc23_project/GlobalContextService.dart';
 import 'package:cmsc23_project/model/donation_drive.dart';
+import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:cmsc23_project/screens/org_donation_drive_details.dart';
 import 'package:cmsc23_project/screens/org_donation_drive_form.dart';
-
 import '../screens/admin_pages/admin_org_details.dart';
 import '../screens/admin_pages/admin_profile.dart';
 import '../model/donation.dart';
@@ -42,7 +42,8 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         // ChangeNotifierProvider(create: ((context) => TodoListProvider())),
-        ChangeNotifierProvider(create: ((context) => UserAuthProvider()))
+        ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
+        ChangeNotifierProvider(create: ((context) => DonationListProvider()))
       ],
       child: MyApp(),
     ),
@@ -92,7 +93,9 @@ class MyApp extends StatelessWidget {
             userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         "/donor-org-details": (context) => DonorOrgDetailsPage(),
-        "/donor-donation": (context) => const DonorDonationPage(),
+        "/donor-donation": (context) => DonorDonationPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),
         "/org-home/donation/details": (context) => OrganizationDonationDetails(
