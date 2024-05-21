@@ -1,40 +1,40 @@
 import 'dart:convert';
 
 class Donation {
-  String id;
-  String donor;
+  String? id;
+  String donorId;
   String? category;
   String weight;
-  List<String?> addresses;
-  String? contactNo;
+  String address;
+  String? contactNum;
   String? pickUpDateTime;
   String? dropOffDateTime;
-  String? photo;
+  String? itemPhoto;
   int status;
 
   Donation(
-      {required this.id,
-      required this.donor,
+      {this.id,
+      required this.donorId,
       required this.category,
       required this.weight,
-      required this.addresses,
-      required this.contactNo,
+      required this.address,
+      required this.contactNum,
       this.pickUpDateTime,
       this.dropOffDateTime,
-      this.photo,
+      this.itemPhoto,
       required this.status});
 
   factory Donation.fromJson(Map<String, dynamic> json) {
     return Donation(
         id: json['id'],
-        donor: json['donor'],
+        donorId: json['donorId'],
         category: json['category'],
         weight: json['weight'],
-        addresses: json['addresses'],
-        contactNo: json['contactNo'],
+        address: json['address'],
+        contactNum: json['contactNum'],
         pickUpDateTime: json['pickUpDateTime'],
         dropOffDateTime: json['dropOffDateTime'],
-        photo: json['photo'],
+        itemPhoto: json['itemPhoto'],
         status: json['status']);
   }
 
@@ -46,14 +46,14 @@ class Donation {
   Map<String, dynamic> toJson(Donation donation) {
     return {
       'id': donation.id,
-      'donor': donation.donor,
+      'donorId': donation.donorId,
       'category': donation.category,
       'weight': donation.weight,
-      'addresses': donation.addresses,
-      'contactNo': donation.contactNo,
+      'address': donation.address,
+      'contactNum': donation.contactNum,
       'pickUpDateTime': donation.pickUpDateTime,
       'dropOffDateTime': donation.dropOffDateTime,
-      'photo': donation.photo,
+      'photo': donation.itemPhoto,
       'status': donation.status
     };
   }

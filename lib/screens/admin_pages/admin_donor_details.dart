@@ -7,20 +7,14 @@ class AdminDonorDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var donor = Donor(
-        id: '1',
-        name: 'Jane Smith',
-        username: '@therealJS',
-        password: 'thisisapassword',
-        address: '123 Datu st., Brgy. Magiliw',
-        contactNo: '+63 123 123 4567',
-        donations: [
-          'Donation 1',
-          'Donation 2',
-          'Donation 3',
-          'Donation 4',
-          'Donation 5',
-          'Donation 6'
-        ]);
+      id: '1',
+      userType: 'Donor',
+      name: 'Jane Smith',
+      username: '@therealJS',
+      email: 'anEmail@email.com',
+      addresses: {'Main branch': '123 Datu st., Brgy. Magiliw'},
+      contactNum: '+63 123 123 4567',
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -65,10 +59,10 @@ class AdminDonorDetailsPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 15),
-                          Text("Contact Number: ${donor.contactNo}",
+                          Text("Contact Number: ${donor.contactNum}",
                               style: const TextStyle(
                                   fontSize: 18, color: Colors.white)),
-                          Text("Address/es: ${donor.address}",
+                          Text("Address/es: ${donor.addresses}",
                               style: const TextStyle(
                                   fontSize: 18, color: Colors.white)),
                           const SizedBox(height: 25)
@@ -91,15 +85,15 @@ class AdminDonorDetailsPage extends StatelessWidget {
                   physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: donor.donations.length,
+                  // itemCount: ,
                   itemBuilder: (context, index) {
-                    final donation = donor.donations[index];
+                    // final donation = donor.donations[index];
 
-                    return ListTile(
-                      title: Text(
-                        donation,
-                        style: const TextStyle(fontSize: 20),
-                      ),
+                    return const ListTile(
+                      title: Text('Text'
+                          // donation,
+                          // style: const TextStyle(fontSize: 20),
+                          ),
                     );
                   }),
             )

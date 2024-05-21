@@ -422,8 +422,8 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
       padding: const EdgeInsets.all(10),
       child: ElevatedButton(
         onPressed: () async {
-          // Manual validation of selected category, item photo, and addresses
-          if (_selectedCategory == null || _itemPhoto.path.isEmpty) {
+          // Manual validation of selected category
+          if (_selectedCategory == null) {
             setState(() {
               _formKey.currentState!.validate();
               _showErrorMessage = true;
@@ -436,31 +436,29 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               if (_pickupOrDropoff == 'Pickup') {
                 // Donation for pickup
                 newDonation = Donation(
-                    id: '1',
-                    donor: widget.userData["name"],
+                    donorId: widget.userData["name"],
                     category: _selectedCategory,
                     weight: _itemWeight == null
                         ? 'Not applicable.'
                         : '$_itemWeight $_selectedUnit',
-                    addresses: _addresses,
-                    contactNo: _contactNo,
+                    address: 'address',
+                    contactNum: _contactNo,
                     pickUpDateTime: _dateAndTime,
                     // photo: _itemPhoto,
-                    status: 0);
+                    status: 1);
               } else {
                 // Donation for drop-off
                 newDonation = Donation(
-                    id: '1',
-                    donor: widget.userData["name"],
+                    donorId: widget.userData["name"],
                     category: _selectedCategory,
                     weight: _itemWeight == null
                         ? 'Not applicable.'
                         : '$_itemWeight $_selectedUnit',
-                    addresses: _addresses,
-                    contactNo: _contactNo,
+                    address: '_addresses',
+                    contactNum: _contactNo,
                     dropOffDateTime: _dateAndTime,
                     // photo: _itemPhoto,
-                    status: 0);
+                    status: 1);
               }
 
               GlobalContextService.navigatorKey.currentContext!

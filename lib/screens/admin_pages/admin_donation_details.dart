@@ -8,15 +8,16 @@ class AdminDonationDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _addresses = ['address1, address2'];
     var donation = Donation(
-        id: '1',
-        donor: 'Donor A',
-        category: 'Food',
-        weight: '2 kg',
-        addresses: _addresses,
-        contactNo: '+63 123 123 4567',
-        pickUpDateTime: 'April 4, 2030',
-        dropOffDateTime: 'April 15, 2030',
-        status: 1);
+      id: '1',
+      donorId: 'Donor A',
+      category: 'Food',
+      weight: '2 kg',
+      address: 'address',
+      contactNum: '+63 123 123 4567',
+      pickUpDateTime: 'April 4, 2030',
+      dropOffDateTime: 'April 15, 2030',
+      status: 1,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +37,7 @@ class AdminDonationDetailsPage extends StatelessWidget {
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
                 Text(
-                  "${donation.donor}",
+                  "${donation.donorId}",
                   style: TextStyle(fontSize: 35, color: Colors.white),
                 ),
               ],
@@ -81,7 +82,7 @@ class AdminDonationDetailsPage extends StatelessWidget {
               SizedBox(height: 10),
               Text("Contact number:",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("${donation.contactNo}",
+              Text("${donation.contactNum}",
                   style: TextStyle(
                     fontSize: 20,
                   )),

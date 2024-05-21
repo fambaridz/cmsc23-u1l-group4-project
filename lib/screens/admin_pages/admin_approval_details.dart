@@ -10,7 +10,13 @@ class AdminApprovalDetailsPage extends StatelessWidget {
         id: '1',
         name: 'Organization A',
         aboutUs: 'We are an organization.',
-        status: false
+        status: false,
+        userType: '',
+        username: '',
+        email: '',
+        addresses: {},
+        contactNum: '',
+        proof: ''
         // proof of legitimacy
         );
 
