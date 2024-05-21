@@ -63,6 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 addressField,
                 contactField,
                 fileUpload,
+                if (errorMessage != null) signUpErrorMessage,
                 submitButton
               ],
             )
@@ -333,11 +334,46 @@ class _SignUpPageState extends State<SignUpPage> {
                   errorMessage = result["error"];
                 });
               }
-              
-            } else if (filesUploaded == true) {
               // if user is not a donor, check first if proof was uploaded
+
+            } else if (filesUploaded == true) {
+
               _formKey.currentState?.save();
-              Navigator.pushNamed(context, "/sign-in");
+
+              setState(() {
+                isLoading = true;
+              });
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Signing up...'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+
+              final result = await context
+                .read<UserAuthProvider>()
+                .authService
+                .signUpOrg(user_type, name!, username!, email!, password!, address!, contact_num!);
+              
+              setState(() {
+                isLoading = false;
+              });
+
+              if (result == null) {
+                setState(() {
+                  errorMessage = "Unknown error occurred.";
+                });
+              } else if (result['user_type'] == "Organization") {
+                setState(() {
+                  errorMessage = null;
+                });
+                Navigator.pushNamed(context, "/org-home");
+              } else {
+                setState(() {
+                  errorMessage = result["error"];
+                });
+              }   
             }
           }
         },

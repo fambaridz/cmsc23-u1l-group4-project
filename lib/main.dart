@@ -1,3 +1,7 @@
+import 'package:cmsc23_project/model/donation_drive.dart';
+import 'package:cmsc23_project/screens/org_donation_drive_details.dart';
+import 'package:cmsc23_project/screens/org_donation_drive_form.dart';
+
 import '../screens/admin_pages/admin_org_details.dart';
 import '../screens/admin_pages/admin_profile.dart';
 import '../model/donation.dart';
@@ -14,11 +18,10 @@ import '../screens/donor_profile.dart';
 import '../screens/landing.dart';
 import '../screens/sign_in.dart';
 import '../screens/sign_up.dart';
-import '../screens/org_donation.dart';
 import '../screens/org_donation_details.dart';
 import '../screens/org_donation_drive.dart';
 import '../screens/org_profile.dart';
-import '../screens/organization_home.dart';
+import '../screens/org_home.dart';
 import 'screens/admin_pages/admin_approvals.dart';
 import 'screens/admin_pages/admin_organizations.dart';
 import 'screens/admin_pages/admin_donors.dart';
@@ -87,13 +90,14 @@ class MyApp extends StatelessWidget {
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),
         "/org-home/donation/details": (context) => OrganizationDonationDetails(
-            ModalRoute.of(context)!.settings.arguments
-                as Map<String, Donation>),
+          ModalRoute.of(context)!.settings.arguments as Map<String, Donation>),
         "/org-home/profile": (context) => OrganizationDetails(
-            ModalRoute.of(context)!.settings.arguments
-                as Map<String, Organization>),
-        "/org-home/donation-drive": (context) =>
-            const OrganizationDonationDrivePage(),
+          ModalRoute.of(context)!.settings.arguments as Map<String, Organization>),
+        "/org-home/donation-drive": (context) => const OrganizationDonationDrivePage(),
+        "/org-home/donation-drive/details": (context) => OrganizationDonationDriveDetails(
+          ModalRoute.of(context)!.settings.arguments as Map<String, DonationDrive>),
+        "/org-home/donation-drive/add": (context) => DonationDriveForm(
+          ModalRoute.of(context)!.settings.arguments as Organization),
       },
     );
   }

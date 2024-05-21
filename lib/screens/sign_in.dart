@@ -136,14 +136,23 @@ class _SignInPageState extends State<SignInPage> {
           isLoading = false;
         });
 
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Signing in...'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+
         if (result == null) {
           setState(() {
             errorMessage = "Unknown error occurred.";
           });
-        } else if (result['user_type'] == "Admin" || result['user_type'] == "Donor" || result == "Organization") {
+        } else if (result['user_type'] == "Admin" || result['user_type'] == "Donor" || result['user_type'] == "Organization") {
           setState(() {
             errorMessage = null;
           });
+
+          print(result);
           
           if (result['user_type'] == "Admin") {
             Navigator.pushNamed(context, "/admin-home");
