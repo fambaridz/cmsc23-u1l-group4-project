@@ -15,16 +15,17 @@ class FirebaseAuthAPI {
 
   Future<Map<String, dynamic>?> signIn(String email, String password) async {
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
 
-      DocumentSnapshot userDoc = await db.collection('users').doc(userCredential.user!.uid).get();
+      DocumentSnapshot userDoc =
+          await db.collection('users').doc(userCredential.user!.uid).get();
 
       if (!userDoc.exists) {
         return {"error": "User not found"};
       } else {
         return userDoc.data() as Map<String, dynamic>;
       }
-    
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         return {"error": e.message};
@@ -36,10 +37,16 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> signUpDonor(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
+  Future<Map<String, dynamic>?> signUpDonor(
+      String userType,
+      String name,
+      String username,
+      String email,
+      String password,
+      Map<String, String> addresses,
+      String contactNum) async {
     UserCredential credential;
     try {
-
       credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -47,18 +54,18 @@ class FirebaseAuthAPI {
 
       // add user to firestore after successful sign up in authentication by getting the user id
       await db.collection('users').doc(credential.user!.uid).set({
-        'user_type': user_type,
+        'userType': userType,
         'name': name,
         'username': username,
         'email': email,
-        'address': address,
-        'contact_num': contact_num,
+        'addresses': addresses,
+        'contactNum': contactNum,
       });
 
       // Retrieve the user data after creation and return it
-      DocumentSnapshot userDoc = await db.collection('users').doc(credential.user!.uid).get();
+      DocumentSnapshot userDoc =
+          await db.collection('users').doc(credential.user!.uid).get();
       return userDoc.data() as Map<String, dynamic>;
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         return {"error": e.message};
@@ -72,10 +79,17 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> signUpOrg(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
+  Future<Map<String, dynamic>?> signUpOrg(
+      String userType,
+      String name,
+      String aboutUs,
+      String username,
+      String email,
+      String password,
+      Map<String, String> addresses,
+      String contactNum) async {
     UserCredential credential;
     try {
-
       credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -83,18 +97,18 @@ class FirebaseAuthAPI {
 
       // add user to firestore after successful sign up in authentication by getting the user id
       await db.collection('users').doc(credential.user!.uid).set({
-        'user_type': user_type,
+        'userType': userType,
         'name': name,
         'username': username,
         'email': email,
-        'address': address,
-        'contact_num': contact_num,
+        'addresses': addresses,
+        'contactNum': contactNum,
       });
 
       // Retrieve the user data after creation and return it
-      DocumentSnapshot userDoc = await db.collection('users').doc(credential.user!.uid).get();
+      DocumentSnapshot userDoc =
+          await db.collection('users').doc(credential.user!.uid).get();
       return userDoc.data() as Map<String, dynamic>;
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         return {"error": e.message};
