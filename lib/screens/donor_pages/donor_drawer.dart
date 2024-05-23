@@ -73,6 +73,14 @@ class _DonorDrawerState extends State<DonorDrawer> {
             },
           ),
           ListTile(
+            leading: Icon(Icons.inventory),
+            title: Text("Donations"),
+            onTap: () {
+              Navigator.pushNamed(context, "/donor-donations",
+                  arguments: widget.userData);
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () {

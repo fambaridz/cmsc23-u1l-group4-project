@@ -1,8 +1,9 @@
 import 'package:cmsc23_project/GlobalContextService.dart';
 import 'package:cmsc23_project/model/donation_drive.dart';
 import 'package:cmsc23_project/providers/donation_provider.dart';
-import 'package:cmsc23_project/screens/org_donation_drive_details.dart';
-import 'package:cmsc23_project/screens/org_donation_drive_form.dart';
+import 'package:cmsc23_project/screens/donor_pages/donor_donation_list.dart';
+import 'package:cmsc23_project/screens/org_pages/org_donation_drive_details.dart';
+import 'package:cmsc23_project/screens/org_pages/org_donation_drive_form.dart';
 import '../screens/admin_pages/admin_org_details.dart';
 import '../screens/admin_pages/admin_profile.dart';
 import '../model/donation.dart';
@@ -12,17 +13,17 @@ import 'screens/admin_pages/admin_approval_details.dart';
 import 'screens/admin_pages/admin_donation_details.dart';
 import 'screens/admin_pages/admin_donor_details.dart';
 import 'screens/admin_pages/admin_home.dart';
-import '../screens/donor_donation.dart';
-import '../screens/donor_home.dart';
-import 'package:cmsc23_project/screens/donor_org_details.dart';
-import '../screens/donor_profile.dart';
+import 'screens/donor_pages/donor_donation.dart';
+import 'screens/donor_pages/donor_home.dart';
+import 'package:cmsc23_project/screens/donor_pages/donor_org_details.dart';
+import 'screens/donor_pages/donor_profile.dart';
 import '../screens/landing.dart';
 import '../screens/sign_in.dart';
 import '../screens/sign_up.dart';
-import '../screens/org_donation_details.dart';
-import '../screens/org_donation_drive.dart';
-import '../screens/org_profile.dart';
-import '../screens/org_home.dart';
+import 'screens/org_pages/org_donation_details.dart';
+import 'screens/org_pages/org_donation_drive.dart';
+import 'screens/org_pages/org_profile.dart';
+import 'screens/org_pages/org_home.dart';
 import 'screens/admin_pages/admin_approvals.dart';
 import 'screens/admin_pages/admin_organizations.dart';
 import 'screens/admin_pages/admin_donors.dart';
@@ -95,6 +96,9 @@ class MyApp extends StatelessWidget {
         "/donor-org-details": (context) => DonorOrgDetailsPage(),
         "/donor-donation": (context) => DonorDonationPage(
             userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/donor-donations":(context) => DonorDonationList(
+          userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),

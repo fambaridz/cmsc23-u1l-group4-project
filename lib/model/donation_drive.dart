@@ -11,4 +11,6 @@ class DonationDrive {
       required this.status,
       required this.orgId,
       required this.donationList});
+
+  get organization => null;
 }

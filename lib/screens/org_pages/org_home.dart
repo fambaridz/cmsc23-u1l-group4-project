@@ -1,6 +1,6 @@
 import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/organization.dart';
-import 'package:cmsc23_project/screens/org_drawer.dart';
+import 'package:cmsc23_project/screens/org_pages/org_drawer.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationHomePage extends StatefulWidget {
@@ -23,63 +23,63 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
       id: "1",
       name: "Organization Name",
       aboutUs: "We are organization. We do organization things. Please donate",
-      status: true);
+      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', proof: '');
 
   final List<Donation> donationList = [
     Donation(
         id: "1",
-        donor: "Juan Dela Cruz",
+        donorId: "Juan Dela Cruz",
         category: "Clothes",
         weight: '5 lbs',
-        addresses: ["1234 Donations St."],
-        contactNo: "09123456789",
+        address: "1234 Donations St.",
+        contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
+        itemPhoto: "photo.jpg",
         status: 1),
     Donation(
         id: "2",
-        donor: "Pedro Penduko",
+        donorId: "Pedro Penduko",
         category: "Books",
         weight: '10 kg',
-        addresses: ["5678 Donations St."],
-        contactNo: "09876543210",
+        address: "5678 Donations St.",
+        contactNum: "09876543210",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
+        itemPhoto: "photo.jpg",
         status: 2),
     Donation(
         id: "3",
-        donor: "Maria Makiling",
+        donorId: "Maria Makiling",
         category: "Food",
         weight: '15 kg',
-        addresses: ["91011 Donations St."],
-        contactNo: "09123456789",
+        address: "91011 Donations St.",
+        contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
+        itemPhoto: "photo.jpg",
         status: 3),
     Donation(
         id: "4",
-        donor: "Juan Tamad",
+        donorId: "Juan Tamad",
         category: "Toys",
         weight: '20 lbs',
-        addresses: ["121314 Donations St."],
-        contactNo: "09876543210",
+        address: "121314 Donations St.",
+        contactNum: "09876543210",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
+        itemPhoto: "photo.jpg",
         status: 4),
     Donation(
         id: "5",
-        donor: "Pedro Penduko",
+        donorId: "Pedro Penduko",
         category: "Clothes",
         weight: '25 lbs',
-        addresses: ["151617 Donations St."],
-        contactNo: "09123456789",
+        address: "151617 Donations St.",
+        contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
+        itemPhoto: "photo.jpg",
         status: 5),
   ];
 
@@ -146,7 +146,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
                                     )),
                               ),
                               title: Text(
-                                donation.donor,
+                                donation.donorId,
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,

@@ -13,7 +13,7 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
       id: "1",
       name: "Organization Name",
       aboutUs: "We are organization. We do organization things. Please donate",
-      status: true);
+      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', proof: '');
 
   @override
   Widget build(BuildContext context) {
