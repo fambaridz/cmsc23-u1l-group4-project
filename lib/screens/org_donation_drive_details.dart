@@ -33,8 +33,8 @@ class _OrganizationDonationDriveDetailsPageState
         id: "1",
         donor: "Juan Dela Cruz",
         category: "Clothes",
-        weight: 5,
-        address: "1234 Donations St.",
+        weight: '5 lbs',
+        addresses: ["1234 Donations St."],
         contactNo: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
@@ -44,8 +44,8 @@ class _OrganizationDonationDriveDetailsPageState
         id: "2",
         donor: "Pedro Penduko",
         category: "Books",
-        weight: 10,
-        address: "5678 Donations St.",
+        weight: '10 kg',
+        addresses: ["5678 Donations St."],
         contactNo: "09876543210",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
@@ -55,8 +55,8 @@ class _OrganizationDonationDriveDetailsPageState
         id: "3",
         donor: "Maria Makiling",
         category: "Food",
-        weight: 15,
-        address: "91011 Donations St.",
+        weight: '15 kg',
+        addresses: ["91011 Donations St."],
         contactNo: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
@@ -66,8 +66,8 @@ class _OrganizationDonationDriveDetailsPageState
         id: "4",
         donor: "Juan Tamad",
         category: "Toys",
-        weight: 20,
-        address: "121314 Donations St.",
+        weight: '20 lbs',
+        addresses: ["121314 Donations St."],
         contactNo: "09876543210",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
@@ -77,8 +77,8 @@ class _OrganizationDonationDriveDetailsPageState
         id: "5",
         donor: "Pedro Penduko",
         category: "Clothes",
-        weight: 25,
-        address: "151617 Donations St.",
+        weight: '25 lbs',
+        addresses: ["151617 Donations St."],
         contactNo: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
@@ -128,9 +128,7 @@ class _OrganizationDonationDriveDetailsPageState
                         MaterialPageRoute(builder: (context) {
                       return DonationDriveForm(organization);
                     }));
-                    setState(() {
-                      
-                    });
+                    setState(() {});
                   },
                   child: Text("Edit", style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(

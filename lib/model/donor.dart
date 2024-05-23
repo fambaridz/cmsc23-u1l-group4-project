@@ -1,18 +1,19 @@
 class Donor {
-  String id;
+  String? id;
+  String userType;
   String name;
   String username;
-  String password;
-  String address;
-  String contactNo;
-  List<String> donations;
+  String email;
+  Map<String, String> addresses;
+  String? contactNum;
 
-  Donor(
-      {required this.id,
-      required this.name,
-      required this.username,
-      required this.password,
-      required this.address,
-      required this.contactNo,
-      required this.donations});
+  Donor({
+    this.id,
+    required this.userType,
+    required this.name,
+    required this.username,
+    required this.email,
+    required this.addresses,
+    required this.contactNum,
+  });
 }

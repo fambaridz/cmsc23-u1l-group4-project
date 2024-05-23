@@ -12,7 +12,6 @@ class DonorDrawer extends StatefulWidget {
 }
 
 class _DonorDrawerState extends State<DonorDrawer> {
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -40,8 +39,9 @@ class _DonorDrawerState extends State<DonorDrawer> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/donor-profile", arguments: widget.userData);
-                        }, 
+                          Navigator.pushNamed(context, "/donor-profile",
+                              arguments: widget.userData);
+                        },
                         child: Text(
                           "View Profile",
                           style: TextStyle(
@@ -68,7 +68,8 @@ class _DonorDrawerState extends State<DonorDrawer> {
             leading: Icon(Icons.home),
             title: Text("Home"),
             onTap: () {
-              Navigator.pushNamed(context, "/donor-home");
+              Navigator.pushNamed(context, "/donor-home",
+                  arguments: widget.userData);
             },
           ),
           ListTile(
