@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cmsc23_project/model/donor.dart';
+import 'package:cmsc23_project/model/organization.dart';
 import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,8 +23,10 @@ class _SignUpPageState extends State<SignUpPage> {
   String? name, username, email, password, contactNum, aboutUs;
   Map<String, String> _addresses = {};
   File _itemPhoto = File('');
+  bool status = false;
   String? errorMessage;
   bool isLoading = false;
+  bool _passwordVisible = false;
 
   // Method that returns the title to be displayed depending
   // on the type of user that will sign up.
@@ -59,39 +62,41 @@ class _SignUpPageState extends State<SignUpPage> {
       case 'Organization':
         {
           return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  nameField,
-                  usernameField,
-                  emailField,
-                  passwordField,
-                  userType == 'Organization' ? descField : Container(),
-                  addressField,
-                  contactField,
-                  itemPhoto,
-                  if (errorMessage != null) signUpErrorMessage,
-                  submitButton
-                ],
-              ));
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                nameField,
+                usernameField,
+                emailField,
+                passwordField,
+                userType == 'Organization' ? descField : Container(),
+                addressField,
+                contactField,
+                itemPhoto,
+                if (errorMessage != null) signUpErrorMessage,
+                submitButton
+              ],
+            )
+          );
         }
       default:
         {
           return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  nameField,
-                  usernameField,
-                  emailField,
-                  passwordField,
-                  addressField,
-                  contactField,
-                  if (errorMessage != null) signUpErrorMessage,
-                  submitButton,
-                  orgSignUp
-                ],
-              ));
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                nameField,
+                usernameField,
+                emailField,
+                passwordField,
+                addressField,
+                contactField,
+                if (errorMessage != null) signUpErrorMessage,
+                submitButton,
+                orgSignUp
+              ],
+            )
+          );
         }
     }
   }
@@ -99,16 +104,20 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(children: [
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-            key: _formKey,
-            child: Column(
-              children: [_buildTitle(), _buildContent(context)],
-            )),
-      ),
-    ]));
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [_buildTitle(), _buildContent(context)],
+              )
+            ),
+          ),
+        ]
+      )
+    );
   }
 
   Widget get nameField => Padding(
@@ -119,16 +128,18 @@ class _SignUpPageState extends State<SignUpPage> {
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: userType == 'Donor'
-              ? const Text("Your name",
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                  ))
-              : const Text("Organization's name",
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                  )),
+            ? const Text(
+              "Your name",
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+              ))
+            : const Text(
+              "Organization's name",
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+              )),
         ),
         TextFormField(
           decoration: const InputDecoration(
@@ -154,11 +165,13 @@ class _SignUpPageState extends State<SignUpPage> {
       children: [
         const Padding(
           padding: EdgeInsets.all(5.0),
-          child: const Text("Choose a username",
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold,
-              )),
+          child: const Text(
+            "Choose a username",
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.bold,
+            )
+          ),
         ),
         TextFormField(
           decoration: const InputDecoration(
@@ -182,11 +195,13 @@ class _SignUpPageState extends State<SignUpPage> {
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const Padding(
         padding: EdgeInsets.all(5.0),
-        child: const Text("Email",
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold,
-            )),
+        child: const Text(
+          "Email",
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.bold,
+          )
+        ),
       ),
       TextFormField(
         decoration: const InputDecoration(
@@ -209,17 +224,34 @@ class _SignUpPageState extends State<SignUpPage> {
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const Padding(
         padding: EdgeInsets.all(5.0),
-        child: Text("Password",
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold,
-            )),
+        child: Text(
+          "Password",
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.bold,
+          )
+        ),
       ),
       TextFormField(
-        obscureText: true,
-        decoration: const InputDecoration(
+        obscureText: !_passwordVisible,
+        enableSuggestions: false,
+        autocorrect: false,
+        decoration: InputDecoration(
+          labelText: "Password",
           border: OutlineInputBorder(),
-          label: Text("Password"),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _passwordVisible
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+              color: Theme.of(context).primaryColorDark,
+            ),
+            onPressed: () {
+              setState(() {
+                _passwordVisible = !_passwordVisible;
+              });
+            }
+          )
         ),
         onSaved: (value) => setState(() => password = value),
         validator: (value) {
@@ -233,38 +265,45 @@ class _SignUpPageState extends State<SignUpPage> {
   );
 
   Widget get descField => Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Text("Organization description",
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold,
-                )),
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start, 
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Text(
+            "Organization description",
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.bold,
+            )
           ),
-          SizedBox(
-              width: 350,
-              height: 150,
-              child: TextFormField(
-                maxLength: 150,
-                maxLines: 3,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                    hintText: "Short description of your organization.",
-                    border: OutlineInputBorder(),
-                    label: Text("Description"),
-                    contentPadding: EdgeInsets.all(15)),
-                onSaved: (value) => setState(() => aboutUs = value),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Description cannot be empty.";
-                  }
-                  return null;
-                },
-              ))
-        ]),
-      );
+        ),
+        SizedBox(
+          width: 350,
+          height: 150,
+          child: TextFormField(
+            maxLength: 150,
+            maxLines: 3,
+            keyboardType: TextInputType.multiline,
+            decoration: const InputDecoration(
+              hintText: "Short description of your organization.",
+              border: OutlineInputBorder(),
+              label: Text("Description"),
+              contentPadding: EdgeInsets.all(15)
+            ),
+            onSaved: (value) => setState(() => aboutUs = value),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Description cannot be empty.";
+              }
+              return null;
+            },
+          )
+        )
+      ]
+    ),
+  );
 
   Widget get addressField => Padding(
     padding: const EdgeInsets.only(bottom: 10),
@@ -481,108 +520,122 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget get submitButton => Padding(
     padding: const EdgeInsets.all(12),
     child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.lightBlue[400],
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13),
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.lightBlue[400],
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
-        onPressed: isLoading
-            ? null
-            : () async {
-                if (_formKey.currentState!.validate()) {
-                  if (userType == 'Donor') {
+      ),
+      onPressed: isLoading
+        ? null
+        : () async {
+          if (_formKey.currentState!.validate()) {
 
-                    _formKey.currentState?.save();
+            if (userType == 'Donor') {
 
-                    Donor donor = Donor(
-                      userType: userType,
-                      name: name!,
-                      username: username!,
-                      email: email!,
-                      addresses: _addresses,
-                      contactNum: contactNum!,
-                    );
+              _formKey.currentState?.save();
 
-                    setState(() {
-                      isLoading = true;
-                    });
+              Donor donor = Donor(
+                userType: userType,
+                name: name!,
+                username: username!,
+                email: email!,
+                addresses: _addresses,
+                contactNum: contactNum!,
+              );
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Signing up...'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
+              setState(() {
+                isLoading = true;
+              });
 
-                    final result = await context
-                        .read<UserAuthProvider>()
-                        .authService
-                        .signUpDonor(donor, password!);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Signing up...'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
 
-                    setState(() {
-                      isLoading = false;
-                    });
+              final result = await context
+                .read<UserAuthProvider>()
+                .authService
+                .signUpDonor(donor, password!);
 
-                    if (result == null) {
-                      setState(() {
-                        errorMessage = "Unknown error occurred.";
-                      });
-                    } else if (result['userType'] == "Donor") {
-                      setState(() {
-                        errorMessage = null;
-                      });
-                      Navigator.pushNamed(context, "/donor-home",
-                          arguments: result);
-                    } else {
-                      setState(() {
-                        errorMessage = result["error"];
-                      });
-                    }
-                  // if user is not a donor, check first if proof was uploaded
-                  } else if (_itemPhoto.path.isNotEmpty) {
-              
-                    _formKey.currentState?.save();
+              setState(() {
+                isLoading = false;
+              });
 
-                    setState(() {
-                      isLoading = true;
-                    });
+              if (result == null) {
+                setState(() {
+                  errorMessage = "Unknown error occurred.";
+                });
+              } else if (result['userType'] == "Donor") {
+                setState(() {
+                  errorMessage = null;
+                });
+                Navigator.pushNamed(context, "/donor-home",
+                    arguments: result);
+              } else {
+                setState(() {
+                  errorMessage = result["error"];
+                });
+              }
+            
+            // if user is not a donor, check first if proof was uploaded
+            } else if (_itemPhoto.path.isNotEmpty) {
+        
+              _formKey.currentState?.save();
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Signing up...'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
+              Organization org = Organization(
+                userType: userType,
+                name: name!,
+                aboutUs: aboutUs!,
+                username: username!,
+                email: email!,
+                addresses: _addresses,
+                contactNum: contactNum!,
+                status: status,
+                photoUrl: "",
+              );
 
-                    final result = await context
-                        .read<UserAuthProvider>()
-                        .authService
-                        .signUpOrg(userType, name!, aboutUs!, username!, email!, password!, _addresses, contactNum!);
+              setState(() {
+                isLoading = true;
+              });
 
-                    setState(() {
-                      isLoading = false;
-                    });
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Uploading photo and signing up...'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
 
-                    if (result == null) {
-                      setState(() {
-                        errorMessage = "Unknown error occurred.";
-                      });
-                    } else if (result['userType'] == "Organization") {
-                      setState(() {
-                        errorMessage = null;
-                      });
-                      Navigator.pushNamed(context, "/org-home");
-                    } else {
-                      setState(() {
-                        errorMessage = result["error"];
-                      });
-                    }
-                  }
-                }
-              },
+              final result = await context
+                .read<UserAuthProvider>()
+                .authService
+                .signUpOrg(org, password!, _itemPhoto);
+
+              setState(() {
+                isLoading = false;
+              });
+
+              if (result == null) {
+                setState(() {
+                  errorMessage = "Unknown error occurred.";
+                });
+              } else if (result['userType'] == "Organization") {
+                setState(() {
+                  errorMessage = null;
+                });
+                Navigator.pushNamed(context, "/org-home");
+              } else {
+                setState(() {
+                  errorMessage = result["error"];
+                });
+              }
+            }
+          }
+        },
         child: isLoading
           ? CircularProgressIndicator(
               strokeWidth: 3,
@@ -625,40 +678,116 @@ class _SignUpPageState extends State<SignUpPage> {
   );
 
   Widget get itemPhoto => Padding(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Photo of Proof of Legitimacy",
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold,
+    padding: const EdgeInsets.only(bottom: 30),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Photo of Proof of Legitimacy",
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+          ),
+          child: _itemPhoto.path.isEmpty
+            ? Center(
+              child: Icon(
+                Icons.photo,
+                size: 50,
+                color: Colors.grey[400],
+              ),
+            )
+            : Image.file(_itemPhoto, fit: BoxFit.cover),
+        ),
+        if (_itemPhoto.path.isEmpty)
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                "Please upload a photo of your proof of legitimacy.",
+                style: TextStyle(color: Colors.red, fontSize: 15.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ), 
+        if (_itemPhoto.path.isNotEmpty)
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                "Photo successfully uploaded.",
+                style: TextStyle(color: Colors.green, fontSize: 15.0, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
-          const SizedBox(height: 10),
-          Container(
-            height: 200,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
+        const SizedBox(height: 20),
+        Center(
+          child: ElevatedButton(
+            onPressed: _takePhoto,
+            child: const Text(
+              'Take Photo',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-            child: _itemPhoto.path.isEmpty
-                ? Center(
-                    child: IconButton(
-                      icon: const Icon(Icons.camera_alt),
-                      onPressed: _takePhoto,
-                    ),
-                  )
-                : Image.file(_itemPhoto, fit: BoxFit.cover),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.lightBlue[200],
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ),
-        ],
-      ),
-    );
+        ),
+        const SizedBox(height: 10),
+        Center(
+          child: ElevatedButton(
+            onPressed: _takePhotoGallery,
+            child: const Text(
+              'Choose from Gallery',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.lightBlue[200],
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 
   Future<void> _takePhoto() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      setState(() {
+        _itemPhoto = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _takePhotoGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
