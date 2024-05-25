@@ -1,7 +1,9 @@
 import 'package:cmsc23_project/model/donor.dart';
+import 'package:cmsc23_project/model/organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cmsc23_project/api/auth_api.dart';
+import 'dart:io';
 
 class UserAuthProvider with ChangeNotifier {
   late FirebaseAuthAPI authService;
@@ -26,17 +28,8 @@ class UserAuthProvider with ChangeNotifier {
     return message;
   }
 
-  Future<Map<String, dynamic>?> signUpOrg(
-      String userType,
-      String name,
-      String aboutUs,
-      String username,
-      String email,
-      String password,
-      Map<String, String> addresses,
-      String contactNum) async {
-    Map<String, dynamic>? message = await authService.signUpOrg(userType, name,
-        aboutUs, username, email, password, addresses, contactNum);
+  Future<Map<String, dynamic>?> signUpOrg(Organization org, String password, File file) async {
+    Map<String, dynamic>? message = await authService.signUpOrg(org, password, file);
     notifyListeners();
     return message;
   }
