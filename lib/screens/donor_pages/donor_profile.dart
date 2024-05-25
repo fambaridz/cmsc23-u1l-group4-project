@@ -16,10 +16,10 @@ class DonorProfile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(height: 30),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 30),
                 Text(
                   userData['name'],
                   style: TextStyle(
@@ -41,36 +41,31 @@ class DonorProfile extends StatelessWidget {
             Expanded(
               child: Container(
                 width: double.infinity,
-                child: Flexible(
-                  fit: FlexFit.tight,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30.0),
-                        topRight: Radius.circular(30.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Personal details",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Personal details",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          Divider(),
-                          SizedBox(height: 20),
-                          contactDetails,
-                          SizedBox(height: 20),
-                          address,
-                        ],
-                      ),
-                    ),
+                      SizedBox(height: 15),
+                      Divider(),
+                      SizedBox(height: 20),
+                      contactDetails,
+                      SizedBox(height: 20),
+                      Expanded(child: address),
+                    ],
                   ),
                 ),
               ),
@@ -81,7 +76,7 @@ class DonorProfile extends StatelessWidget {
     );
   }
 
-  Widget get contactDetails => Row (
+  Widget get contactDetails => Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
@@ -92,7 +87,7 @@ class DonorProfile extends StatelessWidget {
         ),
       ),
       Text(
-        userData['contact_num'],
+        userData['contactNum'],
         style: TextStyle(
           fontSize: 20,
         ),
@@ -100,25 +95,55 @@ class DonorProfile extends StatelessWidget {
     ],
   );
 
-  Widget get address => Row (
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget get address => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "Address",
+        "Address/es",
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
       ),
-      Flexible(
-        flex: 3,
-        child: Text(
-          userData['address'],
-          textAlign: TextAlign.right,
-          style: TextStyle(
-            fontSize: 20,
-            
-          ),
+      Expanded(
+        child: ListView.builder(
+          padding: EdgeInsets.only(top: 10),
+          itemCount: userData['addresses'].length,
+          itemBuilder: (context, index) {
+            var label = userData['addresses'].keys.elementAt(index);
+            var address = userData['addresses'][label];
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[100],
+              ),
+              child: ListTile(
+                contentPadding: EdgeInsets.all(20),
+                title: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "$label: ",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      TextSpan(
+                        text: address,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     ],
