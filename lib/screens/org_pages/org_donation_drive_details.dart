@@ -26,7 +26,7 @@ class _OrganizationDonationDriveDetailsPageState
       id: "1",
       name: "Organization Name",
       aboutUs: "We are organization. We do organization things. Please donate",
-      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', proof: '');
+      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', photoUrl: '');
 
   final List<Donation> donationList = [
     Donation(

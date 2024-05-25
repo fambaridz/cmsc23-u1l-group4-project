@@ -15,8 +15,8 @@ class AdminOrgDetailsPage extends StatelessWidget {
         email: 'org@org.com',
         addresses: {'Laguna branch': 'Laguna'},
         contactNum: '091234567890',
-        status: true,
-        proof: 'image');
+        status: true, photoUrl: '',
+        );
 
     return Scaffold(
       appBar: AppBar(

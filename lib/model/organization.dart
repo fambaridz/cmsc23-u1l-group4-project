@@ -8,7 +8,7 @@ class Organization {
   Map<String, String> addresses;
   String? contactNum;
   bool status;
-  String? proof;
+  String? photoUrl;
 
   Organization({
     this.id,
@@ -19,7 +19,7 @@ class Organization {
     required this.email,
     required this.addresses,
     required this.contactNum,
-    required this.status,
-    required this.proof,
+    required this.status, 
+    required String photoUrl,
   });
 }

@@ -15,8 +15,7 @@ class AdminApprovalDetailsPage extends StatelessWidget {
         username: '',
         email: '',
         addresses: {},
-        contactNum: '',
-        proof: ''
+        contactNum: '', photoUrl: '',
         // proof of legitimacy
         );
 
