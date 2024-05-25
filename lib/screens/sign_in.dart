@@ -147,18 +147,18 @@ class _SignInPageState extends State<SignInPage> {
           setState(() {
             errorMessage = "Unknown error occurred.";
           });
-        } else if (result['user_type'] == "Admin" || result['user_type'] == "Donor" || result['user_type'] == "Organization") {
+        } else if (result['userType'] == "Admin" || result['userType'] == "Donor" || result['userType'] == "Organization") {
           setState(() {
             errorMessage = null;
           });
 
           print(result);
           
-          if (result['user_type'] == "Admin") {
+          if (result['userType'] == "Admin") {
             Navigator.pushNamed(context, "/admin-home");
-          } else if (result['user_type'] == "Donor") {
+          } else if (result['userType'] == "Donor") {
             Navigator.pushNamed(context, "/donor-home", arguments: result);
-          } else if (result['user_type'] == "Organization") {
+          } else if (result['userType'] == "Organization") {
             Navigator.pushNamed(context, "/org-home");
           }
         } else {

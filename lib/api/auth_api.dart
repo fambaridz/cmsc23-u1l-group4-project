@@ -37,15 +37,9 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> signUpDonor(
-      String userType,
-      String name,
-      String username,
-      String email,
-      String password,
-      Map<String, String> addresses,
-      String contactNum) async {
+  Future<Map<String, dynamic>?> signUpDonor(String userType, String name, String username, String email, String password, Map<String, String> addresses, String contactNum) async {
     UserCredential credential;
+    
     try {
       credential = await auth.createUserWithEmailAndPassword(
         email: email,
@@ -63,9 +57,9 @@ class FirebaseAuthAPI {
       });
 
       // Retrieve the user data after creation and return it
-      DocumentSnapshot userDoc =
-          await db.collection('users').doc(credential.user!.uid).get();
+      DocumentSnapshot userDoc = await db.collection('users').doc(credential.user!.uid).get();
       return userDoc.data() as Map<String, dynamic>;
+      
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         return {"error": e.message};
