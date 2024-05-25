@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cmsc23_project/model/donor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthAPI {
@@ -37,23 +38,23 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> signUpDonor(String userType, String name, String username, String email, String password, Map<String, String> addresses, String contactNum) async {
+  Future<Map<String, dynamic>?> signUpDonor(Donor donor, String password) async {
     UserCredential credential;
     
     try {
       credential = await auth.createUserWithEmailAndPassword(
-        email: email,
+        email: donor.email,
         password: password,
       );
 
       // add user to firestore after successful sign up in authentication by getting the user id
       await db.collection('users').doc(credential.user!.uid).set({
-        'userType': userType,
-        'name': name,
-        'username': username,
-        'email': email,
-        'addresses': addresses,
-        'contactNum': contactNum,
+        'userType': donor.userType,
+        'name': donor.name,
+        'username': donor.username,
+        'email': donor.email,
+        'addresses': donor.addresses,
+        'contactNum': donor. contactNum,
       });
 
       // Retrieve the user data after creation and return it

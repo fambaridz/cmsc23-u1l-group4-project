@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cmsc23_project/model/donor.dart';
 import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -493,7 +494,17 @@ class _SignUpPageState extends State<SignUpPage> {
             : () async {
                 if (_formKey.currentState!.validate()) {
                   if (userType == 'Donor') {
+
                     _formKey.currentState?.save();
+
+                    Donor donor = Donor(
+                      userType: userType,
+                      name: name!,
+                      username: username!,
+                      email: email!,
+                      addresses: _addresses,
+                      contactNum: contactNum!,
+                    );
 
                     setState(() {
                       isLoading = true;
@@ -509,7 +520,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     final result = await context
                         .read<UserAuthProvider>()
                         .authService
-                        .signUpDonor(userType, name!, username!, email!, password!, _addresses, contactNum!);
+                        .signUpDonor(donor, password!);
 
                     setState(() {
                       isLoading = false;

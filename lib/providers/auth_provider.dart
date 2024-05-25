@@ -1,3 +1,4 @@
+import 'package:cmsc23_project/model/donor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cmsc23_project/api/auth_api.dart';
@@ -19,8 +20,8 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>?> signUpDonor(String userType, String name, String username, String email, String password, Map<String, String> addresses, String contactNum) async {
-    Map<String, dynamic>? message = await authService.signUpDonor( userType, name, username, email, password, addresses, contactNum);
+  Future<Map<String, dynamic>?> signUpDonor(Donor donor, String password) async {
+    Map<String, dynamic>? message = await authService.signUpDonor(donor, password);
     notifyListeners();
     return message;
   }
