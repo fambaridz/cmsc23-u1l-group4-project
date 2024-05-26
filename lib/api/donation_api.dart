@@ -3,9 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirebaseDonationAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<String> addDonation(Map<String, dynamic> donation) async {
+  Future<String> addDonation(Map<String, dynamic> donation, Map<String, String> donorAddresses) async {
     try {
       await db.collection("donations").add(donation);
+      await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
 
       return "Successfully added!";
     } on FirebaseException catch (e) {
@@ -34,7 +35,6 @@ class FirebaseDonationAPI {
   Future<String> editDonation(String id, String status) async {
     try {
       await db.collection("donations").doc(id).update({"status": status});
-
       return "Successfully edited!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
