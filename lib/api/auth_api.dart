@@ -17,6 +17,15 @@ class FirebaseAuthAPI {
     return auth.authStateChanges();
   }
 
+  Future<Map<String, dynamic>?> getUserData(String uid) async {
+    DocumentSnapshot userDoc = await db.collection('users').doc(uid).get();
+    if (!userDoc.exists) {
+      return null;
+    } else {
+      return userDoc.data() as Map<String, dynamic>;
+    }
+  }
+
   Future<Map<String, dynamic>?> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(

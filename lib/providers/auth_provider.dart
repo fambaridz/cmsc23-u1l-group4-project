@@ -22,6 +22,12 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<Map<String, dynamic>?> getUserData(String uid) async {
+    Map<String, dynamic>? message = await authService.getUserData(uid);
+    notifyListeners();
+    return message;
+  }
+
   Future<Map<String, dynamic>?> signUpDonor(Donor donor, String password) async {
     Map<String, dynamic>? message = await authService.signUpDonor(donor, password);
     notifyListeners();
