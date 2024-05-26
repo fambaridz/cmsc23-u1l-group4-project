@@ -1,25 +1,63 @@
+import 'dart:convert';
+
 class Donation {
-  String id;
-  String donor;
-  String category;
-  int weight;
+  String? id;
+  String donorId;
+  String? category;
+  String pickupOrDropoff;
+  String weight;
   String address;
-  String contactNo;
-  String pickUpDateTime;
-  String dropOffDateTime;
-  String? photo;
+  String? contactNum;
+  String? pickUpDateTime;
+  String? dropOffDateTime;
+  String? itemPhoto;
   int status;
 
-  Donation({
-    required this.id,
-    required this.donor, 
-    required this.category, 
-    required this.weight, 
-    required this.address, 
-    required this.contactNo,
-    required this.pickUpDateTime, 
-    required this.dropOffDateTime,
-    this.photo,
-    required this.status
-  });
+  Donation(
+      {this.id,
+      required this.donorId,
+      required this.category,
+      required this.pickupOrDropoff,
+      required this.weight,
+      required this.address,
+      required this.contactNum,
+      this.pickUpDateTime,
+      this.dropOffDateTime,
+      this.itemPhoto,
+      required this.status});
+
+  factory Donation.fromJson(Map<String, dynamic> json) {
+    return Donation(
+        id: json['id'],
+        donorId: json['donorId'],
+        category: json['category'],
+        pickupOrDropoff: json['pickupOrDropoff'],
+        weight: json['weight'],
+        address: json['address'],
+        contactNum: json['contactNum'],
+        pickUpDateTime: json['pickUpDateTime'],
+        dropOffDateTime: json['dropOffDateTime'],
+        itemPhoto: json['itemPhoto'],
+        status: json['status']);
+  }
+
+  static List<Donation> fromJsonArray(String jsonData) {
+    final Iterable<dynamic> data = jsonDecode(jsonData);
+    return data.map<Donation>((dynamic d) => Donation.fromJson(d)).toList();
+  }
+
+  Map<String, dynamic> toJson(Donation donation) {
+    return {
+      'donorId': donation.donorId,
+      'category': donation.category,
+      'pickupOrDropoff': donation.pickupOrDropoff,
+      'weight': donation.weight,
+      'address': donation.address,
+      'contactNum': donation.contactNum,
+      'pickUpDateTime': donation.pickUpDateTime,
+      'dropOffDateTime': donation.dropOffDateTime,
+      'photo': donation.itemPhoto,
+      'status': donation.status
+    };
+  }
 }

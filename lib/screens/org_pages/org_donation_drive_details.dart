@@ -1,6 +1,6 @@
 import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/organization.dart';
-import 'package:cmsc23_project/screens/org_donation_drive_form.dart';
+import 'package:cmsc23_project/screens/org_pages/org_donation_drive_form.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDonationDriveDetails extends StatefulWidget {
@@ -26,64 +26,64 @@ class _OrganizationDonationDriveDetailsPageState
       id: "1",
       name: "Organization Name",
       aboutUs: "We are organization. We do organization things. Please donate",
-      status: true);
+      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', photoUrl: '', isVerified: false);
 
   final List<Donation> donationList = [
     Donation(
         id: "1",
-        donor: "Juan Dela Cruz",
+        donorId: "Juan Dela Cruz",
         category: "Clothes",
-        weight: 5,
+        weight: '5 lbs',
         address: "1234 Donations St.",
-        contactNo: "09123456789",
+        contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
-        status: 1),
+        itemPhoto: "photo.jpg",
+        status: 1, pickupOrDropoff: ''),
     Donation(
         id: "2",
-        donor: "Pedro Penduko",
+        donorId: "Pedro Penduko",
         category: "Books",
-        weight: 10,
+        weight: '10 kg',
         address: "5678 Donations St.",
-        contactNo: "09876543210",
+        contactNum: "09876543210",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
-        status: 2),
+        itemPhoto: "photo.jpg",
+        status: 2, pickupOrDropoff: ''),
     Donation(
         id: "3",
-        donor: "Maria Makiling",
+        donorId: "Maria Makiling",
         category: "Food",
-        weight: 15,
+        weight: '15 kg',
         address: "91011 Donations St.",
-        contactNo: "09123456789",
+        contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
-        status: 3),
+        itemPhoto: "photo.jpg",
+        status: 3, pickupOrDropoff: ''),
     Donation(
         id: "4",
-        donor: "Juan Tamad",
+        donorId: "Juan Tamad",
         category: "Toys",
-        weight: 20,
+        weight: '20 lbs',
         address: "121314 Donations St.",
-        contactNo: "09876543210",
+        contactNum: "09876543210",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
-        status: 4),
+        itemPhoto: "photo.jpg",
+        status: 4, pickupOrDropoff: ''),
     Donation(
         id: "5",
-        donor: "Pedro Penduko",
+        donorId: "Pedro Penduko",
         category: "Clothes",
-        weight: 25,
+        weight: '25 lbs',
         address: "151617 Donations St.",
-        contactNo: "09123456789",
+        contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        photo: "photo.jpg",
-        status: 5),
+        itemPhoto: "photo.jpg",
+        status: 5, pickupOrDropoff: ''),
   ];
 
   @override
@@ -128,9 +128,7 @@ class _OrganizationDonationDriveDetailsPageState
                         MaterialPageRoute(builder: (context) {
                       return DonationDriveForm(organization);
                     }));
-                    setState(() {
-                      
-                    });
+                    setState(() {});
                   },
                   child: Text("Edit", style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
@@ -223,7 +221,7 @@ class _OrganizationDonationDriveDetailsPageState
                                         )),
                                   ),
                                   title: Text(
-                                    donation.donor,
+                                    donation.donorId,
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,

@@ -18,8 +18,8 @@ class _DonationDriveFormState extends State<DonationDriveForm> {
   Widget build(BuildContext context) {
     String name = '';
     bool status = true;
-    Organization organization = widget.organization;
-    List<Donation> donationList = [];
+    String? orgId = widget.organization.id;
+    List<String> donationList = [];
 
     final switchKey = GlobalKey<SwitchExampleState>();
     final txtForm = GlobalKey<FormState>();
@@ -62,7 +62,7 @@ class _DonationDriveFormState extends State<DonationDriveForm> {
                   id: '',
                   name: name,
                   status: status,
-                  organization: organization,
+                  orgId: orgId!,
                   donationList: donationList);
               Navigator.pop(context, donationDrive);
             },

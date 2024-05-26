@@ -1,20 +1,17 @@
-import 'package:cmsc23_project/model/organization.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class OrganizationDrawer extends StatefulWidget {
-  const OrganizationDrawer({Key? key}) : super(key: key);
+class DonorDrawer extends StatefulWidget {
+  final Map<String, dynamic> userData;
+
+  const DonorDrawer({super.key, required this.userData});
 
   @override
-  State<OrganizationDrawer> createState() => _OrganizationDrawerState();
+  State<DonorDrawer> createState() => _DonorDrawerState();
 }
 
-class _OrganizationDrawerState extends State<OrganizationDrawer> {
-  final Organization organization = Organization(
-      id: "1",
-      name: "Organization Name",
-      aboutUs: "We are organization. We do organization things. Please donate",
-      status: true);
-
+class _DonorDrawerState extends State<DonorDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -33,8 +30,9 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(
-                        child: Text(
-                          organization.name,
+                        child: 
+                          Text(
+                          widget.userData['name'],
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -44,8 +42,8 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/org-home/profile",
-                              arguments: {"details": organization});
+                          Navigator.pushNamed(context, "/donor-profile",
+                              arguments: widget.userData);
                         },
                         child: Text(
                           "View Profile",
@@ -70,23 +68,26 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.inventory),
-            title: Text("Donations"),
+            leading: Icon(Icons.home),
+            title: Text("Home"),
             onTap: () {
-              Navigator.pushNamed(context, "/org-home");
+              Navigator.pushNamed(context, "/donor-home",
+                  arguments: widget.userData);
             },
           ),
           ListTile(
-            leading: Icon(Icons.local_shipping),
-            title: Text("Donation Drives"),
+            leading: Icon(Icons.inventory),
+            title: Text("Donations"),
             onTap: () {
-              Navigator.pushNamed(context, "/org-home/donation-drive");
+              Navigator.pushNamed(context, "/donor-donations",
+                  arguments: widget.userData);
             },
           ),
           ListTile(
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () {
+              context.read<UserAuthProvider>().signOut();
               Navigator.pushNamed(context, "/");
             },
           ),

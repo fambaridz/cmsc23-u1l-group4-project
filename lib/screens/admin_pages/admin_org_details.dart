@@ -8,9 +8,15 @@ class AdminOrgDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var organization = Organization(
         id: '1',
+        userType: 'Organizaiton',
         name: 'Organization A',
         aboutUs: 'We are an organization.',
-        status: true);
+        username: 'anOrg',
+        email: 'org@org.com',
+        addresses: {'Laguna branch': 'Laguna'},
+        contactNum: '091234567890',
+        status: true, photoUrl: '', isVerified: false,
+        );
 
     return Scaffold(
       appBar: AppBar(

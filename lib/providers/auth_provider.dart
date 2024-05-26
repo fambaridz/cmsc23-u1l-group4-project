@@ -1,6 +1,9 @@
+import 'package:cmsc23_project/model/donor.dart';
+import 'package:cmsc23_project/model/organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cmsc23_project/api/auth_api.dart';
+import 'dart:io';
 
 class UserAuthProvider with ChangeNotifier {
   late FirebaseAuthAPI authService;
@@ -19,14 +22,20 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>?> signUpDonor(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
-    Map<String, dynamic>? message = await authService.signUpDonor(user_type, name, username, email, password, address, contact_num);
+  Future<Map<String, dynamic>?> getUserData(String uid) async {
+    Map<String, dynamic>? message = await authService.getUserData(uid);
     notifyListeners();
     return message;
   }
 
-  Future<Map<String, dynamic>?> signUpOrg(String user_type, String name, String username, String email, String password, String address, String contact_num) async {
-    Map<String, dynamic>? message = await authService.signUpOrg(user_type, name, username, email, password, address, contact_num);
+  Future<Map<String, dynamic>?> signUpDonor(Donor donor, String password) async {
+    Map<String, dynamic>? message = await authService.signUpDonor(donor, password);
+    notifyListeners();
+    return message;
+  }
+
+  Future<Map<String, dynamic>?> signUpOrg(Organization org, String password, File file) async {
+    Map<String, dynamic>? message = await authService.signUpOrg(org, password, file);
     notifyListeners();
     return message;
   }
