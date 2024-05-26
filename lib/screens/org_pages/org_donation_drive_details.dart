@@ -39,7 +39,7 @@ class _OrganizationDonationDriveDetailsPageState
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhoto: "photo.jpg",
-        status: 1),
+        status: 1, pickupOrDropoff: ''),
     Donation(
         id: "2",
         donorId: "Pedro Penduko",
@@ -50,7 +50,7 @@ class _OrganizationDonationDriveDetailsPageState
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhoto: "photo.jpg",
-        status: 2),
+        status: 2, pickupOrDropoff: ''),
     Donation(
         id: "3",
         donorId: "Maria Makiling",
@@ -61,7 +61,7 @@ class _OrganizationDonationDriveDetailsPageState
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhoto: "photo.jpg",
-        status: 3),
+        status: 3, pickupOrDropoff: ''),
     Donation(
         id: "4",
         donorId: "Juan Tamad",
@@ -72,7 +72,7 @@ class _OrganizationDonationDriveDetailsPageState
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhoto: "photo.jpg",
-        status: 4),
+        status: 4, pickupOrDropoff: ''),
     Donation(
         id: "5",
         donorId: "Pedro Penduko",
@@ -83,7 +83,7 @@ class _OrganizationDonationDriveDetailsPageState
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhoto: "photo.jpg",
-        status: 5),
+        status: 5, pickupOrDropoff: ''),
   ];
 
   @override

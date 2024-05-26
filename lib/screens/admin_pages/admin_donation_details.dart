@@ -16,7 +16,7 @@ class AdminDonationDetailsPage extends StatelessWidget {
       contactNum: '+63 123 123 4567',
       pickUpDateTime: 'April 4, 2030',
       dropOffDateTime: 'April 15, 2030',
-      status: 1,
+      status: 1, pickupOrDropoff: '',
     );
 
     return Scaffold(
