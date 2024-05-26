@@ -4,6 +4,7 @@ class Donation {
   String? id;
   String donorId;
   String? category;
+  String pickupOrDropoff;
   String weight;
   String address;
   String? contactNum;
@@ -16,6 +17,7 @@ class Donation {
       {this.id,
       required this.donorId,
       required this.category,
+      required this.pickupOrDropoff,
       required this.weight,
       required this.address,
       required this.contactNum,
@@ -29,6 +31,7 @@ class Donation {
         id: json['id'],
         donorId: json['donorId'],
         category: json['category'],
+        pickupOrDropoff: json['pickupOrDropoff'],
         weight: json['weight'],
         address: json['address'],
         contactNum: json['contactNum'],
@@ -45,9 +48,9 @@ class Donation {
 
   Map<String, dynamic> toJson(Donation donation) {
     return {
-      'id': donation.id,
       'donorId': donation.donorId,
       'category': donation.category,
+      'pickupOrDropoff': donation.pickupOrDropoff,
       'weight': donation.weight,
       'address': donation.address,
       'contactNum': donation.contactNum,
