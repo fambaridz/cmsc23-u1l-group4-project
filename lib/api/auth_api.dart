@@ -108,6 +108,7 @@ class FirebaseAuthAPI {
       'addresses': org.addresses,
       'contactNum': org.contactNum,
       'status': org.status,
+      'isVerified': org.isVerified,
       'photoUrl': downloadUrl,
     });
 
