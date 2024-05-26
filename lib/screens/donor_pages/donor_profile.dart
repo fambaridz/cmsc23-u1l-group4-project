@@ -107,7 +107,7 @@ class DonorProfile extends StatelessWidget {
       ),
       Expanded(
         child: ListView.builder(
-          padding: EdgeInsets.only(top: 10),
+          padding: EdgeInsets.only(top: 10, bottom: 10),
           itemCount: userData['addresses'].length,
           itemBuilder: (context, index) {
             var label = userData['addresses'].keys.elementAt(index);
@@ -117,6 +117,7 @@ class DonorProfile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey[100],
               ),
+              margin: EdgeInsets.only(bottom: 10),
               child: ListTile(
                 contentPadding: EdgeInsets.all(20),
                 title: RichText(
