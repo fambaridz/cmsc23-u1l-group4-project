@@ -23,7 +23,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
       id: "1",
       name: "Organization Name",
       aboutUs: "We are organization. We do organization things. Please donate",
-      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', photoUrl: '');
+      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', photoUrl: '', isVerified: false);
 
   final List<Donation> donationList = [
     Donation(
