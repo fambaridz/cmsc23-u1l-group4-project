@@ -6,16 +6,18 @@ import 'package:provider/provider.dart';
 import '../../GlobalContextService.dart';
 import '../../model/donation.dart';
 import '../../providers/donation_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
 
 class DonorDonationPage extends StatefulWidget {
-  final Map<String, dynamic> userData;
-  const DonorDonationPage({super.key, required this.userData});
+  const DonorDonationPage({super.key});
 
   @override
   State<DonorDonationPage> createState() => _DonorDonationPageState();
 }
 
 class _DonorDonationPageState extends State<DonorDonationPage> {
+  User? user;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _addressController = TextEditingController();
 
@@ -47,6 +49,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
 
   @override
   Widget build(BuildContext context) {
+    user = context.read<UserAuthProvider>().user;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Donor Donation"),
@@ -436,7 +439,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               if (_pickupOrDropoff == 'Pickup') {
                 // Donation for pickup
                 newDonation = Donation(
-                    donorId: widget.userData["name"],
+                    donorId: user!.uid,
                     category: _selectedCategory,
                     weight: _itemWeight == null
                         ? 'Not applicable.'
@@ -449,7 +452,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               } else {
                 // Donation for drop-off
                 newDonation = Donation(
-                    donorId: widget.userData["name"],
+                    donorId: user!.uid,
                     category: _selectedCategory,
                     weight: _itemWeight == null
                         ? 'Not applicable.'

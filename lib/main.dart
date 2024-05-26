@@ -94,9 +94,7 @@ class MyApp extends StatelessWidget {
             userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         "/donor-org-details": (context) => DonorOrgDetailsPage(),
-        "/donor-donation": (context) => DonorDonationPage(
-            userData: ModalRoute.of(context)!.settings.arguments
-                as Map<String, dynamic>),
+        "/donor-donation": (context) => DonorDonationPage(),
         "/donor-donations":(context) => DonorDonationList(
           userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
