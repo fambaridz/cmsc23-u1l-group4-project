@@ -27,6 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String? errorMessage;
   bool isLoading = false;
   bool _passwordVisible = false;
+  bool _isVerified = false;
 
   // Method that returns the title to be displayed depending
   // on the type of user that will sign up.
@@ -366,8 +367,12 @@ class _SignUpPageState extends State<SignUpPage> {
               _addressController.clear();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Please fill up both fields.'),
+                SnackBar(
+                  backgroundColor: Colors.lightBlue[400],
+                  content: Text(
+                    'Please fill up both fields.',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  ),
                   duration: Duration(seconds: 2),
                 ),
               );
@@ -552,7 +557,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Signing up...'),
+                  backgroundColor: Colors.lightBlue[400],
+                  content: Text(
+                    'Signing up...',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  ),
                   duration: Duration(seconds: 2),
                 ),
               );
@@ -574,8 +583,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 setState(() {
                   errorMessage = null;
                 });
-                Navigator.pushNamed(context, "/donor-home",
-                    arguments: result);
+                Navigator.pushNamed(context, "/donor-home");
               } else {
                 setState(() {
                   errorMessage = result["error"];
@@ -596,6 +604,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 addresses: _addresses,
                 contactNum: contactNum!,
                 status: status,
+                isVerified: _isVerified,
                 photoUrl: "",
               );
 
@@ -604,8 +613,12 @@ class _SignUpPageState extends State<SignUpPage> {
               });
 
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Uploading photo and signing up...'),
+                SnackBar(
+                  backgroundColor: Colors.lightBlue[400],
+                  content: Text(
+                    'Uploading photo and signing up...',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  ),
                   duration: Duration(seconds: 2),
                 ),
               );
@@ -627,7 +640,19 @@ class _SignUpPageState extends State<SignUpPage> {
                 setState(() {
                   errorMessage = null;
                 });
-                Navigator.pushNamed(context, "/org-home");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.lightBlue[400],
+                    content: Text(
+                      'Successfully signed up! Please wait for approval.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+                Future.delayed(const Duration(seconds: 2), () {
+                  Navigator.pushNamed(context, "/");
+                });
               } else {
                 setState(() {
                   errorMessage = result["error"];
@@ -707,23 +732,19 @@ class _SignUpPageState extends State<SignUpPage> {
             : Image.file(_itemPhoto, fit: BoxFit.cover),
         ),
         if (_itemPhoto.path.isEmpty)
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                "Please upload a photo of your proof of legitimacy.",
-                style: TextStyle(color: Colors.red, fontSize: 15.0, fontWeight: FontWeight.bold),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+              "Please upload a photo of your proof of legitimacy.",
+              style: TextStyle(color: Colors.red, fontSize: 15.0, fontWeight: FontWeight.bold),
             ),
-          ), 
+          ),
         if (_itemPhoto.path.isNotEmpty)
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                "Photo successfully uploaded.",
-                style: TextStyle(color: Colors.green, fontSize: 15.0, fontWeight: FontWeight.bold),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+              "Photo successfully uploaded.",
+              style: TextStyle(color: Colors.green, fontSize: 15.0, fontWeight: FontWeight.bold),
             ),
           ),
         const SizedBox(height: 20),
