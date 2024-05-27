@@ -22,7 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String userType = 'Donor';
   String? name, username, email, password, contactNum, aboutUs;
   Map<String, String> _addresses = {};
-  File _itemPhoto = File('');
+  File _proofPhoto = File('');
   bool status = false;
   String? errorMessage;
   bool isLoading = false;
@@ -591,7 +591,7 @@ class _SignUpPageState extends State<SignUpPage> {
               }
             
             // if user is not a donor, check first if proof was uploaded
-            } else if (_itemPhoto.path.isNotEmpty) {
+            } else if (_proofPhoto.path.isNotEmpty) {
         
               _formKey.currentState?.save();
 
@@ -626,7 +626,7 @@ class _SignUpPageState extends State<SignUpPage> {
               final result = await context
                 .read<UserAuthProvider>()
                 .authService
-                .signUpOrg(org, password!, _itemPhoto);
+                .signUpOrg(org, password!, _proofPhoto);
 
               setState(() {
                 isLoading = false;
@@ -721,7 +721,7 @@ class _SignUpPageState extends State<SignUpPage> {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
           ),
-          child: _itemPhoto.path.isEmpty
+          child: _proofPhoto.path.isEmpty
             ? Center(
               child: Icon(
                 Icons.photo,
@@ -729,9 +729,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 color: Colors.grey[400],
               ),
             )
-            : Image.file(_itemPhoto, fit: BoxFit.cover),
+            : Image.file(_proofPhoto, fit: BoxFit.cover),
         ),
-        if (_itemPhoto.path.isEmpty)
+        if (_proofPhoto.path.isEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(
@@ -739,7 +739,7 @@ class _SignUpPageState extends State<SignUpPage> {
               style: TextStyle(color: Colors.red, fontSize: 15.0, fontWeight: FontWeight.bold),
             ),
           ),
-        if (_itemPhoto.path.isNotEmpty)
+        if (_proofPhoto.path.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(
@@ -801,7 +801,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (pickedFile != null) {
       setState(() {
-        _itemPhoto = File(pickedFile.path);
+        _proofPhoto = File(pickedFile.path);
       });
     }
   }
@@ -812,7 +812,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (pickedFile != null) {
       setState(() {
-        _itemPhoto = File(pickedFile.path);
+        _proofPhoto = File(pickedFile.path);
       });
     }
   }
