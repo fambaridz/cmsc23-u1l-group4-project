@@ -1,5 +1,6 @@
 import 'package:cmsc23_project/GlobalContextService.dart';
 import 'package:cmsc23_project/providers/auth_provider.dart';
+import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:cmsc23_project/screens/admin_pages/admin_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -49,13 +50,14 @@ class _AdminHomeState extends State<AdminHome> {
       donorCount = donors.length;
     }
 
-    // Retrieve all donations
-    // final donations = await GlobalContextService.navigatorKey.currentContext!
-    //     .read<DonationListProvider>()
-    //     .donation
-    //     .length;
+    // Retrieve all completed donations
+    final donations = await GlobalContextService.navigatorKey.currentContext!
+        .read<DonationListProvider>()
+        .getCompleteDonations();
 
-    // donationCount = donations;
+    if (donations != null) {
+      donationCount = donations.length;
+    }
   }
 
   @override
@@ -70,7 +72,7 @@ class _AdminHomeState extends State<AdminHome> {
     }
 
     return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             gradient: LinearGradient(
                 colors: [Color(0xFF29B6F6), Colors.white],
                 begin: FractionalOffset(3.0, 1.0),
@@ -184,7 +186,7 @@ class _AdminHomeState extends State<AdminHome> {
                                 height: 10,
                               ),
                               Text(
-                                "Total Number of Donations",
+                                "Total Number of Complete Donations",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
@@ -205,7 +207,7 @@ class _AdminHomeState extends State<AdminHome> {
                                 height: 10,
                               ),
                               Text(
-                                "Accounts Waiting for Approval",
+                                "Organizations Waiting for Approval",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
