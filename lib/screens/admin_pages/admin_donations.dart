@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../../model/donation.dart';
 import 'admin_drawer.dart';
 
 class AdminDonationsPage extends StatefulWidget {
@@ -11,65 +14,42 @@ class AdminDonationsPage extends StatefulWidget {
 }
 
 class _AdminDonationsPageState extends State<AdminDonationsPage> {
-  final List<String> donations = [
-    'Donation A',
-    'Donation B',
-    'Donation C',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    Stream<QuerySnapshot> donationsStream =
+        context.watch<DonationListProvider>().donation;
     return Scaffold(
-        drawer: AdminDrawer(
-          userData: widget.userData,
-        ),
-        appBar: AppBar(
-          title: const Text("All Donations"),
-        ),
-        body: Center(
-          child: donations.isEmpty
-              ? const Text("No donations available.")
-              : ListView(
-                  padding: const EdgeInsets.all(10),
-                  children: donations
-                      .map((donation) => Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[100],
-                            ),
-                            margin: EdgeInsets.all(10),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(20),
-                              title: Text(
-                                donation,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              trailing: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, "/admin/donation-info");
-                                },
-                                child: Text(
-                                  "View",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.lightBlue[200],
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                ),
-        ));
+      drawer: AdminDrawer(
+        userData: widget.userData,
+      ),
+      appBar: AppBar(
+        title: const Text("All Donations"),
+      ),
+      body: StreamBuilder(
+          stream: donationsStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("Error encountered! ${snapshot.error}"),
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (!snapshot.hasData) {
+              return const Center(
+                child: Text("No donations found."),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: ((context, index) {
+                Donation donation = Donation.fromJson(
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
+              }),
+            );
+          }),
+    );
   }
 }
