@@ -75,6 +75,24 @@ class FirebaseDonationAPI {
     return db.collection("donations").doc(id);
   }
 
+  Future<List<Map<String, dynamic>>?> getCompleteDonations() async {
+    QuerySnapshot<Map<String, dynamic>> completeDonations =
+        await db.collection('donations').where('status', isEqualTo: 4).get();
+
+    if (completeDonations.size == 0) {
+      // No complete donations found
+      return null;
+    } else {
+      // Put all retrieved complete donations in a list
+      List<Map<String, dynamic>> completeDonationList = [];
+      for (var doc in completeDonations.docs) {
+        completeDonationList.add(doc.data());
+      }
+
+      return completeDonationList;
+    }
+  }
+
   Future<String> deleteDonation(String id) async {
     try {
       await db.collection("donations").doc(id).delete();

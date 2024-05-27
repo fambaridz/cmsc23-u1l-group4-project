@@ -36,7 +36,7 @@ class FirebaseAuthAPI {
       // No organizations found
       return null;
     } else {
-      // Put all retrieved documents in a list
+      // Put all retrieved organizations in a list
       List<Map<String, dynamic>> organizationList = [];
       for (var doc in organizations.docs) {
         organizationList.add(doc.data());
@@ -56,7 +56,7 @@ class FirebaseAuthAPI {
       // No donors found
       return null;
     } else {
-      // Put all the retrieved documents in a list
+      // Put all the retrieved donors in a list
       List<Map<String, dynamic>> donorList = [];
       for (var doc in donors.docs) {
         donorList.add(doc.data());
