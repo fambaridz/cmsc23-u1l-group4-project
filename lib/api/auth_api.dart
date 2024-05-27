@@ -36,6 +36,8 @@ class FirebaseAuthAPI {
 
       if (!userDoc.exists) {
         return {"error": "User not found"};
+      } else if ((userDoc.data() as Map<String, dynamic>)['isVerified'] == false && (userDoc.data() as Map<String, dynamic>)['userType'] == "Organization"){
+        return {"error": "Account not yet verified. Please wait for approval."};
       } else {
         return userDoc.data() as Map<String, dynamic>;
       }
