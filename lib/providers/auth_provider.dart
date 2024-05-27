@@ -45,8 +45,7 @@ class UserAuthProvider with ChangeNotifier {
     return donorList;
   }
 
-  Future<Map<String, dynamic>> approveOrganization(
-      String id, bool status) async {
+  Future<Map<String, dynamic>> approveOrganization(String id) async {
     Map<String, dynamic> message = await authService.approveOrganization(id);
     notifyListeners();
     return message;

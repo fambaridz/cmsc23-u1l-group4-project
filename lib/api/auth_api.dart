@@ -169,6 +169,7 @@ class FirebaseAuthAPI {
 
       // Write user data to Firestore
       await db.collection('users').doc(credential.user!.uid).set({
+        'id': credential.user!.uid,
         'userType': org.userType,
         'name': org.name,
         'aboutUs': org.aboutUs,
