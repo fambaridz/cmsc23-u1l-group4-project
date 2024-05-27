@@ -26,8 +26,8 @@ class _AdminDrawerState extends State<AdminDrawer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Text(
-                        "Admin",
+                      Text(
+                        widget.userData['name'],
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

@@ -9,7 +9,7 @@ class AdminProfile extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.lightBlue[400],
       appBar: AppBar(
-        title: Text("Admin Profile"),
+        title: const Text("Admin Profile"),
       ),
       body: Center(
         child: Column(
@@ -18,9 +18,9 @@ class AdminProfile extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Text(
-                  "Admin",
+                  userData['name'],
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -28,47 +28,42 @@ class AdminProfile extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "@iamadmin",
-                  style: TextStyle(
+                  '@${userData['username']}',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Expanded(
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
-                child: Flexible(
-                  fit: FlexFit.tight,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30.0),
-                        topRight: Radius.circular(30.0),
-                      ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Personal details",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Personal details",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(height: 15),
-                          Divider(),
-                          SizedBox(height: 20),
-                          contactDetails,
-                          SizedBox(height: 20),
-                          address,
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 15),
+                        const Divider(),
+                        const SizedBox(height: 20),
+                        email,
+                      ],
                     ),
                   ),
                 ),
@@ -80,43 +75,20 @@ class AdminProfile extends StatelessWidget {
     );
   }
 
-  Widget get contactDetails => Row(
+  Widget get email => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Contact number",
+            "Email",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
-            "09123456789",
+            userData['email'],
             style: TextStyle(
               fontSize: 20,
-            ),
-          ),
-        ],
-      );
-
-  Widget get address => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "Address",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Flexible(
-            flex: 3,
-            child: Text(
-              "123 Main St., City of Manila, Metro Manila",
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                fontSize: 20,
-              ),
             ),
           ),
         ],
