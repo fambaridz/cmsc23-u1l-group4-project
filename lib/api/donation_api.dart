@@ -7,7 +7,9 @@ class FirebaseDonationAPI {
 
   Future<String> addDonationWithFile(Map<String, dynamic> donation, Map<String, String> donorAddresses, File file) async {
     try {
-      TaskSnapshot snapshot = await FirebaseStorage.instance.ref("donation_images/${donation["donorId"]}/${donation["category"]}.jpg").putFile(file);
+      // Generate a unique file name using the current timestamp
+      String fileName = "${donation["donorId"]}_${donation["category"]}_${DateTime.now().millisecondsSinceEpoch}.jpg";
+      TaskSnapshot snapshot = await FirebaseStorage.instance.ref("donation_images/$fileName").putFile(file);
       String url = await snapshot.ref.getDownloadURL();
 
       await db.collection("donations").add(
