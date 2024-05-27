@@ -1,3 +1,4 @@
+import 'package:cmsc23_project/constants/donation_status_map.dart';
 import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/organization.dart';
 import 'package:cmsc23_project/screens/org_pages/org_drawer.dart';
@@ -11,13 +12,6 @@ class OrganizationHomePage extends StatefulWidget {
 }
 
 class _OrganizationHomePageState extends State<OrganizationHomePage> {
-  final statusMap = {
-    1: {"text": "PENDING", "color": Colors.orange},
-    2: {"text": "CONFIRMED", "color": Color.fromARGB(255, 247, 206, 70)},
-    3: {"text": "FOR\n PICK-UP", "color": Color.fromARGB(255, 147, 217, 78)},
-    4: {"text": "COMPLETED", "color": Colors.green},
-    5: {"text": "CANCELLED", "color": Color.fromARGB(255, 215, 63, 63)},
-  };
 
   final Organization organization = Organization(
       id: "1",
