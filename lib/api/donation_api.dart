@@ -5,11 +5,15 @@ import 'dart:io';
 class FirebaseDonationAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<String> addDonationWithFile(Map<String, dynamic> donation, Map<String, String> donorAddresses, File file) async {
+  Future<String> addDonationWithFile(Map<String, dynamic> donation,
+      Map<String, String> donorAddresses, File file) async {
     try {
       // Generate a unique file name using the current timestamp
-      String fileName = "${donation["donorId"]}_${donation["category"]}_${DateTime.now().millisecondsSinceEpoch}.jpg";
-      TaskSnapshot snapshot = await FirebaseStorage.instance.ref("donation_images/$fileName").putFile(file);
+      String fileName =
+          "${donation["donorId"]}_${donation["category"]}_${DateTime.now().millisecondsSinceEpoch}.jpg";
+      TaskSnapshot snapshot = await FirebaseStorage.instance
+          .ref("donation_images/$fileName")
+          .putFile(file);
       String url = await snapshot.ref.getDownloadURL();
 
       await db.collection("donations").add(
@@ -25,17 +29,24 @@ class FirebaseDonationAPI {
           "itemPhotoUrl": url,
         },
       );
-      await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
+      await db
+          .collection("users")
+          .doc(donation["donorId"])
+          .update({"addresses": donorAddresses});
       return "Successfully added!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
   }
 
-  Future<String> addDonation(Map<String, dynamic> donation, Map<String, String> donorAddresses) async {
+  Future<String> addDonation(
+      Map<String, dynamic> donation, Map<String, String> donorAddresses) async {
     try {
       await db.collection("donations").add(donation);
-      await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
+      await db
+          .collection("users")
+          .doc(donation["donorId"])
+          .update({"addresses": donorAddresses});
       return "Successfully added!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
@@ -43,8 +54,9 @@ class FirebaseDonationAPI {
   }
 
   Future<List<Map<String, dynamic>>> getDonationByUserId(String uid) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donations").where("donorId", isEqualTo: uid).get();
-    
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await db.collection("donations").where("donorId", isEqualTo: uid).get();
+
     List<Map<String, dynamic>> donations = [];
     for (var doc in querySnapshot.docs) {
       var donationData = doc.data();

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'admin_drawer.dart';
 
 class AdminApprovalsPage extends StatefulWidget {
-  const AdminApprovalsPage({super.key});
+  final Map<String, dynamic> userData;
+  const AdminApprovalsPage({super.key, required this.userData});
 
   @override
   State<AdminApprovalsPage> createState() => _AdminApprovalsPageState();
@@ -19,7 +20,7 @@ class _AdminApprovalsPageState extends State<AdminApprovalsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const AdminDrawer(),
+        drawer: AdminDrawer(userData: widget.userData),
         appBar: AppBar(
           title: const Text("Pending Organization Accounts"),
         ),

@@ -2,7 +2,8 @@ import 'package:cmsc23_project/screens/admin_pages/admin_drawer.dart';
 import 'package:flutter/material.dart';
 
 class AdminOrganizationsPage extends StatefulWidget {
-  const AdminOrganizationsPage({super.key});
+  final Map<String, dynamic> userData;
+  const AdminOrganizationsPage({super.key, required this.userData});
 
   @override
   State<AdminOrganizationsPage> createState() => _AdminOrganizationsPageState();
@@ -18,7 +19,9 @@ class _AdminOrganizationsPageState extends State<AdminOrganizationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const AdminDrawer(),
+        drawer: AdminDrawer(
+          userData: widget.userData,
+        ),
         appBar: AppBar(
           title: const Text("All Organizations"),
         ),

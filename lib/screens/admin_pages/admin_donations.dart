@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'admin_drawer.dart';
 
 class AdminDonationsPage extends StatefulWidget {
-  const AdminDonationsPage({super.key});
+  final Map<String, dynamic> userData;
+  const AdminDonationsPage({super.key, required this.userData});
 
   @override
   State<AdminDonationsPage> createState() => _AdminDonationsPageState();
@@ -19,7 +20,9 @@ class _AdminDonationsPageState extends State<AdminDonationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const AdminDrawer(),
+        drawer: AdminDrawer(
+          userData: widget.userData,
+        ),
         appBar: AppBar(
           title: const Text("All Donations"),
         ),

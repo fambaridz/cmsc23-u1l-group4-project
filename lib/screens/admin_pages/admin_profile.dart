@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AdminProfile extends StatelessWidget {
-  const AdminProfile({Key? key}) : super(key: key);
+  final Map<String, dynamic> userData;
+  const AdminProfile({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
