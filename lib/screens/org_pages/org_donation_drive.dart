@@ -51,8 +51,8 @@ class _OrganizationDonationDrivePageState
                                 widthFactor: 0.25,
                                 child: Icon(
                                   donationDrive.status
-                                      ? Icons.check_circle
-                                      : Icons.cancel,
+                                      ? Icons.inventory
+                                      : Icons.local_shipping,
                                   color: donationDrive.status
                                       ? Colors.green
                                       : Colors.red,
