@@ -149,7 +149,7 @@ class _AdminHomeState extends State<AdminHome> {
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
                                 height: 10,
@@ -170,7 +170,7 @@ class _AdminHomeState extends State<AdminHome> {
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
                                 height: 10,
@@ -191,7 +191,7 @@ class _AdminHomeState extends State<AdminHome> {
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
                                 height: 10,
@@ -212,7 +212,7 @@ class _AdminHomeState extends State<AdminHome> {
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
                                 height: 10,
