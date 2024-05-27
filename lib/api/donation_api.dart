@@ -71,6 +71,18 @@ class FirebaseDonationAPI {
     return db.collection("donations").snapshots();
   }
 
+  Future<List<Map<String, dynamic>>> getDonationsList() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await db.collection('donations').get();
+
+    List<Map<String, dynamic>> donationList = [];
+    for (var doc in querySnapshot.docs) {
+      donationList.add(doc.data());
+    }
+
+    return donationList;
+  }
+
   DocumentReference<Map<String, dynamic>> getDonation(String id) {
     return db.collection("donations").doc(id);
   }
