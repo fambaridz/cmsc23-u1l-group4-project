@@ -497,7 +497,7 @@ class _SignUpPageState extends State<SignUpPage> {
             return "Contact number cannot be empty.";
           } else {
             if (value.length != 11) {
-              return "Invalid contact number.";
+              return "Please enter a valid contact number.";
             }
           }
           return null;
