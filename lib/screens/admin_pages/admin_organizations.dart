@@ -1,5 +1,7 @@
+import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:cmsc23_project/screens/admin_pages/admin_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdminOrganizationsPage extends StatefulWidget {
   final Map<String, dynamic> userData;
@@ -10,11 +12,31 @@ class AdminOrganizationsPage extends StatefulWidget {
 }
 
 class _AdminOrganizationsPageState extends State<AdminOrganizationsPage> {
-  final List<String> organizations = [
-    'Organization A',
-    'Organization B',
-    'Organization C',
-  ];
+  late List<Map<String, dynamic>> organizations = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getVerifiedOrganizations();
+  }
+
+  void getVerifiedOrganizations() async {
+    List<Map<String, dynamic>>? orgList =
+        await context.read<UserAuthProvider>().getOrganizations();
+
+    if (orgList != null) {
+      List<Map<String, dynamic>>? verifiedOrgs = [];
+      for (var org in orgList) {
+        if (org['isVerified']) {
+          verifiedOrgs.add(org);
+        }
+      }
+
+      setState(() {
+        organizations = verifiedOrgs;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +49,7 @@ class _AdminOrganizationsPageState extends State<AdminOrganizationsPage> {
         ),
         body: Center(
           child: organizations.isEmpty
-              ? const Text("No organizations available.")
+              ? const Center(child: Text("No organizations available."))
               : ListView(
                   padding: const EdgeInsets.all(10),
                   children: organizations
@@ -40,7 +62,7 @@ class _AdminOrganizationsPageState extends State<AdminOrganizationsPage> {
                             child: ListTile(
                               contentPadding: EdgeInsets.all(20),
                               title: Text(
-                                organization,
+                                organization['name'],
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
