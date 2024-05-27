@@ -48,4 +48,11 @@ class DonationListProvider with ChangeNotifier {
     notifyListeners();
     return completeDonationList;
   }
+
+  Future<List<Map<String, dynamic>>?> getDonationsList() async {
+    List<Map<String, dynamic>>? donationList =
+        await firebaseService.getDonationsList();
+    notifyListeners();
+    return donationList;
+  }
 }

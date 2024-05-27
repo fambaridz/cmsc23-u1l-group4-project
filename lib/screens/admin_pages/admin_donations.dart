@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../model/donation.dart';
 import 'admin_drawer.dart';
 
 class AdminDonationsPage extends StatefulWidget {
@@ -15,83 +13,75 @@ class AdminDonationsPage extends StatefulWidget {
 }
 
 class _AdminDonationsPageState extends State<AdminDonationsPage> {
-  late Map<String, dynamic> donorData;
+  late List<Map<String, dynamic>> donations = [];
 
-  void getDonorData(String id) async {
-    Map<String, dynamic> donor =
-        await context.read<UserAuthProvider>().getUserById(id);
-    setState(() {
-      donorData = donor;
-    });
+  @override
+  void initState() {
+    super.initState();
+    getDonationList();
+  }
+
+  void getDonationList() async {
+    List<Map<String, dynamic>>? donationList =
+        await context.read<DonationListProvider>().getDonationsList();
+
+    if (donationList != null) {
+      setState(() {
+        donations = donationList;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> donationsStream =
-        context.watch<DonationListProvider>().donation;
-
     return Scaffold(
-      drawer: AdminDrawer(
-        userData: widget.userData,
-      ),
-      appBar: AppBar(
-        title: const Text("All Donations"),
-      ),
-      body: StreamBuilder(
-          stream: donationsStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text("Error encountered! ${snapshot.error}"),
-              );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (!snapshot.hasData) {
-              return const Center(
-                child: Text("No donations found."),
-              );
-            }
+        drawer: AdminDrawer(
+          userData: widget.userData,
+        ),
+        appBar: AppBar(
+          title: const Text("All Donations"),
+        ),
+        body: ListView.builder(
+          itemCount: donations.length,
+          itemBuilder: ((context, index) {
+            Map<String, dynamic> donation = donations[index];
 
-            return ListView.builder(
-              itemCount: snapshot.data?.docs.length,
-              itemBuilder: ((context, index) {
-                Donation donation = Donation.fromJson(
-                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
-                getDonorData(donation.donorId);
-
-                return ListTile(
-                  contentPadding: const EdgeInsets.all(20),
-                  title: Text(
-                    '${donation.category} from ${donorData['name']}',
-                    style: const TextStyle(
-                      fontSize: 20,
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[100],
+              ),
+              margin: EdgeInsets.all(10),
+              child: ListTile(
+                contentPadding: EdgeInsets.all(20),
+                title: Text(
+                  "${donation['category']} donation",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                trailing: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/admin/donation-info");
+                  },
+                  child: Text(
+                    "View",
+                    style: TextStyle(
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/admin/donation-info");
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightBlue[200],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: const Text(
-                      "View",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightBlue[200],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                );
-              }),
+                ),
+              ),
             );
           }),
-    );
+        ));
   }
 }
