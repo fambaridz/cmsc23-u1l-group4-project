@@ -1,20 +1,13 @@
-import 'package:cmsc23_project/model/donor.dart';
 import 'package:flutter/material.dart';
 
 class AdminDonorDetailsPage extends StatelessWidget {
-  const AdminDonorDetailsPage({super.key});
+  final Map<String, dynamic>? donor;
+  const AdminDonorDetailsPage({super.key, this.donor});
 
   @override
   Widget build(BuildContext context) {
-    var donor = Donor(
-      id: '1',
-      userType: 'Donor',
-      name: 'Jane Smith',
-      username: '@therealJS',
-      email: 'anEmail@email.com',
-      addresses: {'Main branch': '123 Datu st., Brgy. Magiliw'},
-      contactNum: '+63 123 123 4567',
-    );
+    List<String> label = donor!['addresses'].keys.toList();
+    List<String> address = donor!['addresses'].value.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -40,14 +33,14 @@ class AdminDonorDetailsPage extends StatelessWidget {
                                     AssetImage('assets/images/profile.png')))),
                     const SizedBox(height: 20),
                     Text(
-                      donor.name,
+                      donor!['name'],
                       style: const TextStyle(
                           fontSize: 35,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      donor.username,
+                      donor!['username'],
                       style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,
@@ -59,44 +52,59 @@ class AdminDonorDetailsPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 15),
-                          Text("Contact Number: ${donor.contactNum}",
+                          Text("Contact Number: ${donor!['contactNum']}",
                               style: const TextStyle(
                                   fontSize: 18, color: Colors.white)),
-                          Text("Address/es: ${donor.addresses}",
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.white)),
-                          const SizedBox(height: 25)
+                          const Text("Address/es:",
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white)),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: donor!['addresses'].length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(7),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "${label[index]}: ",
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: "${address[index]}",
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          )
                         ],
                       ),
                     )
                   ],
                 ))),
-            const SizedBox(height: 25),
-            Text("Donations by ${donor.name}",
-                style: const TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline)),
-            const SizedBox(
-              height: 10,
-            ),
-            Flexible(
-              child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  // itemCount: ,
-                  itemBuilder: (context, index) {
-                    // final donation = donor.donations[index];
-
-                    return const ListTile(
-                      title: Text('Text'
-                          // donation,
-                          // style: const TextStyle(fontSize: 20),
-                          ),
-                    );
-                  }),
-            )
           ],
         ),
       ),

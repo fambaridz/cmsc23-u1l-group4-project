@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AdminProfile extends StatelessWidget {
-  const AdminProfile({Key? key}) : super(key: key);
+  final Map<String, dynamic> userData;
+  const AdminProfile({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class AdminProfile extends StatelessWidget {
               children: [
                 SizedBox(height: 30),
                 Text(
-                  "Admin",
+                  userData['name'],
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -27,7 +28,7 @@ class AdminProfile extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "@iamadmin",
+                  userData['username'],
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -63,9 +64,7 @@ class AdminProfile extends StatelessWidget {
                           SizedBox(height: 15),
                           Divider(),
                           SizedBox(height: 20),
-                          contactDetails,
-                          SizedBox(height: 20),
-                          address,
+                          email
                         ],
                       ),
                     ),
@@ -79,30 +78,11 @@ class AdminProfile extends StatelessWidget {
     );
   }
 
-  Widget get contactDetails => Row(
+  Widget get email => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Contact number",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            "09123456789",
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-        ],
-      );
-
-  Widget get address => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "Address",
+            "Email",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -111,7 +91,7 @@ class AdminProfile extends StatelessWidget {
           Flexible(
             flex: 3,
             child: Text(
-              "123 Main St., City of Manila, Metro Manila",
+              userData['email'],
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: 20,

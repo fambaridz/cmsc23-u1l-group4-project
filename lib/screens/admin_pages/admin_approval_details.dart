@@ -1,23 +1,15 @@
+import 'package:cmsc23_project/GlobalContextService.dart';
+import 'package:cmsc23_project/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-
-import '../../model/organization.dart';
+import 'package:provider/provider.dart';
 
 class AdminApprovalDetailsPage extends StatelessWidget {
-  const AdminApprovalDetailsPage({super.key});
+  final Map<String, dynamic>? organization;
+  const AdminApprovalDetailsPage({super.key, this.organization});
   @override
   Widget build(BuildContext context) {
-    var organization = Organization(
-        id: '1',
-        name: 'Organization A',
-        aboutUs: 'We are an organization.',
-        status: false,
-        userType: '',
-        username: '',
-        email: '',
-        addresses: {},
-        contactNum: '', photoUrl: '', isVerified: false,
-        // proof of legitimacy
-        );
+    List<String> label = organization!['addresses'].keys.toList();
+    List<String> address = organization!['addresses'].value.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +27,7 @@ class AdminApprovalDetailsPage extends StatelessWidget {
                 color: Colors.lightBlue[200],
                 child: Center(
                   child: Text(
-                    "${organization.name}",
+                    "${organization!['name']}",
                     style: TextStyle(fontSize: 35, color: Colors.white),
                   ),
                 )),
@@ -46,12 +38,13 @@ class AdminApprovalDetailsPage extends StatelessWidget {
                 Text("About Us:",
                     style:
                         TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                Text("${organization.aboutUs}", style: TextStyle(fontSize: 20)),
+                Text("${organization!['aboutUs']}",
+                    style: TextStyle(fontSize: 20)),
                 SizedBox(height: 30),
                 Text("Status:",
                     style:
                         TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                organization.status
+                organization!['status']
                     ? Text(
                         "Open",
                         style: TextStyle(fontSize: 20),
@@ -61,9 +54,68 @@ class AdminApprovalDetailsPage extends StatelessWidget {
                         style: TextStyle(fontSize: 20),
                       ),
                 SizedBox(height: 30),
+                Text("Contact Number:",
+                    style:
+                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                Text("${organization!['contactNum']}",
+                    style: TextStyle(fontSize: 20)),
+                SizedBox(height: 30),
+                const Text("Address/es:",
+                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: organization!['addresses'].length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(7),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "${label[index]}: ",
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "${address[index]}",
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 30),
                 Text("Proof of Legitimacy:",
                     style:
                         TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Image.network(organization!['photoUrl'],
+                      fit: BoxFit.cover),
+                )
               ],
             )
           ])),
@@ -75,7 +127,11 @@ class AdminApprovalDetailsPage extends StatelessWidget {
               "Approve",
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
-            onPressed: () {},
+            onPressed: () {
+              GlobalContextService.navigatorKey.currentContext!
+                  .read<UserListProvider>()
+                  .editUser(organization!['id'], !organization!['status']);
+            },
           )
         ],
       )),

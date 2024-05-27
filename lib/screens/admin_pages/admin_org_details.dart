@@ -1,23 +1,11 @@
-import 'package:cmsc23_project/model/organization.dart';
 import 'package:flutter/material.dart';
 
 class AdminOrgDetailsPage extends StatelessWidget {
-  const AdminOrgDetailsPage({super.key});
+  final Map<String, dynamic>? organization;
+  const AdminOrgDetailsPage({super.key, this.organization});
 
   @override
   Widget build(BuildContext context) {
-    var organization = Organization(
-        id: '1',
-        userType: 'Organizaiton',
-        name: 'Organization A',
-        aboutUs: 'We are an organization.',
-        username: 'anOrg',
-        email: 'org@org.com',
-        addresses: {'Laguna branch': 'Laguna'},
-        contactNum: '091234567890',
-        status: true, photoUrl: '', isVerified: false,
-        );
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Organization"),
@@ -30,7 +18,7 @@ class AdminOrgDetailsPage extends StatelessWidget {
             color: Colors.lightBlue[200],
             child: Center(
               child: Text(
-                "${organization.name}",
+                organization!['name'],
                 style: TextStyle(fontSize: 35, color: Colors.white),
               ),
             )),
@@ -40,11 +28,11 @@ class AdminOrgDetailsPage extends StatelessWidget {
           children: [
             Text("About Us:",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-            Text("${organization.aboutUs}", style: TextStyle(fontSize: 20)),
+            Text("${organization!['aboutUs']}", style: TextStyle(fontSize: 20)),
             SizedBox(height: 50),
             Text("Status:",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-            organization.status
+            organization!['status']
                 ? Text(
                     "Open",
                     style: TextStyle(fontSize: 20),

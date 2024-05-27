@@ -1,21 +1,22 @@
-import 'package:cmsc23_project/GlobalContextService.dart';
-import 'package:cmsc23_project/model/donation_drive.dart';
-import 'package:cmsc23_project/providers/donation_provider.dart';
-import 'package:cmsc23_project/screens/donor_pages/donor_donation_list.dart';
-import 'package:cmsc23_project/screens/org_pages/org_donation_drive_details.dart';
-import 'package:cmsc23_project/screens/org_pages/org_donation_drive_form.dart';
+import '../GlobalContextService.dart';
+import '../model/donation_drive.dart';
+import '../providers/donation_provider.dart';
+import '../providers/user_provider.dart';
+import '../screens/donor_pages/donor_donation_list.dart';
+import '../screens/org_pages/org_donation_drive_details.dart';
+import '../screens/org_pages/org_donation_drive_form.dart';
 import '../screens/admin_pages/admin_org_details.dart';
 import '../screens/admin_pages/admin_profile.dart';
 import '../model/donation.dart';
 import '../model/organization.dart';
-import 'package:cmsc23_project/providers/auth_provider.dart';
+import '../providers/auth_provider.dart';
 import 'screens/admin_pages/admin_approval_details.dart';
 import 'screens/admin_pages/admin_donation_details.dart';
 import 'screens/admin_pages/admin_donor_details.dart';
 import 'screens/admin_pages/admin_home.dart';
 import 'screens/donor_pages/donor_donation.dart';
 import 'screens/donor_pages/donor_home.dart';
-import 'package:cmsc23_project/screens/donor_pages/donor_org_details.dart';
+import '../screens/donor_pages/donor_org_details.dart';
 import 'screens/donor_pages/donor_profile.dart';
 import '../screens/landing.dart';
 import '../screens/sign_in.dart';
@@ -44,7 +45,8 @@ Future<void> main() async {
       providers: [
         // ChangeNotifierProvider(create: ((context) => TodoListProvider())),
         ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
-        ChangeNotifierProvider(create: ((context) => DonationListProvider()))
+        ChangeNotifierProvider(create: ((context) => DonationListProvider())),
+        ChangeNotifierProvider(create: ((context) => UserListProvider()))
       ],
       child: MyApp(),
     ),
@@ -76,12 +78,24 @@ class MyApp extends StatelessWidget {
         "/sign-in": (context) => const SignInPage(),
         "/sign-up": (context) => const SignUpPage(),
         // admin routes
-        "/admin-home": (context) => const AdminHome(),
-        "/admin-profile": (context) => const AdminProfile(),
-        "/admin/organizations": (context) => const AdminOrganizationsPage(),
-        "/admin/donations": (context) => const AdminDonationsPage(),
-        "/admin/donors": (context) => const AdminDonorsPage(),
-        "/admin/approvals": (context) => const AdminApprovalsPage(),
+        "/admin-home": (context) => AdminHome(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin-profile": (context) => AdminProfile(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/organizations": (context) => AdminOrganizationsPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/donations": (context) => AdminDonationsPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/donors": (context) => AdminDonorsPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/approvals": (context) => AdminApprovalsPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
         "/admin/organization-info": (context) => const AdminOrgDetailsPage(),
         "/admin/donation-info": (context) => const AdminDonationDetailsPage(),
         "/admin/donor-info": (context) => const AdminDonorDetailsPage(),
@@ -95,8 +109,8 @@ class MyApp extends StatelessWidget {
         "/donor-donation": (context) => DonorDonationPage(
             userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
-        "/donor-donations":(context) => DonorDonationList(
-          userData: ModalRoute.of(context)!.settings.arguments
+        "/donor-donations": (context) => DonorDonationList(
+            userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),
