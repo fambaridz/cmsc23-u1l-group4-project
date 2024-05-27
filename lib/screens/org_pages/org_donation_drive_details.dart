@@ -38,7 +38,7 @@ class _OrganizationDonationDriveDetailsPageState
         contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhoto: "photo.jpg",
+        itemPhotoUrl: "photo.jpg",
         status: 1, pickupOrDropoff: ''),
     Donation(
         id: "2",
@@ -49,7 +49,7 @@ class _OrganizationDonationDriveDetailsPageState
         contactNum: "09876543210",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhoto: "photo.jpg",
+        itemPhotoUrl: "photo.jpg",
         status: 2, pickupOrDropoff: ''),
     Donation(
         id: "3",
@@ -60,7 +60,7 @@ class _OrganizationDonationDriveDetailsPageState
         contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhoto: "photo.jpg",
+        itemPhotoUrl: "photo.jpg",
         status: 3, pickupOrDropoff: ''),
     Donation(
         id: "4",
@@ -71,7 +71,7 @@ class _OrganizationDonationDriveDetailsPageState
         contactNum: "09876543210",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhoto: "photo.jpg",
+        itemPhotoUrl: "photo.jpg",
         status: 4, pickupOrDropoff: ''),
     Donation(
         id: "5",
@@ -82,7 +82,7 @@ class _OrganizationDonationDriveDetailsPageState
         contactNum: "09123456789",
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhoto: "photo.jpg",
+        itemPhotoUrl: "photo.jpg",
         status: 5, pickupOrDropoff: ''),
   ];
 
