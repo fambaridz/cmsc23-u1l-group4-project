@@ -17,6 +17,12 @@ class UserListProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void editUser(String id, bool status) async {
+    var message = await firebaseService.editUser(id, status);
+    print(message);
+    notifyListeners();
+  }
+
   Future<Map<String, dynamic>> getUserById(String id) {
     return firebaseService.getUserById(id);
   }
