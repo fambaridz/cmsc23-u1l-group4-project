@@ -42,6 +42,19 @@ class FirebaseDonationAPI {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getDonationByUserId(String uid) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donations").where("donorId", isEqualTo: uid).get();
+    
+    List<Map<String, dynamic>> donations = [];
+    for (var doc in querySnapshot.docs) {
+      var donationData = doc.data();
+      donationData['uid'] = doc.id;
+      donations.add(donationData);
+    }
+
+    return donations;
+  }
+
   Stream<QuerySnapshot> getAllDonations() {
     return db.collection("donations").snapshots();
   }

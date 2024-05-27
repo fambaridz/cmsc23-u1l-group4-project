@@ -19,15 +19,21 @@ class DonationListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addDonationWithFile(Donation newDonation, Map<String, String> donorAddresses, File file) async {
+  Future <String>? addDonationWithFile(Donation newDonation, Map<String, String> donorAddresses, File file) async {
     String message = await firebaseService.addDonationWithFile(newDonation.toJson(newDonation), donorAddresses, file);
-    print(message);
     notifyListeners();
+    return message;
   }
 
-  void addDonation(Donation newDonation, Map<String, String> donorAddresses) async {
+  Future <String>? addDonation(Donation newDonation, Map<String, String> donorAddresses) async {
     String message = await firebaseService.addDonation(newDonation.toJson(newDonation), donorAddresses);
-    print(message);
     notifyListeners();
+    return message;
+  }
+
+  Future<List<Map<String, dynamic>?>> getDonationByUserId(String uid) async {
+    List<Map<String, dynamic>?> message = await firebaseService.getDonationByUserId(uid);
+    notifyListeners();
+    return message;
   }
 }
