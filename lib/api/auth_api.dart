@@ -26,6 +26,15 @@ class FirebaseAuthAPI {
     }
   }
 
+  Future<Map<String, dynamic>> getUserById(String id) async {
+    Map<String, dynamic> userData =
+        await db.collection("users").doc(id).get().then((DocumentSnapshot doc) {
+      return doc.data() as Map<String, dynamic>;
+    });
+
+    return userData;
+  }
+
   Future<List<Map<String, dynamic>>?> getOrganizations() async {
     QuerySnapshot<Map<String, dynamic>> organizations = await db
         .collection('users')

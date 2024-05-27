@@ -28,6 +28,11 @@ class UserAuthProvider with ChangeNotifier {
     return message;
   }
 
+  Future<Map<String, dynamic>> getUserById(String id) {
+    notifyListeners();
+    return authService.getUserById(id);
+  }
+
   Future<List<Map<String, dynamic>>?> getOrganizations() async {
     List<Map<String, dynamic>>? orgList = await authService.getOrganizations();
     notifyListeners();
