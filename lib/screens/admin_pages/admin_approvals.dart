@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/auth_provider.dart';
 import 'admin_drawer.dart';
 
 class AdminApprovalsPage extends StatefulWidget {
@@ -11,11 +13,31 @@ class AdminApprovalsPage extends StatefulWidget {
 }
 
 class _AdminApprovalsPageState extends State<AdminApprovalsPage> {
-  final List<String> approvals = [
-    'Organization A',
-    'Organization B',
-    'Organization C',
-  ];
+  late List<Map<String, dynamic>> approvals = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getUnverifiedOrganizations();
+  }
+
+  void getUnverifiedOrganizations() async {
+    List<Map<String, dynamic>>? orgList =
+        await context.read<UserAuthProvider>().getOrganizations();
+
+    if (orgList != null) {
+      List<Map<String, dynamic>>? unverifiedOrgs = [];
+      for (var org in orgList) {
+        if (org['isVerified'] == false) {
+          unverifiedOrgs.add(org);
+        }
+      }
+
+      setState(() {
+        approvals = unverifiedOrgs;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +61,7 @@ class _AdminApprovalsPageState extends State<AdminApprovalsPage> {
                             child: ListTile(
                               contentPadding: EdgeInsets.all(20),
                               title: Text(
-                                approval,
+                                approval['name'],
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
