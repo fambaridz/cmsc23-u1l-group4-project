@@ -131,21 +131,10 @@ class _SignInPageState extends State<SignInPage> {
           .read<UserAuthProvider>()
           .authService
           .signIn(email!, password!);
-
+          
         setState(() {
           isLoading = false;
         });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.lightBlue[400],
-            content: Text(
-              'Signing in...',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-            ),
-            duration: Duration(seconds: 2),
-          ),
-        );
 
         if (result == null) {
           setState(() {
