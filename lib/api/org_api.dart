@@ -44,4 +44,13 @@ class FirebaseOrgAPI {
   Stream<QuerySnapshot> getDonationsByOrg(String orgId) {
     return db.collection("donations").where("org", isEqualTo: orgId).snapshots();
   }
+
+  Future<String> placeDonationToDonationDrive(String donationId, String donationDriveId, String status) async {
+    try {
+      await db.collection("donationDrives").doc(donationDriveId).update({"donations": FieldValue.arrayUnion([donationId])});
+      return "Successfully edited!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
 }
