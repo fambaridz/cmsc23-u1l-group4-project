@@ -10,11 +10,12 @@ class Donation {
   String? contactNum;
   String? pickUpDateTime;
   String? dropOffDateTime;
-  String? itemPhoto;
+  String? itemPhotoUrl;
   int status;
 
   Donation(
-      {this.id,
+    { 
+      this.id,
       required this.donorId,
       required this.category,
       required this.pickupOrDropoff,
@@ -23,8 +24,10 @@ class Donation {
       required this.contactNum,
       this.pickUpDateTime,
       this.dropOffDateTime,
-      this.itemPhoto,
-      required this.status});
+      this.itemPhotoUrl,
+      required this.status
+    }
+  );
 
   factory Donation.fromJson(Map<String, dynamic> json) {
     return Donation(
@@ -37,7 +40,7 @@ class Donation {
         contactNum: json['contactNum'],
         pickUpDateTime: json['pickUpDateTime'],
         dropOffDateTime: json['dropOffDateTime'],
-        itemPhoto: json['itemPhoto'],
+        itemPhotoUrl: json['itemPhotoUrl'],
         status: json['status']);
   }
 
@@ -56,7 +59,7 @@ class Donation {
       'contactNum': donation.contactNum,
       'pickUpDateTime': donation.pickUpDateTime,
       'dropOffDateTime': donation.dropOffDateTime,
-      'photo': donation.itemPhoto,
+      'itemPhotoUrl': donation.itemPhotoUrl,
       'status': donation.status
     };
   }

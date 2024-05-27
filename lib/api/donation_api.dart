@@ -1,17 +1,58 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class FirebaseDonationAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  Future<String> addDonationWithFile(Map<String, dynamic> donation, Map<String, String> donorAddresses, File file) async {
+    try {
+      // Generate a unique file name using the current timestamp
+      String fileName = "${donation["donorId"]}_${donation["category"]}_${DateTime.now().millisecondsSinceEpoch}.jpg";
+      TaskSnapshot snapshot = await FirebaseStorage.instance.ref("donation_images/$fileName").putFile(file);
+      String url = await snapshot.ref.getDownloadURL();
+
+      await db.collection("donations").add(
+        {
+          "donorId": donation["donorId"],
+          "category": donation["category"],
+          "pickupOrDropoff": donation["pickupOrDropoff"],
+          "weight": donation["weight"],
+          "address": donation["address"],
+          "contactNum": donation["contactNum"],
+          "pickUpDateTime": donation["pickUpDateTime"],
+          "dropOffDateTime": donation["dropOffDateTime"],
+          "itemPhotoUrl": url,
+        },
+      );
+      await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
+      return "Successfully added!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
 
   Future<String> addDonation(Map<String, dynamic> donation, Map<String, String> donorAddresses) async {
     try {
       await db.collection("donations").add(donation);
       await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
-
       return "Successfully added!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
+  }
+
+  Future<List<Map<String, dynamic>>> getDonationByUserId(String uid) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donations").where("donorId", isEqualTo: uid).get();
+    
+    List<Map<String, dynamic>> donations = [];
+    for (var doc in querySnapshot.docs) {
+      var donationData = doc.data();
+      donationData['uid'] = doc.id;
+      donations.add(donationData);
+    }
+
+    return donations;
   }
 
   Stream<QuerySnapshot> getAllDonations() {
