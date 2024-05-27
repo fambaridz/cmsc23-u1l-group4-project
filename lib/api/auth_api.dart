@@ -75,6 +75,16 @@ class FirebaseAuthAPI {
     }
   }
 
+  Future<Map<String, dynamic>> approveOrganization(String id) async {
+    try {
+      await db.collection("users").doc(id).update({"isVerified": true});
+
+      return {'success': true};
+    } on FirebaseException catch (e) {
+      return {'success': false, 'message': "Error in ${e.code}: ${e.message}"};
+    }
+  }
+
   Future<Map<String, dynamic>?> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(

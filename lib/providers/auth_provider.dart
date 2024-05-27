@@ -45,6 +45,13 @@ class UserAuthProvider with ChangeNotifier {
     return donorList;
   }
 
+  Future<Map<String, dynamic>> approveOrganization(
+      String id, bool status) async {
+    Map<String, dynamic> message = await authService.approveOrganization(id);
+    notifyListeners();
+    return message;
+  }
+
   Future<Map<String, dynamic>?> signUpDonor(
       Donor donor, String password) async {
     Map<String, dynamic>? message =
