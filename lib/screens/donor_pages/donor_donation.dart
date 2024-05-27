@@ -10,7 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cmsc23_project/providers/auth_provider.dart';
 
 class DonorDonationPage extends StatefulWidget {
-  const DonorDonationPage({super.key});
+  final Map<String, dynamic> userData;
+  const DonorDonationPage({super.key, required this.userData});
 
   @override
   State<DonorDonationPage> createState() => _DonorDonationPageState();
@@ -441,6 +442,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 newDonation = Donation(
                     donorId: user!.uid,
                     category: _selectedCategory,
+                    pickupOrDropoff: _pickupOrDropoff,
                     weight: _itemWeight == null
                         ? 'Not applicable.'
                         : '$_itemWeight $_selectedUnit',
@@ -454,6 +456,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 newDonation = Donation(
                     donorId: user!.uid,
                     category: _selectedCategory,
+                    pickupOrDropoff: _pickupOrDropoff,
                     weight: _itemWeight == null
                         ? 'Not applicable.'
                         : '$_itemWeight $_selectedUnit',
@@ -466,7 +469,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
 
               GlobalContextService.navigatorKey.currentContext!
                   .read<DonationListProvider>()
-                  .addDonation(newDonation);
+                  .addDonation(newDonation, {});
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
