@@ -69,7 +69,8 @@ class _AdminApprovalsPageState extends State<AdminApprovalsPage> {
                               trailing: ElevatedButton(
                                 onPressed: () {
                                   Navigator.pushNamed(
-                                      context, "/admin/approval-info");
+                                      context, "/admin/approval-info",
+                                      arguments: approval);
                                 },
                                 child: Text(
                                   "View",
