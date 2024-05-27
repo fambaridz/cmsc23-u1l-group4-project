@@ -28,14 +28,30 @@ class UserAuthProvider with ChangeNotifier {
     return message;
   }
 
-  Future<Map<String, dynamic>?> signUpDonor(Donor donor, String password) async {
-    Map<String, dynamic>? message = await authService.signUpDonor(donor, password);
+  Future<List<Map<String, dynamic>>?> getOrganizations() async {
+    List<Map<String, dynamic>>? orgList = await authService.getOrganizations();
+    notifyListeners();
+    return orgList;
+  }
+
+  Future<List<Map<String, dynamic>>?> getDonors() async {
+    List<Map<String, dynamic>>? donorList = await authService.getDonors();
+    notifyListeners();
+    return donorList;
+  }
+
+  Future<Map<String, dynamic>?> signUpDonor(
+      Donor donor, String password) async {
+    Map<String, dynamic>? message =
+        await authService.signUpDonor(donor, password);
     notifyListeners();
     return message;
   }
 
-  Future<Map<String, dynamic>?> signUpOrg(Organization org, String password, File file) async {
-    Map<String, dynamic>? message = await authService.signUpOrg(org, password, file);
+  Future<Map<String, dynamic>?> signUpOrg(
+      Organization org, String password, File file) async {
+    Map<String, dynamic>? message =
+        await authService.signUpOrg(org, password, file);
     notifyListeners();
     return message;
   }

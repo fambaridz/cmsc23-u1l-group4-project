@@ -26,6 +26,46 @@ class FirebaseAuthAPI {
     }
   }
 
+  Future<List<Map<String, dynamic>>?> getOrganizations() async {
+    QuerySnapshot<Map<String, dynamic>> organizations = await db
+        .collection('users')
+        .where('userType', isEqualTo: 'Organization')
+        .get();
+
+    if (organizations.size == 0) {
+      // No organizations found
+      return null;
+    } else {
+      // Put all retrieved documents in a list
+      List<Map<String, dynamic>> organizationList = [];
+      for (var doc in organizations.docs) {
+        organizationList.add(doc.data());
+      }
+
+      return organizationList;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> getDonors() async {
+    QuerySnapshot<Map<String, dynamic>> donors = await db
+        .collection('users')
+        .where('userType', isEqualTo: 'Donor')
+        .get();
+
+    if (donors.size == 0) {
+      // No donors found
+      return null;
+    } else {
+      // Put all the retrieved documents in a list
+      List<Map<String, dynamic>> donorList = [];
+      for (var doc in donors.docs) {
+        donorList.add(doc.data());
+      }
+
+      return donorList;
+    }
+  }
+
   Future<Map<String, dynamic>?> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
@@ -36,7 +76,10 @@ class FirebaseAuthAPI {
 
       if (!userDoc.exists) {
         return {"error": "User not found"};
-      } else if ((userDoc.data() as Map<String, dynamic>)['isVerified'] == false && (userDoc.data() as Map<String, dynamic>)['userType'] == "Organization"){
+      } else if ((userDoc.data() as Map<String, dynamic>)['isVerified'] ==
+              false &&
+          (userDoc.data() as Map<String, dynamic>)['userType'] ==
+              "Organization") {
         return {"error": "Account not yet verified. Please wait for approval."};
       } else {
         return userDoc.data() as Map<String, dynamic>;
@@ -52,9 +95,10 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> signUpDonor(Donor donor, String password) async {
+  Future<Map<String, dynamic>?> signUpDonor(
+      Donor donor, String password) async {
     UserCredential credential;
-    
+
     try {
       credential = await auth.createUserWithEmailAndPassword(
         email: donor.email,
@@ -68,13 +112,13 @@ class FirebaseAuthAPI {
         'username': donor.username,
         'email': donor.email,
         'addresses': donor.addresses,
-        'contactNum': donor. contactNum,
+        'contactNum': donor.contactNum,
       });
 
       // Retrieve the user data after creation and return it
-      DocumentSnapshot userDoc = await db.collection('users').doc(credential.user!.uid).get();
+      DocumentSnapshot userDoc =
+          await db.collection('users').doc(credential.user!.uid).get();
       return userDoc.data() as Map<String, dynamic>;
-      
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         return {"error": e.message};
@@ -88,45 +132,48 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> signUpOrg(Organization org, String password, File file) async {
-  try {
-    // Create user with email and password
-    UserCredential credential = await auth.createUserWithEmailAndPassword(
-      email: org.email,
-      password: password,
-    );
+  Future<Map<String, dynamic>?> signUpOrg(
+      Organization org, String password, File file) async {
+    try {
+      // Create user with email and password
+      UserCredential credential = await auth.createUserWithEmailAndPassword(
+        email: org.email,
+        password: password,
+      );
 
-    // Upload file to Firebase Storage
-    TaskSnapshot snapshot = await FirebaseStorage.instance.ref().child('proofs/${file.path.split('/').last}').putFile(file);
-    String downloadUrl = await snapshot.ref.getDownloadURL();
+      // Upload file to Firebase Storage
+      TaskSnapshot snapshot = await FirebaseStorage.instance
+          .ref()
+          .child('proofs/${file.path.split('/').last}')
+          .putFile(file);
+      String downloadUrl = await snapshot.ref.getDownloadURL();
 
-    // Write user data to Firestore
-    await db.collection('users').doc(credential.user!.uid).set({
-      'userType': org.userType,
-      'name': org.name,
-      'aboutUs': org.aboutUs,
-      'username': org.username,
-      'email': org.email,
-      'addresses': org.addresses,
-      'contactNum': org.contactNum,
-      'status': org.status,
-      'isVerified': org.isVerified,
-      'photoUrl': downloadUrl,
-    });
+      // Write user data to Firestore
+      await db.collection('users').doc(credential.user!.uid).set({
+        'userType': org.userType,
+        'name': org.name,
+        'aboutUs': org.aboutUs,
+        'username': org.username,
+        'email': org.email,
+        'addresses': org.addresses,
+        'contactNum': org.contactNum,
+        'status': org.status,
+        'isVerified': org.isVerified,
+        'photoUrl': downloadUrl,
+      });
 
-    // Retrieve the user data after creation and return it
-    DocumentSnapshot userDoc = await db.collection('users').doc(credential.user!.uid).get();
-    return userDoc.data() as Map<String, dynamic>?;
-
-  } on FirebaseAuthException catch (e) {
-    return {"error": e.message};
-  } on FirebaseException catch (e) {
-    return {"error": e.message};
-  } catch (e) {
-    return {"error": e.toString()};
+      // Retrieve the user data after creation and return it
+      DocumentSnapshot userDoc =
+          await db.collection('users').doc(credential.user!.uid).get();
+      return userDoc.data() as Map<String, dynamic>?;
+    } on FirebaseAuthException catch (e) {
+      return {"error": e.message};
+    } on FirebaseException catch (e) {
+      return {"error": e.message};
+    } catch (e) {
+      return {"error": e.toString()};
+    }
   }
-}
-
 
   Future<void> signOut() async {
     await auth.signOut();
