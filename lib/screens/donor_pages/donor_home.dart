@@ -54,7 +54,7 @@ class _DonorHomePageState extends State<DonorHomePage> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey[100],
+                      color: Colors.white,
                     ),
                     margin: EdgeInsets.all(10),
                     child: ListTile(
