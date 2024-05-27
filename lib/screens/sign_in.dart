@@ -138,7 +138,11 @@ class _SignInPageState extends State<SignInPage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Signing in...'),
+            backgroundColor: Colors.lightBlue[400],
+            content: Text(
+              'Signing in...',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+            ),
             duration: Duration(seconds: 2),
           ),
         );
@@ -151,13 +155,11 @@ class _SignInPageState extends State<SignInPage> {
           setState(() {
             errorMessage = null;
           });
-
-          print(result);
           
           if (result['userType'] == "Admin") {
             Navigator.pushNamed(context, "/admin-home");
           } else if (result['userType'] == "Donor") {
-            Navigator.pushNamed(context, "/donor-home", arguments: result);
+            Navigator.pushNamed(context, "/donor-home");
           } else if (result['userType'] == "Organization") {
             Navigator.pushNamed(context, "/org-home");
           }
