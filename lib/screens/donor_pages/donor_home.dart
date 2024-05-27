@@ -24,7 +24,6 @@ class _DonorHomePageState extends State<DonorHomePage> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override

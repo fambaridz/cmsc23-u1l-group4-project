@@ -828,36 +828,49 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 status: 1
               );
 
-              GlobalContextService.navigatorKey.currentContext!
+              String? message = await GlobalContextService.navigatorKey.currentContext!
                 .read<DonationListProvider>()
                 .addDonation(newDonation, donorAddresses);
+              
+              if (message == "Successfully added!") {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.lightBlue[400],
+                    content: const Text(
+                      'Donation is now submitted. Please wait for confirmation from organization.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+
+                // Reset form and values
+                _formKey.currentState?.reset();
+                setState(() {
+                  _selectedCategory = null;
+                  _pickupOrDropoff = 'Pickup';
+                  _itemWeight = null;
+                  _selectedUnit = null;
+                  _address = null;
+                  _addresses = {};
+                  _itemPhoto = File('');
+                  _showErrorMessage = false;
+                });
+
+                Navigator.pushNamed(context, '/donor-home');
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.red,
+                    content: const Text(
+                      'Failed to submit donation. Please try again.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+              }
             }
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Colors.lightBlue[400],
-                content: const Text(
-                  'Donation is now submitted. Please wait for confirmation from organization.',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                ),
-                duration: const Duration(seconds: 5),
-              ),
-            );
-
-            // Reset form and values
-            _formKey.currentState?.reset();
-            setState(() {
-              _selectedCategory = null;
-              _pickupOrDropoff = 'Pickup';
-              _itemWeight = null;
-              _selectedUnit = null;
-              _address = null;
-              _addresses = {};
-              _itemPhoto = File('');
-              _showErrorMessage = false;
-            });
-
-            Navigator.pushNamed(context, '/donor-home');
           }
         }
       },
