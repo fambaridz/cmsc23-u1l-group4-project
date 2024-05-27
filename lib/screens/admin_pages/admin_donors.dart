@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/auth_provider.dart';
 import 'admin_drawer.dart';
 
 class AdminDonorsPage extends StatefulWidget {
@@ -11,11 +13,24 @@ class AdminDonorsPage extends StatefulWidget {
 }
 
 class _AdminDonorsPageState extends State<AdminDonorsPage> {
-  final List<String> donors = [
-    'Donor A',
-    'Donor B',
-    'Donor C',
-  ];
+  late List<Map<String, dynamic>> donors = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getVerifiedOrganizations();
+  }
+
+  void getVerifiedOrganizations() async {
+    List<Map<String, dynamic>>? donorList =
+        await context.read<UserAuthProvider>().getDonors();
+
+    if (donorList != null) {
+      setState(() {
+        donors = donorList;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +56,7 @@ class _AdminDonorsPageState extends State<AdminDonorsPage> {
                             child: ListTile(
                               contentPadding: EdgeInsets.all(20),
                               title: Text(
-                                donor,
+                                donor['name'],
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
