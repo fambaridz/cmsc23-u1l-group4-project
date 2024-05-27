@@ -131,17 +131,10 @@ class _SignInPageState extends State<SignInPage> {
           .read<UserAuthProvider>()
           .authService
           .signIn(email!, password!);
-
+          
         setState(() {
           isLoading = false;
         });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Signing in...'),
-            duration: Duration(seconds: 2),
-          ),
-        );
 
         if (result == null) {
           setState(() {
@@ -151,13 +144,11 @@ class _SignInPageState extends State<SignInPage> {
           setState(() {
             errorMessage = null;
           });
-
-          print(result);
           
           if (result['userType'] == "Admin") {
             Navigator.pushNamed(context, "/admin-home");
           } else if (result['userType'] == "Donor") {
-            Navigator.pushNamed(context, "/donor-home", arguments: result);
+            Navigator.pushNamed(context, "/donor-home");
           } else if (result['userType'] == "Organization") {
             Navigator.pushNamed(context, "/org-home");
           }

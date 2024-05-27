@@ -17,6 +17,7 @@ import 'screens/donor_pages/donor_donation.dart';
 import 'screens/donor_pages/donor_home.dart';
 import 'package:cmsc23_project/screens/donor_pages/donor_org_details.dart';
 import 'screens/donor_pages/donor_profile.dart';
+import 'screens/donor_pages/donor_donation_details.dart';
 import '../screens/landing.dart';
 import '../screens/sign_in.dart';
 import '../screens/sign_up.dart';
@@ -97,6 +98,9 @@ class MyApp extends StatelessWidget {
                 as Map<String, dynamic>),
         "/donor-donations":(context) => DonorDonationList(
           userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/donor-donation-details": (context) => DonorDonationDetails(
+            donationData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         // organization routes
         "/org-home": (context) => const OrganizationHomePage(),
