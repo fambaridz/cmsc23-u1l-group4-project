@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/auth_provider.dart';
 import 'admin_drawer.dart';
 
@@ -48,7 +47,7 @@ class _AdminApprovalsPageState extends State<AdminApprovalsPage> {
         ),
         body: Center(
           child: approvals.isEmpty
-              ? const Text("No pending accounts for approval.")
+              ? const Center(child: Text("No pending accounts for approval."))
               : ListView(
                   padding: const EdgeInsets.all(10),
                   children: approvals

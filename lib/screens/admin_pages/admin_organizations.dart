@@ -71,7 +71,8 @@ class _AdminOrganizationsPageState extends State<AdminOrganizationsPage> {
                               trailing: ElevatedButton(
                                 onPressed: () {
                                   Navigator.pushNamed(
-                                      context, "/admin/organization-info");
+                                      context, "/admin/organization-info",
+                                      arguments: organization);
                                 },
                                 child: Text(
                                   "View",
