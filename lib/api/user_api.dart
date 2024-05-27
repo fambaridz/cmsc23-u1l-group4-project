@@ -16,7 +16,7 @@ class FirebaseUserAPI {
     return userData;
   }
 
-  Future<String> editUser(String id, String status) async {
+  Future<String> editUser(String id, bool status) async {
     try {
       await db.collection("users").doc(id).update({"status": status});
 
