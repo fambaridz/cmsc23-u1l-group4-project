@@ -48,7 +48,7 @@ class FirebaseOrgAPI {
   Future<String> placeDonationToDonationDrive(String donationId, String donationDriveId, String status) async {
     try {
       await db.collection("donationDrives").doc(donationDriveId).update({"donations": FieldValue.arrayUnion([donationId])});
-      return "Successfully edited!";
+      return "Successfully placed donation to a donation drive!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
