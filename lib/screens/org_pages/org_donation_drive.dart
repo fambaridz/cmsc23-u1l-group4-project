@@ -5,7 +5,8 @@ import 'package:cmsc23_project/screens/org_pages/org_drawer.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDonationDrivePage extends StatefulWidget {
-  const OrganizationDonationDrivePage({super.key});
+  final Map<String, dynamic> userData;
+  const OrganizationDonationDrivePage({super.key, required this.userData});
 
   @override
   State<OrganizationDonationDrivePage> createState() =>
@@ -22,7 +23,7 @@ class _OrganizationDonationDrivePageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: OrganizationDrawer(),
+      drawer: OrganizationDrawer(userData: widget.userData,),
       appBar: AppBar(
         title: Text("Donation Drives"),
       ),

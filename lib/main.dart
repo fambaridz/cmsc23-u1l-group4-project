@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
             donationData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         // organization routes
-        "/org-home": (context) => const OrganizationHomePage(),
+        "/org-home": (context) => OrganizationHomePage(),
         "/org-home/donation/details": (context) => OrganizationDonationDetails(
             ModalRoute.of(context)!.settings.arguments
                 as Map<String, Donation>),
@@ -111,7 +111,10 @@ class MyApp extends StatelessWidget {
             ModalRoute.of(context)!.settings.arguments
                 as Map<String, Organization>),
         "/org-home/donation-drive": (context) =>
-            const OrganizationDonationDrivePage(),
+             OrganizationDonationDrivePage(
+                userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>
+            ),
         "/org-home/donation-drive/details": (context) =>
             OrganizationDonationDriveDetails(ModalRoute.of(context)!
                 .settings

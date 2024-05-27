@@ -2,23 +2,21 @@ import 'package:cmsc23_project/constants/donation_status_map.dart';
 import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/organization.dart';
 import 'package:cmsc23_project/screens/org_pages/org_drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationHomePage extends StatefulWidget {
-  const OrganizationHomePage({Key? key}) : super(key: key);
+  const OrganizationHomePage({super.key});
 
   @override
   State<OrganizationHomePage> createState() => _OrganizationHomePageState();
 }
 
 class _OrganizationHomePageState extends State<OrganizationHomePage> {
-
-  final Organization organization = Organization(
-      id: "1",
-      name: "Organization Name",
-      aboutUs: "We are organization. We do organization things. Please donate",
-      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', photoUrl: '', isVerified: false);
-
+  late Map<String, dynamic> userData;
+  User? user;
   final List<Donation> donationList = [
     Donation(
         id: "1",
@@ -78,9 +76,24 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    user = context.read<UserAuthProvider>().user;
+    if (user != null) {
+      context.read<UserAuthProvider>().getUserData(user!.uid).then((value) {
+      setState(() {
+        userData = value!;
+      });
+    });};
+
+    print(user!.uid);
+
     return Scaffold(
-      drawer: OrganizationDrawer(),
+      drawer: OrganizationDrawer(userData: userData),
       appBar: AppBar(
         title: Text("Organization Home"),
       ),
