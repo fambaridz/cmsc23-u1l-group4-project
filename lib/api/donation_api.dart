@@ -1,13 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class FirebaseDonationAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  Future<String> addDonationWithFile(Map<String, dynamic> donation, Map<String, String> donorAddresses, File file) async {
+    try {
+      TaskSnapshot snapshot = await FirebaseStorage.instance.ref("donation_images/${donation["donorId"]}/${donation["category"]}.jpg").putFile(file);
+      String url = await snapshot.ref.getDownloadURL();
+
+      await db.collection("donations").add(
+        {
+          "donorId": donation["donorId"],
+          "category": donation["category"],
+          "pickupOrDropoff": donation["pickupOrDropoff"],
+          "weight": donation["weight"],
+          "address": donation["address"],
+          "contactNum": donation["contactNum"],
+          "pickUpDateTime": donation["pickUpDateTime"],
+          "dropOffDateTime": donation["dropOffDateTime"],
+          "itemPhotoUrl": url,
+        },
+      );
+      await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
+      return "Successfully added!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
 
   Future<String> addDonation(Map<String, dynamic> donation, Map<String, String> donorAddresses) async {
     try {
       await db.collection("donations").add(donation);
       await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
-
       return "Successfully added!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../model/donation.dart';
 import '../api/donation_api.dart';
+import 'dart:io';
 
 class DonationListProvider with ChangeNotifier {
   FirebaseDonationAPI firebaseService = FirebaseDonationAPI();
@@ -15,6 +16,12 @@ class DonationListProvider with ChangeNotifier {
 
   void fetchDonations() {
     _donationsStream = firebaseService.getAllDonations();
+    notifyListeners();
+  }
+
+  void addDonationWithFile(Donation newDonation, Map<String, String> donorAddresses, File file) async {
+    String message = await firebaseService.addDonationWithFile(newDonation.toJson(newDonation), donorAddresses, file);
+    print(message);
     notifyListeners();
   }
 
