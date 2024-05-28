@@ -46,7 +46,12 @@ class _AdminDonorsPageState extends State<AdminDonorsPage> {
               : ListView(
                   padding: const EdgeInsets.all(10),
                   children: donors
-                      .map((donor) => Container(
+                      .map((donor) => GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/admin/donor-info",
+                                arguments: donor);
+                          },
+                          child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.grey[100],
@@ -61,28 +66,8 @@ class _AdminDonorsPageState extends State<AdminDonorsPage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              trailing: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, "/admin/donor-info",
-                                      arguments: donor);
-                                },
-                                child: Text(
-                                  "View",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.lightBlue[200],
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
                             ),
-                          ))
+                          )))
                       .toList(),
                 ),
         ));
