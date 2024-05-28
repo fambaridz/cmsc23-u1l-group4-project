@@ -12,7 +12,7 @@ class AdminDonationDetailsPage extends StatefulWidget {
 }
 
 class _AdminDonationDetailsPageState extends State<AdminDonationDetailsPage> {
-  late Map<String, dynamic>? donorData = {};
+  Map<String, dynamic>? donorData = {};
 
   @override
   void initState() {
@@ -51,10 +51,13 @@ class _AdminDonationDetailsPageState extends State<AdminDonationDetailsPage> {
                       "Donation by:",
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
-                    Text(
-                      "${donorData!['name']}",
-                      style: const TextStyle(fontSize: 35, color: Colors.white),
-                    ),
+                    donorData!['name'] == null
+                        ? CircularProgressIndicator()
+                        : Text(
+                            "${donorData!['name']}",
+                            style: const TextStyle(
+                                fontSize: 35, color: Colors.white),
+                          ),
                   ],
                 )))),
         Padding(

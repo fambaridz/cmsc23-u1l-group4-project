@@ -12,7 +12,7 @@ class AdminDonorsPage extends StatefulWidget {
 }
 
 class _AdminDonorsPageState extends State<AdminDonorsPage> {
-  late List<Map<String, dynamic>> donors = [];
+  List<Map<String, dynamic>> donors = [];
 
   @override
   void initState() {

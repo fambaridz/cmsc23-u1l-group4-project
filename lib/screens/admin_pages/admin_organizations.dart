@@ -12,7 +12,7 @@ class AdminOrganizationsPage extends StatefulWidget {
 }
 
 class _AdminOrganizationsPageState extends State<AdminOrganizationsPage> {
-  late List<Map<String, dynamic>> organizations = [];
+  List<Map<String, dynamic>> organizations = [];
 
   @override
   void initState() {

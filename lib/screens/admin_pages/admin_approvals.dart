@@ -12,7 +12,7 @@ class AdminApprovalsPage extends StatefulWidget {
 }
 
 class _AdminApprovalsPageState extends State<AdminApprovalsPage> {
-  late List<Map<String, dynamic>> approvals = [];
+  List<Map<String, dynamic>> approvals = [];
 
   @override
   void initState() {

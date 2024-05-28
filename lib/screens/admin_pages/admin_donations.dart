@@ -12,7 +12,7 @@ class AdminDonationsPage extends StatefulWidget {
 }
 
 class _AdminDonationsPageState extends State<AdminDonationsPage> {
-  late List<Map<String, dynamic>> donations = [];
+  List<Map<String, dynamic>> donations = [];
 
   @override
   void initState() {
@@ -40,48 +40,52 @@ class _AdminDonationsPageState extends State<AdminDonationsPage> {
         appBar: AppBar(
           title: const Text("All Donations"),
         ),
-        body: ListView.builder(
-          itemCount: donations.length,
-          itemBuilder: ((context, index) {
-            Map<String, dynamic> donation = donations[index];
+        body: Center(
+            child: donations.isEmpty
+                ? Text('No donations available.')
+                : ListView.builder(
+                    itemCount: donations.length,
+                    itemBuilder: ((context, index) {
+                      Map<String, dynamic> donation = donations[index];
 
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[100],
-              ),
-              margin: EdgeInsets.all(10),
-              child: ListTile(
-                contentPadding: EdgeInsets.all(20),
-                title: Text(
-                  "${donation['category']} donation",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                trailing: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/admin/donation-info",
-                        arguments: donation);
-                  },
-                  child: Text(
-                    "View",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightBlue[200],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }),
-        ));
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey[100],
+                        ),
+                        margin: EdgeInsets.all(10),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(20),
+                          title: Text(
+                            "${donation['category']} donation",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          trailing: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, "/admin/donation-info",
+                                  arguments: donation);
+                            },
+                            child: Text(
+                              "View",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.lightBlue[200],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  )));
   }
 }
