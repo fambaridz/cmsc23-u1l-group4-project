@@ -1,4 +1,3 @@
-import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +62,8 @@ class _AdminDonationsPageState extends State<AdminDonationsPage> {
                 ),
                 trailing: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/admin/donation-info");
+                    Navigator.pushNamed(context, "/admin/donation-info",
+                        arguments: donation);
                   },
                   child: Text(
                     "View",

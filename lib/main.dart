@@ -96,7 +96,9 @@ class MyApp extends StatelessWidget {
         "/admin/organization-info": (context) => AdminOrgDetailsPage(
             orgData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
-        "/admin/donation-info": (context) => const AdminDonationDetailsPage(),
+        "/admin/donation-info": (context) => AdminDonationDetailsPage(
+            donationData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
         "/admin/donor-info": (context) => AdminDonorDetailsPage(
               donorData: ModalRoute.of(context)!.settings.arguments
                   as Map<String, dynamic>,
