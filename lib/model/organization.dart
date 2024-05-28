@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Organization {
   String? id;
   String userType;
@@ -24,4 +26,42 @@ class Organization {
     required this.isVerified,
     required this.photoUrl,
   });
+
+  factory Organization.fromJson(Map<String, dynamic> json) {
+    return Organization(
+      id: json['id'],
+      userType: json['userType'],
+      name: json['name'],
+      aboutUs: json['aboutUs'],
+      username: json['username'],
+      email: json['email'],
+      addresses: Map<String, String>.from(json['addresses']),
+      contactNum: json['contactNum'],
+      status: json['status'],
+      isVerified: json['isVerified'],
+      photoUrl: json['photoUrl'],
+    );
+  }
+
+  static List<Organization> fromJsonArray(String jsonData) {
+    final Iterable<dynamic> data = jsonDecode(jsonData);
+    return data.map<Organization>((dynamic d) => Organization.fromJson(d)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userType': userType,
+      'name': name,
+      'aboutUs': aboutUs,
+      'username': username,
+      'email': email,
+      'addresses': addresses,
+      'contactNum': contactNum,
+      'status': status,
+      'isVerified': isVerified,
+      'photoUrl': photoUrl,
+    };
+  }
+
 }
