@@ -126,6 +126,7 @@ class FirebaseAuthAPI {
 
       // add user to firestore after successful sign up in authentication by getting the user id
       await db.collection('users').doc(credential.user!.uid).set({
+        'id': credential.user!.uid,
         'userType': donor.userType,
         'name': donor.name,
         'username': donor.username,

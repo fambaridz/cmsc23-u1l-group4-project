@@ -64,7 +64,8 @@ class _AdminDonorsPageState extends State<AdminDonorsPage> {
                               trailing: ElevatedButton(
                                 onPressed: () {
                                   Navigator.pushNamed(
-                                      context, "/admin/donor-info");
+                                      context, "/admin/donor-info",
+                                      arguments: donor);
                                 },
                                 child: Text(
                                   "View",
