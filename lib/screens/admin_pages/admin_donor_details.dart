@@ -44,28 +44,22 @@ class _AdminDonorDetailsPageState extends State<AdminDonorDetailsPage> {
                       color: Colors.lightBlue[200],
                       child: Column(
                         children: [
-                          Container(
-                              height: 130,
-                              width: 130,
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/profile.png')))),
-                          const SizedBox(height: 20),
-                          Text(
-                            widget.donorData['name'],
-                            style: const TextStyle(
-                                fontSize: 35,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '@${widget.donorData['username']}',
-                            style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontStyle: FontStyle.italic),
+                          Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                widget.donorData['name'],
+                                style: const TextStyle(
+                                    fontSize: 35,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Text('@${widget.donorData['username']}',
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontStyle: FontStyle.italic)),
                           ),
                           Padding(
                               padding:
@@ -153,30 +147,26 @@ class _AdminDonorDetailsPageState extends State<AdminDonorDetailsPage> {
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline)))),
-            Flexible(
-              child: ListView.builder(
-                  physics:
-                      ScrollPhysics(parent: NeverScrollableScrollPhysics()),
-                  shrinkWrap: true,
-                  itemCount: donationList.length,
-                  itemBuilder: (context, index) {
-                    var donation = donationList[index];
+            ListView.builder(
+                physics: ScrollPhysics(parent: NeverScrollableScrollPhysics()),
+                shrinkWrap: true,
+                itemCount: donationList.length,
+                itemBuilder: (context, index) {
+                  var donation = donationList[index];
 
-                    return Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Column(children: [
-                          Text(
-                            '${donation!['category']} donation',
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          donation['pickupOrDropoff'] == 'Pickup'
-                              ? Text(
-                                  'Picked up on ${donation['pickUpDateTime']}')
-                              : Text(
-                                  'Dropped off on ${donation['dropOffDateTime']}')
-                        ]));
-                  }),
-            )
+                  return Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Column(children: [
+                        Text(
+                          '${donation!['category']} donation',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        donation['pickupOrDropoff'] == 'Pickup'
+                            ? Text('Picked up on ${donation['pickUpDateTime']}')
+                            : Text(
+                                'Dropped off on ${donation['dropOffDateTime']}')
+                      ]));
+                }),
           ],
         ),
       ),
