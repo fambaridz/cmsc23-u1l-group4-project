@@ -43,11 +43,6 @@ class _DonorDonationListState extends State<DonorDonationList> {
       ),
       body: Center(
         child: donations.isEmpty
-          ? CircularProgressIndicator(
-              strokeWidth: 3,
-              color: Colors.lightBlue[400],
-            )
-          : donations[0] == null
               ? Text("No donations found.")
               : ListView.builder(
                   padding: const EdgeInsets.all(10),
