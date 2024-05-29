@@ -23,6 +23,7 @@ class FirebaseDonationAPI {
           "pickUpDateTime": donation["pickUpDateTime"],
           "dropOffDateTime": donation["dropOffDateTime"],
           "itemPhotoUrl": url,
+          "status": donation["status"],
         },
       );
       
