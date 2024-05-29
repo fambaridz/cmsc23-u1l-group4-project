@@ -42,6 +42,7 @@ class AdminOrgDetailsPage extends StatelessWidget {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: 20),
                   const Padding(
                     padding: EdgeInsets.all(10),
                     child: Text("About Us:",
@@ -54,7 +55,7 @@ class AdminOrgDetailsPage extends StatelessWidget {
                           style: const TextStyle(fontSize: 19))),
                   const Padding(
                     padding: EdgeInsets.all(10),
-                    child: Text("Status:",
+                    child: Text("Status for Donations:",
                         style: TextStyle(
                             fontSize: 23, fontWeight: FontWeight.bold)),
                   ),
@@ -113,7 +114,7 @@ class AdminOrgDetailsPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: RichText(
-                                textAlign: TextAlign.justify,
+                                textAlign: TextAlign.center,
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
@@ -154,6 +155,7 @@ class AdminOrgDetailsPage extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 19, fontStyle: FontStyle.italic)),
                   ),
+                  SizedBox(height: 20),
                 ],
               ))),
         ],

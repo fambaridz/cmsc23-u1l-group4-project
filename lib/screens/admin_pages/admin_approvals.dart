@@ -21,8 +21,7 @@ class _AdminApprovalsPageState extends State<AdminApprovalsPage> {
   }
 
   void getUnverifiedOrganizations() async {
-    List<Map<String, dynamic>>? orgList =
-        await context.read<UserAuthProvider>().getOrganizations();
+    List<Map<String, dynamic>>? orgList = await context.read<UserAuthProvider>().getOrganizations();
 
     if (orgList != null) {
       List<Map<String, dynamic>>? unverifiedOrgs = [];
@@ -41,40 +40,41 @@ class _AdminApprovalsPageState extends State<AdminApprovalsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: AdminDrawer(userData: widget.userData),
-        appBar: AppBar(
-          title: const Text("Pending Organization Accounts"),
-        ),
-        body: Center(
-          child: approvals.isEmpty
-              ? const Center(child: Text("No pending accounts for approval."))
-              : ListView(
-                  padding: const EdgeInsets.all(10),
-                  children: approvals
-                      .map((approval) => GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, "/admin/approval-info",
-                                arguments: approval);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[100],
-                            ),
-                            margin: EdgeInsets.all(10),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(20),
-                              title: Text(
-                                approval['name'],
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )))
-                      .toList(),
-                ),
-        ));
+      drawer: AdminDrawer(userData: widget.userData),
+      appBar: AppBar(
+        title: const Text("Pending Organization Accounts"),
+      ),
+      body: Center(
+        child: approvals.isEmpty
+          ? const Center(child: Text("No pending accounts for approval."))
+          : ListView(
+              padding: const EdgeInsets.all(10),
+              children: approvals
+                .map((approval) => GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/admin/approval-info", arguments: approval);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey[100],
+                    ),
+                    margin: EdgeInsets.all(10),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.all(20),
+                      title: Text(
+                        approval['name'],
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+                ))
+                .toList(),
+            ),
+      )
+    );
   }
 }

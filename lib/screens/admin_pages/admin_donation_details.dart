@@ -7,8 +7,7 @@ class AdminDonationDetailsPage extends StatefulWidget {
   const AdminDonationDetailsPage({super.key, required this.donationData});
 
   @override
-  State<AdminDonationDetailsPage> createState() =>
-      _AdminDonationDetailsPageState();
+  State<AdminDonationDetailsPage> createState() => _AdminDonationDetailsPageState();
 }
 
 class _AdminDonationDetailsPageState extends State<AdminDonationDetailsPage> {
@@ -22,8 +21,8 @@ class _AdminDonationDetailsPageState extends State<AdminDonationDetailsPage> {
 
   void getDonorData() async {
     Map<String, dynamic>? donor = await context
-        .read<UserAuthProvider>()
-        .getUserData(widget.donationData['donorId']);
+      .read<UserAuthProvider>()
+      .getUserData(widget.donationData['donorId']);
 
     setState(() {
       donorData = donor;
@@ -37,36 +36,42 @@ class _AdminDonationDetailsPageState extends State<AdminDonationDetailsPage> {
         title: const Text("Donation"),
       ),
       body: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
         Container(
-            width: double.infinity,
-            height: 100,
-            color: Colors.lightBlue[200],
-            child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Center(
-                    child: Column(
-                  children: [
-                    const Text(
-                      "Donation by:",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    donorData!['name'] == null
-                        ? CircularProgressIndicator()
-                        : Text(
-                            "${donorData!['name']}",
-                            style: const TextStyle(
-                                fontSize: 35, color: Colors.white),
-                          ),
-                  ],
-                )))),
+          width: double.infinity,
+          height: 100,
+          color: Colors.lightBlue[200],
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Column(
+                children: [
+                  const Text(
+                    "Donation by:",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  donorData!['name'] == null
+                    ? CircularProgressIndicator()
+                    : Text(
+                        "${donorData!['name']}",
+                        style: const TextStyle(fontSize: 35, color: Colors.white),
+                      ),
+                ],
+              )
+            )
+          )
+        ),
+        SizedBox(height: 10),
         Padding(
-            padding: const EdgeInsets.all(20),
-            child: const Text("Donation Information",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline))),
+          padding: const EdgeInsets.all(20),
+          child: const Text("Donation Information",
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline
+            )
+          )
+        ),
         SizedBox(
           width: 350,
           child: Column(
@@ -74,87 +79,123 @@ class _AdminDonationDetailsPageState extends State<AdminDonationDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Category:",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                    ),
+                    Text(
+                      "${widget.donationData['category']}",
+                      style: TextStyle(fontSize: 20)
+                    )
+                  ]
+                )
+              ),
+              widget.donationData['category'] == 'Cash'
+                ? Container()
+                : Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Weight:",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                      ),
+                      Text(
+                        "${widget.donationData['weight']}",
+                        style: const TextStyle(
+                          fontSize: 20,
+                        )
+                      )
+                    ]
+                  )
+                ),
+              widget.donationData['pickupOrDropoff'] == 'Pickup'
+                ? Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Address:",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                      ),
+                      Text(
+                        "${widget.donationData['address']}",
+                        style: const TextStyle(fontSize: 20,)
+                      )
+                    ]
+                  )
+                )
+                : Container(),
+              widget.donationData['pickupOrDropoff'] == 'Pickup'
+                ? Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Category:",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text("${widget.donationData['category']}",
-                            style: TextStyle(fontSize: 20))
-                      ])),
-              widget.donationData['category'] == 'Cash'
-                  ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Weight:",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                            Text("${widget.donationData['weight']}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                ))
-                          ])),
+                        const Text(
+                          "Contact number:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['contactNum']}",
+                          style: const TextStyle(fontSize: 20,)
+                        ),
+                      ],
+                    )
+                  )
+                : Container(),
               widget.donationData['pickupOrDropoff'] == 'Pickup'
-                  ? Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Address:",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                            Text("${widget.donationData['address']}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                ))
-                          ]))
-                  : Container(),
-              widget.donationData['pickupOrDropoff'] == 'Pickup'
-                  ? Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Contact number:",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                          Text("${widget.donationData['contactNum']}",
-                              style: const TextStyle(
-                                fontSize: 20,
-                              )),
-                        ],
-                      ))
-                  : Container(),
-              widget.donationData['pickupOrDropoff'] == 'Pickup'
-                  ? Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Pick up:",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                            Text("${widget.donationData['pickUpDateTime']}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                )),
-                          ]))
-                  : Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Drop off:",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                            Text("${widget.donationData['dropOffDateTime']}",
-                                style: const TextStyle(fontSize: 20)),
-                          ]))
+                ? Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Pick up:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['pickUpDateTime']}",
+                          style: const TextStyle(fontSize: 20)
+                        ),
+                      ]
+                    )
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Drop off:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['dropOffDateTime']}",
+                          style: const TextStyle(fontSize: 20)
+                        ),
+                      ]
+                    )
+                  ),
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Item Photo', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    if (widget.donationData['itemPhotoUrl'] != "No photo uploaded.")
+                      Image.network('${widget.donationData['itemPhotoUrl']}', width: 200, height: 200),
+                    if (widget.donationData['itemPhotoUrl'] == "No photo uploaded.") 
+                      Text('No photo uploaded.', style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic)),
+                  ],
+                ),
+              ),
             ],
           ),
         )

@@ -67,6 +67,7 @@ class FirebaseDonationAPI {
     return donations;
   }
 
+  // might delete this if remained unused
   Stream<QuerySnapshot> getAllDonations() {
     return db.collection("donations").snapshots();
   }
@@ -87,6 +88,7 @@ class FirebaseDonationAPI {
     }
   }
 
+  // might delete this if remained unused
   DocumentReference<Map<String, dynamic>> getDonation(String id) {
     return db.collection("donations").doc(id);
   }
@@ -109,6 +111,7 @@ class FirebaseDonationAPI {
     }
   }
 
+  // might delete this if remained unused
   Future<String> deleteDonation(String id) async {
     try {
       await db.collection("donations").doc(id).delete();
@@ -119,6 +122,7 @@ class FirebaseDonationAPI {
     }
   }
 
+  // might delete this if remained unused
   Future<String> editDonation(String id, String status) async {
     try {
       await db.collection("donations").doc(id).update({"status": status});
