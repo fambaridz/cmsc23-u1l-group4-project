@@ -11,8 +11,10 @@ class DonorQRPage extends StatelessWidget {
       appBar: AppBar(title: Text("Donor QR Code")),
       body: Center(
         child: Column (
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Screenshot this QR Code", style: TextStyle(fontSize: 20)),
+            Text("Screenshot this QR Code", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 20),
             QrImageView(
               data: this.message,
               version: QrVersions.auto,
