@@ -49,7 +49,7 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
                             Navigator.pushNamed(context, "/org-home/profile",
                                 arguments: {"details": widget.userData});
                           },
-                          icon: Icon(Icons.account_circle, color: Colors.white),
+                          icon: Icon(Icons.people_outline, color: Colors.white),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.lightBlue[400],
                             elevation: 3,
