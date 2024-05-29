@@ -1,103 +1,201 @@
-import 'package:cmsc23_project/model/donation.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AdminDonationDetailsPage extends StatelessWidget {
-  const AdminDonationDetailsPage({super.key});
+class AdminDonationDetailsPage extends StatefulWidget {
+  final Map<String, dynamic> donationData;
+  const AdminDonationDetailsPage({super.key, required this.donationData});
+
+  @override
+  State<AdminDonationDetailsPage> createState() => _AdminDonationDetailsPageState();
+}
+
+class _AdminDonationDetailsPageState extends State<AdminDonationDetailsPage> {
+  Map<String, dynamic>? donorData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    getDonorData();
+  }
+
+  void getDonorData() async {
+    Map<String, dynamic>? donor = await context
+      .read<UserAuthProvider>()
+      .getUserData(widget.donationData['donorId']);
+
+    setState(() {
+      donorData = donor;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _addresses = ['address1, address2'];
-    var donation = Donation(
-      id: '1',
-      donorId: 'Donor A',
-      category: 'Food',
-      weight: '2 kg',
-      address: 'address',
-      contactNum: '+63 123 123 4567',
-      pickUpDateTime: 'April 4, 2030',
-      dropOffDateTime: 'April 15, 2030',
-      status: 1, pickupOrDropoff: '',
-    );
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Donation"),
       ),
       body: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
         Container(
-            width: double.infinity,
-            height: 100,
-            color: Colors.lightBlue[200],
+          width: double.infinity,
+          height: 100,
+          color: Colors.lightBlue[200],
+          child: Padding(
+            padding: const EdgeInsets.all(10),
             child: Center(
-                child: Column(
-              children: [
-                Text(
-                  "Donation by:",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                Text(
-                  "${donation.donorId}",
-                  style: TextStyle(fontSize: 35, color: Colors.white),
-                ),
-              ],
-            ))),
-        SizedBox(height: 30),
-        Text("Donation Information",
+              child: Column(
+                children: [
+                  const Text(
+                    "Donation by:",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  donorData!['name'] == null
+                    ? CircularProgressIndicator()
+                    : Text(
+                        "${donorData!['name']}",
+                        style: const TextStyle(fontSize: 35, color: Colors.white),
+                      ),
+                ],
+              )
+            )
+          )
+        ),
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: const Text("Donation Information",
             style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline)),
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline
+            )
+          )
+        ),
         SizedBox(
           width: 350,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 10,
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Category:",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                    ),
+                    Text(
+                      "${widget.donationData['category']}",
+                      style: TextStyle(fontSize: 20)
+                    )
+                  ]
+                )
               ),
-              Text("Category:",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("${donation.category}", style: TextStyle(fontSize: 20)),
-              SizedBox(height: 10),
-              Text("Weight:",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("${donation.weight}",
-                  style: TextStyle(
-                    fontSize: 20,
-                  )),
-              SizedBox(height: 10),
-              Text("Address/es:",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: _addresses.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Text(_addresses[index]));
-                },
+              widget.donationData['category'] == 'Cash'
+                ? Container()
+                : Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Weight:",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                      ),
+                      Text(
+                        "${widget.donationData['weight']}",
+                        style: const TextStyle(
+                          fontSize: 20,
+                        )
+                      )
+                    ]
+                  )
+                ),
+              widget.donationData['pickupOrDropoff'] == 'Pickup'
+                ? Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Address:",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                      ),
+                      Text(
+                        "${widget.donationData['address']}",
+                        style: const TextStyle(fontSize: 20,)
+                      )
+                    ]
+                  )
+                )
+                : Container(),
+              widget.donationData['pickupOrDropoff'] == 'Pickup'
+                ? Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Contact number:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['contactNum']}",
+                          style: const TextStyle(fontSize: 20,)
+                        ),
+                      ],
+                    )
+                  )
+                : Container(),
+              widget.donationData['pickupOrDropoff'] == 'Pickup'
+                ? Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Pick up:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['pickUpDateTime']}",
+                          style: const TextStyle(fontSize: 20)
+                        ),
+                      ]
+                    )
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Drop off:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['dropOffDateTime']}",
+                          style: const TextStyle(fontSize: 20)
+                        ),
+                      ]
+                    )
+                  ),
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Item Photo', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    if (widget.donationData['itemPhotoUrl'] != "No photo uploaded.")
+                      Image.network('${widget.donationData['itemPhotoUrl']}', width: 200, height: 200),
+                    if (widget.donationData['itemPhotoUrl'] == "No photo uploaded.") 
+                      Text('No photo uploaded.', style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic)),
+                  ],
+                ),
               ),
-              SizedBox(height: 10),
-              Text("Contact number:",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("${donation.contactNum}",
-                  style: TextStyle(
-                    fontSize: 20,
-                  )),
-              SizedBox(height: 10),
-              Text("Pick up:",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("${donation.pickUpDateTime}",
-                  style: TextStyle(
-                    fontSize: 20,
-                  )),
-              SizedBox(height: 10),
-              Text("Drop off:",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("${donation.dropOffDateTime}",
-                  style: TextStyle(fontSize: 20)),
             ],
           ),
         )

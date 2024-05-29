@@ -1,102 +1,169 @@
-import 'package:cmsc23_project/model/donor.dart';
+import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AdminDonorDetailsPage extends StatelessWidget {
-  const AdminDonorDetailsPage({super.key});
+class AdminDonorDetailsPage extends StatefulWidget {
+  final Map<String, dynamic> donorData;
+  const AdminDonorDetailsPage({super.key, required this.donorData});
+
+  @override
+  State<AdminDonorDetailsPage> createState() => _AdminDonorDetailsPageState();
+}
+
+class _AdminDonorDetailsPageState extends State<AdminDonorDetailsPage> {
+  late List<Map<String, dynamic>?> donationList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getDonorDonations();
+  }
+
+  void getDonorDonations() async {
+    List<Map<String, dynamic>?> donations = await context
+      .read<DonationListProvider>()
+      .getDonationByUserId(widget.donorData['id']);
+
+    setState(() {
+      donationList = donations;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var donor = Donor(
-      id: '1',
-      userType: 'Donor',
-      name: 'Jane Smith',
-      username: '@therealJS',
-      email: 'anEmail@email.com',
-      addresses: {'Main branch': '123 Datu st., Brgy. Magiliw'},
-      contactNum: '+63 123 123 4567',
-    );
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Donor"),
+        title: Text("About ${widget.donorData['name']}"),
       ),
       body: Center(
-        child: Column(
+        child: ListView(
           children: [
-            Container(
-                width: double.infinity,
-                color: Colors.lightBlue[200],
-                child: Center(
-                    child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    Container(
-                        height: 160,
-                        width: 160,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image:
-                                    AssetImage('assets/images/profile.png')))),
-                    const SizedBox(height: 20),
-                    Text(
-                      donor.name,
-                      style: const TextStyle(
-                          fontSize: 35,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      donor.username,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontStyle: FontStyle.italic),
-                    ),
-                    SizedBox(
-                      width: 350,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 15),
-                          Text("Contact Number: ${donor.contactNum}",
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.white)),
-                          Text("Address/es: ${donor.addresses}",
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.white)),
-                          const SizedBox(height: 25)
-                        ],
+            Row(children: [
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.lightBlue[200],
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          widget.donorData['name'],
+                          style: const TextStyle(
+                            fontSize: 35,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        )),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text('@${widget.donorData['username']}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontStyle: FontStyle.italic)),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 20),
+                        child: SizedBox(
+                          width: 350,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:EdgeInsets.only(top: 10, bottom: 5),
+                                child: Text("Contact Number: ",
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold))),
+                              Text("${widget.donorData['contactNum']}",
+                                style: const TextStyle(fontSize: 18, color: Colors.white)),
+                              Padding(
+                                padding:EdgeInsets.only(top: 5, bottom: 5),
+                                child: Text("Address/es: ",
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold))),
+                              ListView.builder(
+                                physics: ScrollPhysics(
+                                  parent: NeverScrollableScrollPhysics()),
+                                shrinkWrap: true,
+                                itemCount: widget.donorData['addresses'].length,
+                                itemBuilder: (context, index) {
+                                  var label = widget
+                                    .donorData['addresses'].keys
+                                    .toList();
+                                  var address = widget
+                                    .donorData['addresses'].values
+                                    .toList();
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 7),
+                                    child: RichText(
+                                      textAlign: TextAlign.justify,
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "${label[index]}: ",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: "${address[index]}",
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight:
+                                                    FontWeight.normal,
+                                                color: Colors.white,
+                                                fontStyle:
+                                                    FontStyle.italic),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ))
+                      ],
                     )
-                  ],
-                ))),
-            const SizedBox(height: 25),
-            Text("Donations by ${donor.name}",
-                style: const TextStyle(
+                  )
+                )
+              ]
+            ),
+            SizedBox(height: 10),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text("Donations by ${widget.donorData['name']}",
+                  style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline)),
-            const SizedBox(
-              height: 10,
-            ),
-            Flexible(
-              child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  // itemCount: ,
-                  itemBuilder: (context, index) {
-                    // final donation = donor.donations[index];
-
-                    return const ListTile(
-                      title: Text('Text'
-                          // donation,
-                          // style: const TextStyle(fontSize: 20),
-                          ),
-                    );
-                  }),
-            )
+                    decoration: TextDecoration.underline)))),
+            ListView.builder(
+              physics: ScrollPhysics(parent: NeverScrollableScrollPhysics()),
+              shrinkWrap: true,
+              itemCount: donationList.length,
+              itemBuilder: (context, index) {
+                var donation = donationList[index];
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: Column(children: [
+                    Text(
+                      '${donation!['category']} donation',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    donation['pickupOrDropoff'] == 'Pickup'
+                      ? Text('Picked up on ${donation['pickUpDateTime']}')
+                      : Text(
+                        'Dropped off on ${donation['dropOffDateTime']}')
+                  ]));
+                }),
           ],
         ),
       ),
