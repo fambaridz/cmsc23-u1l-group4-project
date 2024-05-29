@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cmsc23_project/screens/donor_pages/donor_qr_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -765,74 +766,11 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 status: 1
               );
 
-              GlobalContextService.navigatorKey.currentContext!
-                .read<DonationListProvider>()
-                .addDonationWithFile(newDonation, donorAddresses, _itemPhoto);
-
-            } else if (_pickupOrDropoff == 'Pickup' && _itemPhoto.path.isEmpty) {
-
-              // Donation for pickup
-              newDonation = Donation(
-                donorId: user!.uid,
-                category: _selectedCategory,
-                pickupOrDropoff: _pickupOrDropoff,
-                weight: _itemWeight == null
-                  ? 'Not applicable.'
-                  : '$_itemWeight $_selectedUnit',
-                address: _address!,
-                contactNum: _contactNo,
-                pickUpDateTime: _dateAndTime,
-                itemPhotoUrl: "No photo uploaded.",
-                status: 1
-              );
-
-              GlobalContextService.navigatorKey.currentContext!
-                .read<DonationListProvider>()
-                .addDonation(newDonation, donorAddresses);
-
-            } else if (_pickupOrDropoff == 'Drop-off' && _itemPhoto.path.isNotEmpty) {
-
-              // Donation for drop-off
-              newDonation = Donation(
-                donorId: user!.uid,
-                category: _selectedCategory,
-                pickupOrDropoff: _pickupOrDropoff,
-                weight: _itemWeight == null
-                    ? 'Not applicable.'
-                    : '$_itemWeight $_selectedUnit',
-                address: 'Not applicable.',
-                contactNum: 'Not applicable.',
-                dropOffDateTime: _dateAndTime,
-                itemPhotoUrl: "",
-                status: 1
-              );
-
-              GlobalContextService.navigatorKey.currentContext!
-                .read<DonationListProvider>()
-                .addDonationWithFile(newDonation, donorAddresses, _itemPhoto);
-
-            } else {
-
-              // Donation for drop-off
-              newDonation = Donation(
-                donorId: user!.uid,
-                category: _selectedCategory,
-                pickupOrDropoff: _pickupOrDropoff,
-                weight: _itemWeight == null
-                    ? 'Not applicable.'
-                    : '$_itemWeight $_selectedUnit',
-                address: 'Not applicable.',
-                contactNum: 'Not applicable.',
-                dropOffDateTime: _dateAndTime,
-                itemPhotoUrl: "No photo uploaded.",
-                status: 1
-              );
-
               String? message = await GlobalContextService.navigatorKey.currentContext!
                 .read<DonationListProvider>()
-                .addDonation(newDonation, donorAddresses);
+                .addDonationWithFile(newDonation, donorAddresses, _itemPhoto);
               
-              if (message == "Successfully added!") {
+              if (!message!.startsWith("Error in")) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     backgroundColor: Colors.lightBlue[400],
@@ -858,6 +796,204 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 });
 
                 Navigator.pushNamed(context, '/donor-home');
+
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.red,
+                    content: const Text(
+                      'Failed to submit donation. Please try again.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+              }
+
+            } else if (_pickupOrDropoff == 'Pickup' && _itemPhoto.path.isEmpty) {
+
+              // Donation for pickup
+              newDonation = Donation(
+                donorId: user!.uid,
+                category: _selectedCategory,
+                pickupOrDropoff: _pickupOrDropoff,
+                weight: _itemWeight == null
+                  ? 'Not applicable.'
+                  : '$_itemWeight $_selectedUnit',
+                address: _address!,
+                contactNum: _contactNo,
+                pickUpDateTime: _dateAndTime,
+                itemPhotoUrl: "No photo uploaded.",
+                status: 1
+              );
+
+              String? message = await GlobalContextService.navigatorKey.currentContext!
+                .read<DonationListProvider>()
+                .addDonation(newDonation, donorAddresses);
+              
+              if (!message!.startsWith("Error in")) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.lightBlue[400],
+                    content: const Text(
+                      'Donation is now submitted. Please wait for confirmation from organization.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+
+                // Reset form and values
+                _formKey.currentState?.reset();
+                setState(() {
+                  _selectedCategory = null;
+                  _pickupOrDropoff = 'Pickup';
+                  _itemWeight = null;
+                  _selectedUnit = null;
+                  _address = null;
+                  _addresses = {};
+                  _itemPhoto = File('');
+                  _showErrorMessage = false;
+                });
+
+                Navigator.pushNamed(context, '/donor-home');
+
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.red,
+                    content: const Text(
+                      'Failed to submit donation. Please try again.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+              }
+
+            } else if (_pickupOrDropoff == 'Drop-off' && _itemPhoto.path.isNotEmpty) {
+
+              // Donation for drop-off
+              newDonation = Donation(
+                donorId: user!.uid,
+                category: _selectedCategory,
+                pickupOrDropoff: _pickupOrDropoff,
+                weight: _itemWeight == null
+                    ? 'Not applicable.'
+                    : '$_itemWeight $_selectedUnit',
+                address: 'Not applicable.',
+                contactNum: 'Not applicable.',
+                dropOffDateTime: _dateAndTime,
+                itemPhotoUrl: "",
+                status: 1
+              );
+
+              String? message = await GlobalContextService.navigatorKey.currentContext!
+                .read<DonationListProvider>()
+                .addDonationWithFile(newDonation, donorAddresses, _itemPhoto);
+              
+              if (!message!.startsWith("Error in")) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.lightBlue[400],
+                    content: const Text(
+                      'Donation is now submitted. Please wait for confirmation from organization.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+
+                // Reset form and values
+                _formKey.currentState?.reset();
+                setState(() {
+                  _selectedCategory = null;
+                  _pickupOrDropoff = 'Pickup';
+                  _itemWeight = null;
+                  _selectedUnit = null;
+                  _address = null;
+                  _addresses = {};
+                  _itemPhoto = File('');
+                  _showErrorMessage = false;
+                });
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) {
+                      return DonorQRPage(message);
+                    }),
+                  ),
+                );
+
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.red,
+                    content: const Text(
+                      'Failed to submit donation. Please try again.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+              }
+              
+            } else {
+
+              // Donation for drop-off
+              newDonation = Donation(
+                donorId: user!.uid,
+                category: _selectedCategory,
+                pickupOrDropoff: _pickupOrDropoff,
+                weight: _itemWeight == null
+                    ? 'Not applicable.'
+                    : '$_itemWeight $_selectedUnit',
+                address: 'Not applicable.',
+                contactNum: 'Not applicable.',
+                dropOffDateTime: _dateAndTime,
+                itemPhotoUrl: "No photo uploaded.",
+                status: 1
+              );
+
+              String? message = await GlobalContextService.navigatorKey.currentContext!
+                .read<DonationListProvider>()
+                .addDonation(newDonation, donorAddresses);
+              
+              if (!message!.startsWith("Error in")) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.lightBlue[400],
+                    content: const Text(
+                      'Donation is now submitted. Please wait for confirmation from organization.',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+
+                // Reset form and values
+                _formKey.currentState?.reset();
+                setState(() {
+                  _selectedCategory = null;
+                  _pickupOrDropoff = 'Pickup';
+                  _itemWeight = null;
+                  _selectedUnit = null;
+                  _address = null;
+                  _addresses = {};
+                  _itemPhoto = File('');
+                  _showErrorMessage = false;
+                });
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) {
+                      return DonorQRPage(message);
+                    }),
+                  ),
+                );
+                
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

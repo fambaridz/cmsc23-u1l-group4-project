@@ -16,7 +16,7 @@ class FirebaseDonationAPI {
           .putFile(file);
       String url = await snapshot.ref.getDownloadURL();
 
-      await db.collection("donations").add(
+      DocumentReference docRef = await db.collection("donations").add(
         {
           "donorId": donation["donorId"],
           "category": donation["category"],
@@ -29,11 +29,9 @@ class FirebaseDonationAPI {
           "itemPhotoUrl": url,
         },
       );
-      await db
-          .collection("users")
-          .doc(donation["donorId"])
-          .update({"addresses": donorAddresses});
-      return "Successfully added!";
+      
+      await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
+      return docRef.id;
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
@@ -42,12 +40,9 @@ class FirebaseDonationAPI {
   Future<String> addDonation(
       Map<String, dynamic> donation, Map<String, String> donorAddresses) async {
     try {
-      await db.collection("donations").add(donation);
-      await db
-          .collection("users")
-          .doc(donation["donorId"])
-          .update({"addresses": donorAddresses});
-      return "Successfully added!";
+      DocumentReference docRef = await db.collection("donations").add(donation);
+      await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
+      return docRef.id;
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
