@@ -81,4 +81,31 @@ class FirebaseDonationAPI {
       return "Error in ${e.code}: ${e.message}";
     }
   }
+
+  Future<List<Map<String, dynamic>>> getDonationsByOrgId(String oid) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donations").where((doc) => doc["orgId"] == oid).get();
+    
+    List<Map<String, dynamic>> donations = [];
+    for (var doc in querySnapshot.docs) {
+      var donationData = doc.data();
+      donationData['oid'] = doc.id;
+      donations.add(donationData);
+    }
+
+    return donations;
+  }
+
+  Future<List<Map<String, dynamic>>> getUnsortedDonationsByOrgId(String oid) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donations").where((doc) => doc["orgId"] == oid || doc["donationDriveId"] == 'null').get();
+    print(querySnapshot);
+    List<Map<String, dynamic>> donations = [];
+    for (var doc in querySnapshot.docs) {
+      var donationData = doc.data();
+      donationData['oid'] = doc.id;
+      donations.add(donationData);
+    }
+    print(donations);
+    return donations;
+  }
+
 }
