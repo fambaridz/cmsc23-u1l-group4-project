@@ -31,13 +31,13 @@ class DonationDrive {
     return data.map<DonationDrive>((dynamic d) => DonationDrive.fromJson(d)).toList();
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(DonationDrive donationDrive) {
     return {
-      'id': id,
-      'name': name,
-      'status': status,
-      'orgId': orgId,
-      'donationList': donationList,
+      'id': donationDrive.id,
+      'name': donationDrive.name,
+      'status': donationDrive.status,
+      'orgId': donationDrive.orgId,
+      'donationList': donationDrive.donationList,
     };
   }
 }

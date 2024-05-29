@@ -35,7 +35,7 @@ class FirebaseDonationDriveAPI {
     }
   }
 
-  // Future<String> editOrg(String id, String status) async {
+  // Future<String> editDonationDrive(String id, String status) async {
   //   try {
   //     await db.collection("users").doc(id).update({"status": status});
   //     return "Successfully edited!";
