@@ -183,19 +183,6 @@ class _AdminDonationDetailsPageState extends State<AdminDonationDetailsPage> {
                       ]
                     )
                   ),
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Item Photo', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    if (widget.donationData['itemPhotoUrl'] != "No photo uploaded.")
-                      Image.network('${widget.donationData['itemPhotoUrl']}', width: 200, height: 200),
-                    if (widget.donationData['itemPhotoUrl'] == "No photo uploaded.") 
-                      Text('No photo uploaded.', style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic)),
-                  ],
-                ),
-              ),
             ],
           ),
         )
