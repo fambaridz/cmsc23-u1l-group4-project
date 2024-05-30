@@ -178,7 +178,6 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
                                             ],
                                           ),
                                         );
-                                        // print(donation);
                                       });
                                     },
                                     child: Text(
@@ -219,49 +218,54 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
                                 child: IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      print(orgDonationDrives);
                                       showDialog<String>(
                                         context: context,
                                         builder: (BuildContext context) =>
                                             AlertDialog(
                                           title: const Text(
                                               'Send Donation to a Donation Drive'),
-                                          content: SingleChildScrollView(child: Container(
-                                            height: 300,
-                                            width: 300,
-                                            child: Center(
-                                              child: orgDonationDrives.isNotEmpty ? ListView(
-                                                children: orgDonationDrives
-                                                    .map((donationDrive) =>
-                                                        ListTile(
-                                                          title: Text(
-                                                              donationDrive[
-                                                                  'name']),
-                                                          subtitle: Text(
-                                                              donationDrive[
-                                                                  'status'] ? "Open" : "Closed"),
-                                                          trailing: TextButton(
-                                                            onPressed: () {
-                                                              sendDonationToDonationDrive(
-                                                                  donation[
-                                                                      'id'],
-                                                                  donationDrive[
-                                                                      'id']);
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text(
-                                                              "Send",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .green),
-                                                            ),
-                                                          ),
-                                                        ))
-                                                    .toList(),
-                                              ): Text("No donation drives available at the moment."),
+                                          content: SingleChildScrollView(
+                                            child: Container(
+                                              height: 300,
+                                              width: 300,
+                                              child: Center(
+                                                child: orgDonationDrives
+                                                        .isNotEmpty
+                                                    ? ListView(
+                                                        children:
+                                                            orgDonationDrives
+                                                                .map(
+                                                                  (donationDrive) => donationDrive[
+                                                                          'status']
+                                                                      ? ListTile(
+                                                                          title:
+                                                                              Text(donationDrive['name']),
+                                                                          subtitle: Text(donationDrive['status']
+                                                                              ? "Open"
+                                                                              : "Closed"),
+                                                                          trailing:
+                                                                              TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              sendDonationToDonationDrive(donation['id'], donationDrive['id']);
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child:
+                                                                                Text(
+                                                                              "Send",
+                                                                              style: TextStyle(color: Colors.green),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      : Container(),
+                                                                )
+                                                                .toList(),
+                                                      )
+                                                    : Text(
+                                                        "No donation drives available at the moment."),
+                                              ),
                                             ),
-                                          ),),
+                                          ),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
@@ -272,7 +276,6 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
                                           ],
                                         ),
                                       );
-                                      // print(donation);
                                     });
                                   },
                                   icon: Icon(Icons.local_shipping),

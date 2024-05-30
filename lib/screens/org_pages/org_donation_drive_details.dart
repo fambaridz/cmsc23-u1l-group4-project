@@ -1,7 +1,9 @@
 import 'package:cmsc23_project/constants/donation_status_map.dart';
-import 'package:cmsc23_project/model/donation.dart';
-import 'package:cmsc23_project/model/organization.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
+import 'package:cmsc23_project/providers/donation_drive_provider.dart';
+import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrganizationDonationDriveDetails extends StatefulWidget {
   final Map<String, dynamic> donationDrive;
@@ -12,70 +14,57 @@ class OrganizationDonationDriveDetails extends StatefulWidget {
 }
 
 class _OrganizationDonationDriveDetailsPageState extends State<OrganizationDonationDriveDetails> {
+  List<Map<String, dynamic>> donationList = [];
+  Map<String, String> donorMap = {};
+  
+  @override
+  void initState() {
+    super.initState();
+    getDonations();
+    getUnsortedDonationDonors();
+  }
 
-  final Organization organization = Organization(
-      id: "1",
-      name: "Organization Name",
-      aboutUs: "We are organization. We do organization things. Please donate",
-      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', photoUrl: '', isVerified: false);
+  Future<void> getDonations() async {
+    List<String>? donationIds = await context.read<DonationDriveProvider>().getDonationsByDonationDriveId(widget.donationDrive['id']);
+    if (donationIds != null) {
+      for (var id in donationIds) {
+        Map<String, dynamic>? donation = await context.read<DonationListProvider>().getDonation(id);
+        if (donation != null) {
+          donationList.add(donation);
+        }
+      }
+      setState(() {});
+      // donationList = donationIds.map((id) => {  }).toList();
+    }
+  }
 
-  final List<Donation> donationList = [
-    Donation(
-        id: "1",
-        donorId: "Juan Dela Cruz",
-        category: "Clothes",
-        weight: '5 lbs',
-        address: "1234 Donations St.",
-        contactNum: "09123456789",
-        pickUpDateTime: "2022-12-31 23:59:59",
-        dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhotoUrl: "photo.jpg",
-        status: 1, pickupOrDropoff: '', orgId: ''),
-    Donation(
-        id: "2",
-        donorId: "Pedro Penduko",
-        category: "Books",
-        weight: '10 kg',
-        address: "5678 Donations St.",
-        contactNum: "09876543210",
-        pickUpDateTime: "2022-12-31 23:59:59",
-        dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhotoUrl: "photo.jpg",
-        status: 2, pickupOrDropoff: '', orgId: ''),
-    Donation(
-        id: "3",
-        donorId: "Maria Makiling",
-        category: "Food",
-        weight: '15 kg',
-        address: "91011 Donations St.",
-        contactNum: "09123456789",
-        pickUpDateTime: "2022-12-31 23:59:59",
-        dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhotoUrl: "photo.jpg",
-        status: 3, pickupOrDropoff: '', orgId: ''),
-    Donation(
-        id: "4",
-        donorId: "Juan Tamad",
-        category: "Toys",
-        weight: '20 lbs',
-        address: "121314 Donations St.",
-        contactNum: "09876543210",
-        pickUpDateTime: "2022-12-31 23:59:59",
-        dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhotoUrl: "photo.jpg",
-        status: 4, pickupOrDropoff: '', orgId: ''),
-    Donation(
-        id: "5",
-        donorId: "Pedro Penduko",
-        category: "Clothes",
-        weight: '25 lbs',
-        address: "151617 Donations St.",
-        contactNum: "09123456789",
-        pickUpDateTime: "2022-12-31 23:59:59",
-        dropOffDateTime: "2023-01-01 00:00:00",
-        itemPhotoUrl: "photo.jpg",
-        status: 5, pickupOrDropoff: '', orgId: ''),
-  ];
+  editDonationStatus(String donationId, int status) async {
+    await context.read<DonationListProvider>().editDonation(donationId, status);
+    getDonations();
+  }
+
+  Future<void> deleteDonationDrive() async {
+    await context.read<DonationDriveProvider>().deleteDonationDrive(widget.donationDrive['id']);
+  }
+
+  Future<void> editDonationDriveStatus() async {
+    await context.read<DonationDriveProvider>().editDonationDrive(widget.donationDrive['id'], false);
+  }
+
+  Future<void> getUnsortedDonationDonors() async {
+    List<Map<String, dynamic>>? donorList =
+          await context.read<UserAuthProvider>().getDonors();
+
+      if (donorList != null) {
+        setState(() {
+          donorMap = {};
+          for (var donor in donorList) {
+            donorMap[donor['id']] = donor['name'];
+          }
+        });
+      }
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,25 +101,28 @@ class _OrganizationDonationDriveDetailsPageState extends State<OrganizationDonat
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
+                widget.donationDrive['status'] ? ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) {
-                    //   return DonationDriveForm(organization);
-                    // }));
-                    setState(() {});
+                    
+                    setState(() {
+                      editDonationDriveStatus();
+                      Navigator.pop(context);
+                    });
                   },
-                  child: Text("Edit", style: TextStyle(color: Colors.white)),
+                  child: Text("Close", style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightBlue[200],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                ),
+                ) : Container(),
                 ElevatedButton(
                   onPressed: () {
-                    // Navigator.pop(context, {"remove": details.id});
+                    setState(() {
+                      deleteDonationDrive();
+                      Navigator.pop(context);
+                    });
                   },
                   child: Text("Remove", style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
@@ -157,72 +149,110 @@ class _OrganizationDonationDriveDetailsPageState extends State<OrganizationDonat
           SizedBox(height: 20),
           Expanded(
             child: donationList.isEmpty
-                ? const Text("No donations available")
-                : ListView(
-                    padding: const EdgeInsets.all(10),
-                    children: donationList
-                        .map((donation) => GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, "/org-home/donation/details",
-                                    arguments: {"details": donation});
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey[100],
-                                ),
-                                margin: EdgeInsets.all(3),
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.all(20),
-                                  leading: FractionallySizedBox(
-                                    heightFactor: 1,
-                                    widthFactor: 0.32,
-                                    child: TextButton(
-                                        onPressed: () {
-                                          donation.status = donation.status == 5
-                                              ? 1
-                                              : donation.status + 1;
-                                          setState(() {});
-                                        },
-                                        child: Text(
-                                          statusMap[donation.status]!["text"]
-                                              .toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            // shadows: [
-                                            //   Shadow(
-                                            //     color: Colors.grey,
-                                            //     offset: Offset(0.8, 0.8),
-                                            //   ),
-                                            // ],
+            ? const Text(
+                textAlign: TextAlign.center,
+                "No donations are available at the moment. Please check back later.",
+              )
+            : ListView(
+                padding: const EdgeInsets.all(10),
+                children: donationList
+                    .map((donation) => GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, "/org-home/donation/details",
+                                arguments: donation);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            margin: EdgeInsets.all(10),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(30),
+                              leading: FractionallySizedBox(
+                                heightFactor: 1,
+                                widthFactor: 0.3,
+                                child: TextButton(
+                                    onPressed: () {
+                                      if (donation['status'] >= 4) {
+                                        return;
+                                      }
+                                      setState(() {
+                                        showDialog<String>(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Donation Status Change Confirmation'),
+                                            content: const Text(
+                                                'Are you sure you want to change the status of this donation?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  if (donation['status'] == 2 &&
+                                                      donation[
+                                                              'pickupOrDropoff'] ==
+                                                          "Drop-off") {
+                                                    //qr code
+                                                    donation['status'] = 3;
+                                                  }
+                                                  editDonationStatus(
+                                                      donation['id'],
+                                                      ++donation['status']);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Yes'),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: statusMap[donation
-                                              .status]!["color"] as Color,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(11),
-                                          ),
-                                        )),
-                                  ),
-                                  title: Text(
-                                    donation.donorId,
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
+                                        );
+                                      });
+                                    },
+                                    child: Text(
+                                      statusMap[donation['status']]!["text"]
+                                          .toString(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: statusMap[
+                                              donation['status']]!["color"]
+                                          as Color,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(11),
+                                      ),
+                                    )),
+                              ),
+                              title: Text(
+                                donation['category'],
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ))
-                        .toList(),
-                  ),
-          )
+                              subtitle: Text(
+                                "${donorMap[donation['donorId']] ?? "Unknown"}\n${donation['pickupOrDropoff']}",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ))
+                    .toList(),
+              ),
+      ),
         ],
       )),
     );

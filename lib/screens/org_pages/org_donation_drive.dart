@@ -28,10 +28,11 @@ class _OrganizationDonationDrivePageState extends State<OrganizationDonationDriv
     user = context.read<UserAuthProvider>().user;
     if (user != null) {
       final orgDonationDrives = await context.read<DonationDriveProvider>().getAllDonationDrivesByOrg(user!.uid);
-      if (orgDonationDrives != null)
-      setState(() {
+      if (orgDonationDrives != null) {
+        setState(() {
         donationDriveList = orgDonationDrives;
       });
+      }
     }
   }
 
