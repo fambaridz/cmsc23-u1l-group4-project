@@ -18,7 +18,10 @@ class FirebaseDonationDriveAPI {
   }
 
   Stream<QuerySnapshot> getAllDonationDrivesByOrg(String orgId) {
-    return db.collection("donationDrives").where("orgId", isEqualTo: orgId).snapshots();
+    return db
+        .collection("donationDrives")
+        .where("orgId", isEqualTo: orgId)
+        .snapshots();
   }
 
   DocumentReference<Map<String, dynamic>> getDonationDrive(String id) {
@@ -33,6 +36,21 @@ class FirebaseDonationDriveAPI {
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
+  }
+
+  Future<List<Map<String, dynamic>>> getDonationDriveByOrgId(
+      String orgId) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db
+        .collection("donationDrives")
+        .where("orgId", isEqualTo: orgId)
+        .get();
+
+    List<Map<String, dynamic>> donationDrives = [];
+    for (var doc in querySnapshot.docs) {
+      donationDrives.add(doc.data());
+    }
+
+    return donationDrives;
   }
 
   // Future<String> editDonationDrive(String id, String status) async {
