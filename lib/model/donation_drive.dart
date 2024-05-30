@@ -33,7 +33,6 @@ class DonationDrive {
 
   Map<String, dynamic> toJson(DonationDrive donationDrive) {
     return {
-      'id': donationDrive.id,
       'name': donationDrive.name,
       'status': donationDrive.status,
       'orgId': donationDrive.orgId,

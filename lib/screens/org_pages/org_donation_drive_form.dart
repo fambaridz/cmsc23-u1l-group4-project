@@ -57,13 +57,9 @@ class _DonationDriveFormState extends State<DonationDriveForm> {
           const SizedBox(height: 40),
           ElevatedButton(
             onPressed: () async {
-              // Add donation drive
-              print('Name: $name');
-              print('Status: $status');
-              print('Org ID: ${widget.userData['id']}');
               final donationDrive = DonationDrive(
                 name: name,
-                status: status!,
+                status: status,
                 orgId: widget.userData['id'],
                 donationList: {});
               
