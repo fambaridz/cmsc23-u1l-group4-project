@@ -5,7 +5,7 @@ class DonationDrive {
   String name;
   bool status;
   String orgId;
-  Map<String, dynamic>? donationList;
+  Map<int, String>? donationList;
 
   DonationDrive(
       {this.id,
@@ -22,13 +22,15 @@ class DonationDrive {
       name: json['name'],
       status: json['status'],
       orgId: json['orgId'],
-      donationList: Map<String, dynamic>.from(json['donationList']),
+      donationList: Map<int, String>.from(json['donationList']),
     );
   }
 
   static List<DonationDrive> fromJsonArray(String jsonData) {
     final Iterable<dynamic> data = jsonDecode(jsonData);
-    return data.map<DonationDrive>((dynamic d) => DonationDrive.fromJson(d)).toList();
+    return data
+        .map<DonationDrive>((dynamic d) => DonationDrive.fromJson(d))
+        .toList();
   }
 
   Map<String, dynamic> toJson(DonationDrive donationDrive) {

@@ -1,6 +1,7 @@
 import 'package:cmsc23_project/GlobalContextService.dart';
 import 'package:cmsc23_project/model/donation_drive.dart';
 import 'package:cmsc23_project/providers/donation_drive_provider.dart';
+import 'package:cmsc23_project/providers/donation_drive_provider.dart';
 import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:cmsc23_project/screens/donor_pages/donor_donation_list.dart';
 import 'package:cmsc23_project/screens/org_pages/org_donation_drive_details.dart';
@@ -12,6 +13,7 @@ import '../model/organization.dart';
 import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'screens/admin_pages/admin_approval_details.dart';
 import 'screens/admin_pages/admin_donation_details.dart';
+import 'screens/admin_pages/admin_donation_drive_details.dart';
 import 'screens/admin_pages/admin_donor_details.dart';
 import 'screens/admin_pages/admin_home.dart';
 import 'screens/donor_pages/donor_donation.dart';
@@ -96,6 +98,9 @@ class MyApp extends StatelessWidget {
                 as Map<String, dynamic>),
         "/admin/organization-info": (context) => AdminOrgDetailsPage(
             orgData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/donationdrive-info": (context) => AdminDonationDriveDetailsPage(
+            donationDriveData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         "/admin/donation-info": (context) => AdminDonationDetailsPage(
             donationData: ModalRoute.of(context)!.settings.arguments

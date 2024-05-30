@@ -40,6 +40,21 @@ class FirebaseDonationDriveAPI {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getDonationDriveByOrgId(
+      String orgId) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db
+        .collection("donationDrives")
+        .where("orgId", isEqualTo: orgId)
+        .get();
+
+    List<Map<String, dynamic>> donationDrives = [];
+    for (var doc in querySnapshot.docs) {
+      donationDrives.add(doc.data());
+    }
+
+    return donationDrives;
+  }
+
   // Future<String> editDonationDrive(String id, String status) async {
   //   try {
   //     await db.collection("users").doc(id).update({"status": status});
