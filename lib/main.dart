@@ -1,6 +1,7 @@
 import 'package:cmsc23_project/GlobalContextService.dart';
 import 'package:cmsc23_project/model/donation_drive.dart';
 import 'package:cmsc23_project/providers/donation_drive_provider.dart';
+import 'package:cmsc23_project/providers/donation_drive_provider.dart';
 import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:cmsc23_project/screens/donor_pages/donor_donation_list.dart';
 import 'package:cmsc23_project/screens/org_pages/org_donation_drive_details.dart';
@@ -45,10 +46,9 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        // ChangeNotifierProvider(create: ((context) => TodoListProvider())),
         ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
         ChangeNotifierProvider(create: ((context) => DonationListProvider())),
-        ChangeNotifierProvider(create: ((context) => DonationDriveProvider()))
+        ChangeNotifierProvider(create: ((context) => DonationDriveProvider())),
       ],
       child: MyApp(),
     ),
@@ -132,20 +132,21 @@ class MyApp extends StatelessWidget {
         // organization routes
         "/org-home": (context) => OrganizationHomePage(),
         "/org-home/donation/details": (context) => OrganizationDonationDetails(
-            ModalRoute.of(context)!.settings.arguments
-                as Map<String, Donation>),
-        "/org-home/profile": (context) => OrganizationDetails(
-            userData: ModalRoute.of(context)!.settings.arguments
+            donationData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
-        "/org-home/donation-drive": (context) => OrganizationDonationDrivePage(
-            userData: ModalRoute.of(context)!.settings.arguments
+        "/org-home/profile": (context) => OrganizationDetails(userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
-        "/org-home/donation-drive/details": (context) =>
-            OrganizationDonationDriveDetails(ModalRoute.of(context)!
-                .settings
-                .arguments as Map<String, DonationDrive>),
+        "/org-home/donation-drive": (context) =>
+             OrganizationDonationDrivePage(
+                userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>
+            ),
+        "/org-home/donation-drive/details": (context) => OrganizationDonationDriveDetails(
+            donationDrive: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
         "/org-home/donation-drive/add": (context) => DonationDriveForm(
-            ModalRoute.of(context)!.settings.arguments as Organization),
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
       },
     );
   }

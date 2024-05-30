@@ -12,7 +12,7 @@ class DonationDrive {
       required this.name,
       required this.status,
       required this.orgId,
-      required this.donationList});
+      this.donationList});
 
   get organization => null;
 
@@ -35,7 +35,6 @@ class DonationDrive {
 
   Map<String, dynamic> toJson(DonationDrive donationDrive) {
     return {
-      'id': donationDrive.id,
       'name': donationDrive.name,
       'status': donationDrive.status,
       'orgId': donationDrive.orgId,

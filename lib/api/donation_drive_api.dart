@@ -6,7 +6,6 @@ class FirebaseDonationDriveAPI {
   Future<String> addDonationDrive(Map<String, dynamic> donationDrive) async {
     try {
       await db.collection("donationDrives").add(donationDrive);
-
       return "Successfully added!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
@@ -17,11 +16,14 @@ class FirebaseDonationDriveAPI {
     return db.collection("donationDrives").snapshots();
   }
 
-  Stream<QuerySnapshot> getAllDonationDrivesByOrg(String orgId) {
-    return db
-        .collection("donationDrives")
-        .where("orgId", isEqualTo: orgId)
-        .snapshots();
+  Future<List<Map<String, dynamic>>> getAllDonationDrivesByOrg(String orgId) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donationDrives").where('orgId', isEqualTo: orgId).get();
+    List<Map<String, dynamic>> donationDrives = [];
+    for (var doc in querySnapshot.docs) {
+      var donationDrive = doc.data();
+      donationDrives.add(donationDrive);
+    }
+    return donationDrives;
   }
 
   DocumentReference<Map<String, dynamic>> getDonationDrive(String id) {

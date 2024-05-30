@@ -39,9 +39,14 @@ class DonationDriveProvider with ChangeNotifier {
   //   return message;
   // }
 
-  Future<String> deleteDonationDrive(DonationDrive donationDrive) async {
-    String message =
-        await firebaseService.deleteDonationDrive(donationDrive.id!);
+  Future<String> deleteDonationDrive(DonationDrive donationDrive) async{
+    String message = await firebaseService.deleteDonationDrive(donationDrive.id!);
+    notifyListeners();
+    return message;
+  }
+
+  Future<List<Map<String, dynamic>?>> getAllDonationDrivesByOrg(String orgId) async{
+    List<Map<String, dynamic>?> message = await firebaseService.getAllDonationDrivesByOrg(orgId);
     notifyListeners();
     return message;
   }
