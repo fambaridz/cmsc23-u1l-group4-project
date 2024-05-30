@@ -19,7 +19,7 @@ class DonorOrgDetailsPage extends StatelessWidget {
         title: const Text("Organization"),
       ),
       body: Center(
-          child: Column(
+        child: Column(
         children: [
           Container(
               constraints: const BoxConstraints(minHeight: 150, maxHeight: 200),
