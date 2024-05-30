@@ -160,6 +160,7 @@ class FirebaseDonationAPI {
     List<Map<String, dynamic>> donations = [];
     for (var doc in querySnapshot.docs) {
       var donationData = doc.data();
+      donationData['id'] = doc.id;
       if (donationData['donationDriveId'] == "") {
         donations.add(donationData);
       }
