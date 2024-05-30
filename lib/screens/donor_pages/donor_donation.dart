@@ -789,7 +789,8 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 contactNum: _contactNo,
                 pickUpDateTime: _dateAndTime,
                 itemPhotoUrl: "",
-                status: 1
+                status: 1,
+                donationDriveId: "",
               );
 
               String? message = await GlobalContextService.navigatorKey.currentContext!
@@ -851,7 +852,8 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 contactNum: _contactNo,
                 pickUpDateTime: _dateAndTime,
                 itemPhotoUrl: "No photo uploaded.",
-                status: 1
+                status: 1,
+                donationDriveId: "",
               );
 
               String? message = await GlobalContextService.navigatorKey.currentContext!
@@ -913,7 +915,8 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 contactNum: 'Not applicable.',
                 dropOffDateTime: _dateAndTime,
                 itemPhotoUrl: "",
-                status: 1
+                status: 1,
+                donationDriveId: "",
               );
 
               String? message = await GlobalContextService.navigatorKey.currentContext!
@@ -982,7 +985,8 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
                 contactNum: 'Not applicable.',
                 dropOffDateTime: _dateAndTime,
                 itemPhotoUrl: "No photo uploaded.",
-                status: 1
+                status: 1,
+                donationDriveId: "",
               );
 
               String? message = await GlobalContextService.navigatorKey.currentContext!

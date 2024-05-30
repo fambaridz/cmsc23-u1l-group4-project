@@ -13,6 +13,7 @@ class Donation {
   String? dropOffDateTime;
   String? itemPhotoUrl;
   int status;
+  String? donationDriveId;
 
   Donation(
     { 
@@ -27,24 +28,27 @@ class Donation {
       this.pickUpDateTime,
       this.dropOffDateTime,
       this.itemPhotoUrl,
-      required this.status
+      required this.status,
+      this.donationDriveId
     }
   );
 
   factory Donation.fromJson(Map<String, dynamic> json) {
     return Donation(
-        id: json['id'],
-        donorId: json['donorId'],
-        orgId: json['orgId'],
-        category: json['category'],
-        pickupOrDropoff: json['pickupOrDropoff'],
-        weight: json['weight'],
-        address: json['address'],
-        contactNum: json['contactNum'],
-        pickUpDateTime: json['pickUpDateTime'],
-        dropOffDateTime: json['dropOffDateTime'],
-        itemPhotoUrl: json['itemPhotoUrl'],
-        status: json['status']);
+      id: json['id'],
+      donorId: json['donorId'],
+      orgId: json['orgId'],
+      category: json['category'],
+      pickupOrDropoff: json['pickupOrDropoff'],
+      weight: json['weight'],
+      address: json['address'],
+      contactNum: json['contactNum'],
+      pickUpDateTime: json['pickUpDateTime'],
+      dropOffDateTime: json['dropOffDateTime'],
+      itemPhotoUrl: json['itemPhotoUrl'],
+      status: json['status'],
+      donationDriveId: json['donationDriveId']
+    );
   }
 
   static List<Donation> fromJsonArray(String jsonData) {
@@ -64,7 +68,8 @@ class Donation {
       'pickUpDateTime': donation.pickUpDateTime,
       'dropOffDateTime': donation.dropOffDateTime,
       'itemPhotoUrl': donation.itemPhotoUrl,
-      'status': donation.status
+      'status': donation.status,
+      'donationDriveId': donation.donationDriveId
     };
   }
 }
