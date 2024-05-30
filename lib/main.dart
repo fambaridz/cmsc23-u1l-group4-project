@@ -111,9 +111,11 @@ class MyApp extends StatelessWidget {
         "/donor-profile": (context) => DonorProfile(
             userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
-        "/donor-org-details": (context) => DonorOrgDetailsPage(),
+        "/donor-org-details": (context) => DonorOrgDetailsPage(
+            orgData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
         "/donor-donation": (context) => DonorDonationPage(
-            userData: ModalRoute.of(context)!.settings.arguments
+            args: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         "/donor-donations": (context) => DonorDonationList(
             userData: ModalRoute.of(context)!.settings.arguments

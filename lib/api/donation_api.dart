@@ -19,6 +19,7 @@ class FirebaseDonationAPI {
       DocumentReference docRef = await db.collection("donations").add(
         {
           "donorId": donation["donorId"],
+          "orgId": donation["orgId"],
           "category": donation["category"],
           "pickupOrDropoff": donation["pickupOrDropoff"],
           "weight": donation["weight"],

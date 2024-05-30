@@ -11,14 +11,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cmsc23_project/providers/auth_provider.dart';
 
 class DonorDonationPage extends StatefulWidget {
-  final Map<String, dynamic> userData;
-  const DonorDonationPage({super.key, required this.userData});
+  final Map<String, dynamic> args;
+
+  const DonorDonationPage({super.key, required this.args});
 
   @override
   State<DonorDonationPage> createState() => _DonorDonationPageState();
 }
 
 class _DonorDonationPageState extends State<DonorDonationPage> {
+
+  late final dynamic userData;
+  late final dynamic organization;
+
+  @override
+  void initState() {
+    super.initState();
+    userData = widget.args['userData'];
+    organization = widget.args['organization'];
+    donorAddresses = userData['addresses'].map<String, String>((key, value) => MapEntry(key.toString(), value.toString()));
+
+  }
 
   User? user;
   final _formKey = GlobalKey<FormState>();
@@ -48,17 +61,13 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
   String? _selectedAddressKey;
   bool _showExistingAddresses = true;
   Map<String, String> donorAddresses = {};
+  bool _isAddressFieldEnabled = true;
+
 
   @override
   void dispose() {
     _addressController.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    donorAddresses = widget.userData['addresses'].map<String, String>((key, value) => MapEntry(key.toString(), value.toString()));
   }
 
   @override
@@ -406,12 +415,22 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
             if (text == null || text.isEmpty) {
               return "Please enter date and time.";
             }
+
+            // Regular expression to validate the date and time format
+            final dateTimeRegExp = RegExp(
+              r'^(0[1-9]|1[0-2])/([0-2][0-9]|3[0-1])/(\d{4}) ([01][0-9]|2[0-3]):([0-5][0-9])$',
+            );
+
+            if (!dateTimeRegExp.hasMatch(text)) {
+              return "Please enter a value in MM/DD/YYYY HH:MM format.";
+            }
+
             return null;
           },
           keyboardType: TextInputType.datetime,
         ),
-      )
-    ])
+      ),
+    ]),
   );
 
   Widget addressSection(Map<String, String> donorAddresses) => Padding(
@@ -548,153 +567,159 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
 
   Widget get addNewAddressField => Padding(
     padding: const EdgeInsets.only(bottom: 10),
-    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 20, bottom: 5.0),
-        child: TextFormField(
-          controller: _labelController,
-          decoration: const InputDecoration(
-            labelText: 'Label',
-            hintText: 'Home, Office, School',
-            border: OutlineInputBorder(),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 20, bottom: 5.0),
+          child: TextFormField(
+            controller: _labelController,
+            decoration: const InputDecoration(
+              labelText: 'Label',
+              hintText: 'Home, Office, School',
+              border: OutlineInputBorder(),
+            ),
+            validator: (value) {
+              if (_addresses.isEmpty && value!.isEmpty) {
+                return "Please enter a label for your address.";
+              } else {
+                return null;
+              }
+            },
+            enabled: _isAddressFieldEnabled,
           ),
-          validator: (value) {
-            if (_addresses.isEmpty) {
-              return "Please enter a label for your address.";
-            } else {
-              return null;
-            }
-          },
         ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-        child: TextFormField(
-          controller: _addressController,
-          decoration: const InputDecoration(
-            labelText: 'Address',
-            hintText: 'Street, Barangay, City, Province',
-            border: OutlineInputBorder(),
+        Padding(
+          padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+          child: TextFormField(
+            controller: _addressController,
+            decoration: const InputDecoration(
+              labelText: 'Address',
+              hintText: 'Street, Barangay, City, Province',
+              border: OutlineInputBorder(),
+            ),
+            validator: (value) {
+              if (_addresses.isEmpty && value!.isEmpty) {
+                return "Please enter an address.";
+              } else {
+                return null;
+              }
+            },
+            enabled: _isAddressFieldEnabled,
           ),
-          validator: (value) {
-            if (_addresses.isEmpty) {
-              return "Please enter an address.";
-            } else {
-              return null;
-            }
-          },
         ),
-      ),
-      Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Check if both label and address are filled up
-            if (_labelController.text.isNotEmpty && _addressController.text.isNotEmpty) {
-              _addresses[_labelController.text] = _addressController.text;
-              _address = _addressController.text;
-              // Update donorAddresses with new address
-              _addresses.forEach((key, value) {
-                donorAddresses[key] = value;
-              });
-
-              setState(() {});
-              _labelController.clear();
-              _addressController.clear();
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.lightBlue[400],
-                  content: Text(
-                    'Please fill up both fields.',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                  ),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            }
-          },
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue[200]),
-          child: const Text(
-            'Add Address',
-            style: TextStyle(
-              fontSize: 15.0, 
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+        Center(
+          child: ElevatedButton(
+            onPressed: _isAddressFieldEnabled
+                ? () {
+                    if (_labelController.text.isNotEmpty &&
+                        _addressController.text.isNotEmpty) {
+                      setState(() {
+                        _addresses[_labelController.text] = _addressController.text;
+                        _isAddressFieldEnabled = _addresses.isEmpty;
+                      });
+                      _labelController.clear();
+                      _addressController.clear();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.lightBlue[400],
+                          content: Text(
+                            'Please fill up both fields.',
+                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                          ),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  }
+                : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.lightBlue[200],
+            ),
+            child: const Text(
+              'Add Address',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
-        )
-      ),
-      const SizedBox(height: 15),
-      const Text(
-        "Address/es",
-        style: TextStyle(
-          fontSize: 15.0,
-          fontWeight: FontWeight.bold,
         ),
-      ),
-      Container(
-        height: 200,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
+        const SizedBox(height: 15),
+        const Text(
+          "Address/es",
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _addresses.length,
-          itemBuilder: (context, index) {
-            var label = _addresses.keys.toList();
-            var address = _addresses.values.toList();
-            return Padding(
-              padding: const EdgeInsets.all(7),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _addresses.remove(label[index]);
-                      });
-                    },
-                    icon: Icon(
-                      Icons.delete,
-                      size: 25,
-                      color: Colors.red,
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: _addresses.length,
+            itemBuilder: (context, index) {
+              var label = _addresses.keys.toList();
+              var address = _addresses.values.toList();
+              return Padding(
+                padding: const EdgeInsets.all(7),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _addresses.remove(label[index]);
+                          _isAddressFieldEnabled = _addresses.isEmpty;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        size: 25,
+                        color: Colors.red,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "${label[index]}: ",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "${label[index]}: ",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                            TextSpan(
-                              text: "${address[index]}",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.black54,
+                              TextSpan(
+                                text: "${address[index]}",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black54,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
-        )
-      ),
-    ])
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    ),
   );
 
   Widget get contact => Padding(
@@ -754,6 +779,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               // Donation for pickup
               newDonation = Donation(
                 donorId: user!.uid,
+                orgId: organization['id'],
                 category: _selectedCategory,
                 pickupOrDropoff: _pickupOrDropoff,
                 weight: _itemWeight == null
@@ -815,6 +841,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               // Donation for pickup
               newDonation = Donation(
                 donorId: user!.uid,
+                orgId: organization['id'],
                 category: _selectedCategory,
                 pickupOrDropoff: _pickupOrDropoff,
                 weight: _itemWeight == null
@@ -876,6 +903,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               // Donation for drop-off
               newDonation = Donation(
                 donorId: user!.uid,
+                orgId: organization['id'],
                 category: _selectedCategory,
                 pickupOrDropoff: _pickupOrDropoff,
                 weight: _itemWeight == null
@@ -944,6 +972,7 @@ class _DonorDonationPageState extends State<DonorDonationPage> {
               // Donation for drop-off
               newDonation = Donation(
                 donorId: user!.uid,
+                orgId: organization['id'],
                 category: _selectedCategory,
                 pickupOrDropoff: _pickupOrDropoff,
                 weight: _itemWeight == null

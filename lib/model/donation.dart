@@ -3,6 +3,7 @@ import 'dart:convert';
 class Donation {
   String? id;
   String donorId;
+  String orgId;
   String? category;
   String pickupOrDropoff;
   String weight;
@@ -17,6 +18,7 @@ class Donation {
     { 
       this.id,
       required this.donorId,
+      required this.orgId,
       required this.category,
       required this.pickupOrDropoff,
       required this.weight,
@@ -33,6 +35,7 @@ class Donation {
     return Donation(
         id: json['id'],
         donorId: json['donorId'],
+        orgId: json['orgId'],
         category: json['category'],
         pickupOrDropoff: json['pickupOrDropoff'],
         weight: json['weight'],
@@ -52,6 +55,7 @@ class Donation {
   Map<String, dynamic> toJson(Donation donation) {
     return {
       'donorId': donation.donorId,
+      'orgId': donation.orgId,
       'category': donation.category,
       'pickupOrDropoff': donation.pickupOrDropoff,
       'weight': donation.weight,
