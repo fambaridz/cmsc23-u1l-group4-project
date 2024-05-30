@@ -36,7 +36,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhotoUrl: "photo.jpg",
-        status: 1, pickupOrDropoff: ''),
+        status: 1, pickupOrDropoff: '', orgId: ''),
     Donation(
         id: "2",
         donorId: "Pedro Penduko",
@@ -47,7 +47,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhotoUrl: "photo.jpg",
-        status: 2, pickupOrDropoff: ''),
+        status: 2, pickupOrDropoff: '', orgId: ''),
     Donation(
         id: "3",
         donorId: "Maria Makiling",
@@ -58,7 +58,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhotoUrl: "photo.jpg",
-        status: 3, pickupOrDropoff: ''),
+        status: 3, pickupOrDropoff: '', orgId: ''),
     Donation(
         id: "4",
         donorId: "Juan Tamad",
@@ -69,7 +69,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhotoUrl: "photo.jpg",
-        status: 4, pickupOrDropoff: ''),
+        status: 4, pickupOrDropoff: '', orgId: ''),
     Donation(
         id: "5",
         donorId: "Pedro Penduko",
@@ -80,7 +80,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         pickUpDateTime: "2022-12-31 23:59:59",
         dropOffDateTime: "2023-01-01 00:00:00",
         itemPhotoUrl: "photo.jpg",
-        status: 5, pickupOrDropoff: ''),
+        status: 5, pickupOrDropoff: '', orgId: ''),
   ];
 
   @override
