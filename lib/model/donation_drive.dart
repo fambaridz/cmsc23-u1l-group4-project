@@ -5,7 +5,7 @@ class DonationDrive {
   String name;
   bool status;
   String orgId;
-  Map<int, String> donationList;
+  Map<int, String>? donationList;
 
   DonationDrive(
       {this.id,
