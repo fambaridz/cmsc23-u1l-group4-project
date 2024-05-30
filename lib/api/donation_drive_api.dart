@@ -21,8 +21,10 @@ class FirebaseDonationDriveAPI {
     List<Map<String, dynamic>> donationDrives = [];
     for (var doc in querySnapshot.docs) {
       var donationDrive = doc.data();
+      donationDrive['id'] = doc.id;
       donationDrives.add(donationDrive);
     }
+    print(donationDrives);
     return donationDrives;
   }
 
@@ -63,4 +65,17 @@ class FirebaseDonationDriveAPI {
   //     return "Error in ${e.code}: ${e.message}";
   //   }
   // }
+
+  Future<String> receiveDonation(String id, String donationId) async {
+    try {
+      final docSnapshot = await db.collection("donationDrives").doc(id).get();
+      final donationList = docSnapshot.data()!['donationList'];
+      donationList.add(donationId);
+
+      await db.collection("donationDrives").doc(id).update({"donationList": donationList});
+      return "Successfully edited!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
 }

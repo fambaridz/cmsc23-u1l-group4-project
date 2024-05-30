@@ -45,8 +45,14 @@ class DonationDriveProvider with ChangeNotifier {
     return message;
   }
 
-  Future<List<Map<String, dynamic>?>> getAllDonationDrivesByOrg(String orgId) async{
-    List<Map<String, dynamic>?> message = await firebaseService.getAllDonationDrivesByOrg(orgId);
+  Future<List<Map<String, dynamic>>?> getAllDonationDrivesByOrg(String orgId) async{
+    List<Map<String, dynamic>> message = await firebaseService.getAllDonationDrivesByOrg(orgId);
+    notifyListeners();
+    return message;
+  }
+
+  Future<String> receiveDonation(String id, String donationId) async{
+    String message = await firebaseService.receiveDonation(id, donationId);
     notifyListeners();
     return message;
   }

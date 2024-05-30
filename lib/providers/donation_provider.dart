@@ -82,4 +82,10 @@ class DonationListProvider with ChangeNotifier {
     notifyListeners();
     return message;
   }
+
+  Future<String?> sendDonationToDonationDrive(String donationId, String donationDriveId) async {
+    String? message = await firebaseService.sendDonationToDonationDrive(donationId, donationDriveId);
+    notifyListeners();
+    return message;
+  }
 }
