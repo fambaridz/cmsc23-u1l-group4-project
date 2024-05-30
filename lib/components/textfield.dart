@@ -11,15 +11,13 @@ class TextFieldSample extends StatefulWidget {
 }
 
 class TextFieldSampleState extends State<TextFieldSample> {
-
-
   @override
   Widget build(BuildContext context) {
     final _controller = TextEditingController();
 
     final label = widget.label;
     final hint = widget.hint;
-    
+
     return Container(
       margin: EdgeInsets.all(20),
       child: Column(
@@ -30,7 +28,9 @@ class TextFieldSampleState extends State<TextFieldSample> {
             },
             validator: (val) {
               // we used the val parameter for checking instead of the value inside the variable
-              if (val == null || val.isEmpty) return "Enter a text";
+              if (val == null || val.isEmpty) {
+                return 'Please enter some text';
+              }
               return null;
             },
             controller: _controller,
@@ -39,11 +39,9 @@ class TextFieldSampleState extends State<TextFieldSample> {
               // we're not going to save the value of the text inside a separate variable anymore because we're going to pass it directly to the parent widget
               widget.callback(_controller.text);
             },
-                
+
             decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: label,
-                hintText: hint),
+                border: OutlineInputBorder(), labelText: label, hintText: hint),
           ),
         ],
       ),

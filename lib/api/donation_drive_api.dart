@@ -16,11 +16,16 @@ class FirebaseDonationDriveAPI {
     return db.collection("donationDrives").snapshots();
   }
 
-  Future<List<Map<String, dynamic>>> getAllDonationDrivesByOrg(String orgId) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donationDrives").where('orgId', isEqualTo: orgId).get();
+  Future<List<Map<String, dynamic>>> getAllDonationDrivesByOrg(
+      String orgId) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db
+        .collection("donationDrives")
+        .where('orgId', isEqualTo: orgId)
+        .get();
     List<Map<String, dynamic>> donationDrives = [];
     for (var doc in querySnapshot.docs) {
       var donationDrive = doc.data();
+      donationDrive['id'] = doc.id;
       donationDrives.add(donationDrive);
     }
     return donationDrives;
@@ -55,12 +60,39 @@ class FirebaseDonationDriveAPI {
     return donationDrives;
   }
 
-  // Future<String> editDonationDrive(String id, String status) async {
-  //   try {
-  //     await db.collection("users").doc(id).update({"status": status});
-  //     return "Successfully edited!";
-  //   } on FirebaseException catch (e) {
-  //     return "Error in ${e.code}: ${e.message}";
-  //   }
-  // }
+  Future<String> editDonationDrive(String id, bool status) async {
+    try {
+      await db.collection("donationDrives").doc(id).update({"status": status});
+      return "Successfully edited!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
+
+  Future<String> receiveDonation(String id, String donationId) async {
+    try {
+      final docSnapshot = await db.collection("donationDrives").doc(id).get();
+      final donationList = docSnapshot.data()!['donationList'];
+      donationList[(donationList.length).toString()] = donationId;
+      await db
+          .collection("donationDrives")
+          .doc(id)
+          .update({"donationList": donationList});
+      return "Successfully edited!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
+
+  Future<List<String>?> getDonationsByDonationDriveId(String id) async {
+    final docSnapshot = await db.collection("donationDrives").doc(id).get();
+    final donations = docSnapshot.data()!['donationList'];
+    List<String> donationList = [];
+
+    donations.entries.forEach((entry) {
+      donationList.add(entry.value);
+    });
+
+    return donationList;
+  }
 }

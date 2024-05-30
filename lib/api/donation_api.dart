@@ -175,4 +175,13 @@ class FirebaseDonationAPI {
     }
     return donations;
   }
+
+  Future<String> sendDonationToDonationDrive(String id, String donationDriveId) async {
+    try {
+      await db.collection("donations").doc(id).update({"donationDriveId": donationDriveId});
+      return "Successfully edited!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
 }

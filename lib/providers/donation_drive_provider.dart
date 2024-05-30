@@ -33,21 +33,38 @@ class DonationDriveProvider with ChangeNotifier {
     return message;
   }
 
-  // Future<String> editDonationDrive(DonationDrive donationDrive) async{
-  //   String message = await firebaseService.editDonationDrive(donationDrive.toJson(donationDrive));
-  //   notifyListeners();
-  //   return message;
-  // }
-
-  Future<String> deleteDonationDrive(DonationDrive donationDrive) async{
-    String message = await firebaseService.deleteDonationDrive(donationDrive.id!);
+  Future<String> editDonationDrive(String id, bool status) async{
+    String message = await firebaseService.editDonationDrive(id, status);
     notifyListeners();
     return message;
   }
 
-  Future<List<Map<String, dynamic>?>> getAllDonationDrivesByOrg(String orgId) async{
-    List<Map<String, dynamic>?> message = await firebaseService.getAllDonationDrivesByOrg(orgId);
+  Future<String> deleteDonationDrive(String donationDrive) async {
+    String message =
+        await firebaseService.deleteDonationDrive(donationDrive);
     notifyListeners();
     return message;
+  }
+
+  Future<List<Map<String, dynamic>>?> getAllDonationDrivesByOrg(
+      String orgId) async {
+    List<Map<String, dynamic>> message =
+        await firebaseService.getAllDonationDrivesByOrg(orgId);
+    notifyListeners();
+    return message;
+  }
+
+  Future<String> receiveDonation(String id, String donationId) async {
+    String message = await firebaseService.receiveDonation(id, donationId);
+    notifyListeners();
+    return message;
+  }
+
+  Future<List<String>?> getDonationsByDonationDriveId(
+      String id) async {
+    List<String>? donationList =
+        await firebaseService.getDonationsByDonationDriveId(id);
+    notifyListeners();
+    return donationList;
   }
 }
