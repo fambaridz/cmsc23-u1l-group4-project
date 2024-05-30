@@ -102,12 +102,20 @@ class FirebaseDonationAPI {
   // might delete this if remained unused
   Future<String> editDonation(String id, int status) async {
     try {
-      await db.collection("donations").doc(id).update({"status": status});
-      return "Successfully edited!";
+      final docSnapshot = await db.collection("donations").doc(id).get();
+      final currentStatus = docSnapshot.data()!['status'];
+
+      if (currentStatus == 4) {
+        return 'Donation is already completed! Cannot edit status.';
+      } else {
+        await db.collection("donations").doc(id).update({"status": status});
+        return "Successfully edited!";
+      }
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
   }
+
 
   Future<List<Map<String, dynamic>>?> getCompleteDonations() async {
     QuerySnapshot<Map<String, dynamic>> completeDonations =

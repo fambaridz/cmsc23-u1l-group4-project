@@ -154,12 +154,23 @@ class _DonorDonationDetailsState extends State<DonorDonationDetails> {
 
                     Navigator.pushNamed(context, '/donor-home');
 
-                  } else {
+                  } else if (message != 'Donation is already completed! Cannot edit status.') {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Colors.red,
                         content: const Text(
                           'Error cancelling donation. Please try again later.',
+                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                        ),
+                        duration: const Duration(seconds: 5),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: const Text(
+                          'Donation is already completed! Cannot edit status.',
                           style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                         ),
                         duration: const Duration(seconds: 5),
