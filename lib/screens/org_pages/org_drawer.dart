@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class OrganizationDrawer extends StatefulWidget {
   final Map<String, dynamic> userData;
-
   const OrganizationDrawer({super.key, required this.userData});
 
   @override
@@ -24,17 +22,13 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
                 decoration: BoxDecoration(
                   color: Colors.lightBlue[200],
                 ),
-
                 child: Column(
-                  
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
-                      
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
-                          
                           child: Text(
                             widget.userData['name'],
                             style: TextStyle(
@@ -46,8 +40,7 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
                         ),
                         IconButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, "/org-home/profile",
-                                arguments: {"details": widget.userData});
+                            Navigator.pushNamed(context, "/org-home/profile", arguments: widget.userData);
                           },
                           icon: Icon(Icons.people_outline, color: Colors.white),
                           style: ElevatedButton.styleFrom(
@@ -62,20 +55,19 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
               ),
             ),
           ),
+          SizedBox(height: 10),
           ListTile(
             leading: Icon(Icons.inventory),
             title: Text("Donations"),
             onTap: () {
-              Navigator.pushNamed(context, "/org-home",
-                  arguments: {"details": widget.userData});
+              Navigator.pushNamed(context, "/org-home", arguments: {"details": widget.userData});
             },
           ),
           ListTile(
             leading: Icon(Icons.local_shipping),
             title: Text("Donation Drives"),
             onTap: () {
-              Navigator.pushNamed(context, "/org-home/donation-drive",
-                  arguments: {"details": widget.userData});
+              Navigator.pushNamed(context, "/org-home/donation-drive", arguments: {"details": widget.userData});
             },
           ),
           ListTile(

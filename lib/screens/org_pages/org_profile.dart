@@ -1,22 +1,20 @@
-import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/donation_drive.dart';
-import 'package:cmsc23_project/model/organization.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDetails extends StatelessWidget {
-  final Map info;
-  const OrganizationDetails(this.info, {super.key});
+  final Map<String, dynamic> userData;
+  const OrganizationDetails({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
     final List<DonationDrive> donationDriveList = [
       
     ];
-    var details = info["details"];
+    // var details = info["details"];
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          details.name,
+          userData['name'],
         ),
       ),
       body: Center(
@@ -53,7 +51,7 @@ class OrganizationDetails extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Text(
-                                    details.aboutUs,
+                                    userData['aboutUs'],
                                     textAlign: TextAlign.justify,
                                     style: TextStyle(
                                       fontSize: 20,
