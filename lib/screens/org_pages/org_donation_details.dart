@@ -1,201 +1,193 @@
 import 'package:cmsc23_project/constants/donation_status_map.dart';
 import 'package:flutter/material.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
-class OrganizationDonationDetails extends StatelessWidget {
-  final Map info;
-  const OrganizationDonationDetails(this.info, {super.key});
+class OrganizationDonationDetails extends StatefulWidget {
+  final Map<String, dynamic> donationData;
+  const OrganizationDonationDetails({key, required this.donationData}) : super(key: key);
+
+  @override
+  State<OrganizationDonationDetails> createState() => _OrganizationDonationDetailsState();
+}
+
+class _OrganizationDonationDetailsState extends State<OrganizationDonationDetails> {
+  Map<String, dynamic>? donorData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    getDonorData();
+  }
+
+  void getDonorData() async {
+    Map<String, dynamic>? donor = await context
+      .read<UserAuthProvider>()
+      .getUserData(widget.donationData['donorId']);
+
+    setState(() {
+      donorData = donor;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var details = info["details"];
     return Scaffold(
       appBar: AppBar(
         title: Text("Donation Details"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+        Container(
+          width: double.infinity,
+          height: 100,
+          color: Colors.lightBlue[200],
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Column(
                 children: [
-                  Text(
-                    "Donor: ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  const Text(
+                    "Donation by:",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
-                  Text(
-                    details.donor,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
+                  donorData!['name'] == null
+                    ? CircularProgressIndicator()
+                    : Text(
+                        "${donorData!['name']}",
+                        style: const TextStyle(fontSize: 35, color: Colors.white),
+                      ),
                 ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Category: ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    details.category,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Weight: ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    details.weight.toString(),
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Pickup Address: ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    details.address.replaceAll(',', ',\n'),
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Pickup Contact No: ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    details.contactNo,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Pickup Schedule: ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    details.pickUpDateTime.replaceAll(' ', '\n'),
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Drop-off Schedule: ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    details.dropOffDateTime.replaceAll(' ', '\n'),
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Status: ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    statusMap[details.status]!["text"].toString(),
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+              )
+            )
+          )
         ),
-      ),
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: const Text("Donation Information",
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline
+            )
+          )
+        ),
+        SizedBox(
+          width: 350,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Category:",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                    ),
+                    Text(
+                      "${widget.donationData['category']}",
+                      style: TextStyle(fontSize: 20)
+                    )
+                  ]
+                )
+              ),
+              widget.donationData['category'] == 'Cash'
+                ? Container()
+                : Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Weight:",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                      ),
+                      Text(
+                        "${widget.donationData['weight']}",
+                        style: const TextStyle(
+                          fontSize: 20,
+                        )
+                      )
+                    ]
+                  )
+                ),
+              widget.donationData['pickupOrDropoff'] == 'Pickup'
+                ? Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Address:",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                      ),
+                      Text(
+                        "${widget.donationData['address']}",
+                        style: const TextStyle(fontSize: 20,)
+                      )
+                    ]
+                  )
+                )
+                : Container(),
+              widget.donationData['pickupOrDropoff'] == 'Pickup'
+                ? Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Contact number:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['contactNum']}",
+                          style: const TextStyle(fontSize: 20,)
+                        ),
+                      ],
+                    )
+                  )
+                : Container(),
+              widget.donationData['pickupOrDropoff'] == 'Pickup'
+                ? Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Pick up:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['pickUpDateTime']}",
+                          style: const TextStyle(fontSize: 20)
+                        ),
+                      ]
+                    )
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Drop off:",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                        ),
+                        Text(
+                          "${widget.donationData['dropOffDateTime']}",
+                          style: const TextStyle(fontSize: 20)
+                        ),
+                      ]
+                    )
+                  ),
+            ],
+          ),
+        )
+      ])),
     );
   }
 }
-
-// Text("Donor: ${details.donor}"),
-//             Text("Category ${details.category}"),
-//             Text("Weight: ${details.weight.toString()}"),
-//             Text("Pickup Address: ${details.address}"),
-//             Text("Pickup Contact number: ${details.contactNo}"),
-//             Text("Pickup Date and Time: ${details.pickUpDateTime}"),
-//             Text("Drop-off Date and Time: ${details.dropOffDateTime}"),
-//             Text("Photo: ${details.photo}"),

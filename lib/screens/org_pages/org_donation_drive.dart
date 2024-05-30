@@ -9,12 +9,10 @@ class OrganizationDonationDrivePage extends StatefulWidget {
   const OrganizationDonationDrivePage({super.key, required this.userData});
 
   @override
-  State<OrganizationDonationDrivePage> createState() =>
-      _OrganizationDonationDrivePageState();
+  State<OrganizationDonationDrivePage> createState() => _OrganizationDonationDrivePageState();
 }
 
-class _OrganizationDonationDrivePageState
-    extends State<OrganizationDonationDrivePage> {
+class _OrganizationDonationDrivePageState extends State<OrganizationDonationDrivePage> {
 
   final List<DonationDrive> donationDriveList = [
     

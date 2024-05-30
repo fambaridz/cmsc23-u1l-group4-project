@@ -1,4 +1,6 @@
+import 'package:cmsc23_project/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrganizationDrawer extends StatefulWidget {
   final Map<String, dynamic> userData;
@@ -60,20 +62,21 @@ class _OrganizationDrawerState extends State<OrganizationDrawer> {
             leading: Icon(Icons.inventory),
             title: Text("Donations"),
             onTap: () {
-              Navigator.pushNamed(context, "/org-home", arguments: {"details": widget.userData});
+              Navigator.pushNamed(context, "/org-home", arguments: widget.userData);
             },
           ),
           ListTile(
             leading: Icon(Icons.local_shipping),
             title: Text("Donation Drives"),
             onTap: () {
-              Navigator.pushNamed(context, "/org-home/donation-drive", arguments: {"details": widget.userData});
+              Navigator.pushNamed(context, "/org-home/donation-drive", arguments: widget.userData);
             },
           ),
           ListTile(
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () {
+              context.read<UserAuthProvider>().signOut();
               Navigator.pushNamed(context, "/");
             },
           ),
