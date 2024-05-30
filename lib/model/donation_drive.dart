@@ -5,14 +5,14 @@ class DonationDrive {
   String name;
   bool status;
   String orgId;
-  List<String> donationList;
+  Map<String, dynamic>? donationList;
 
   DonationDrive(
       {this.id,
       required this.name,
       required this.status,
       required this.orgId,
-      required this.donationList});
+      this.donationList});
 
   get organization => null;
 
@@ -22,7 +22,7 @@ class DonationDrive {
       name: json['name'],
       status: json['status'],
       orgId: json['orgId'],
-      donationList: List<String>.from(json['donationList']),
+      donationList: Map<String, dynamic>.from(json['donationList']),
     );
   }
 

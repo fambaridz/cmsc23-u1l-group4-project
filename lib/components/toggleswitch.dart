@@ -71,7 +71,7 @@ class SwitchExampleState extends State<SwitchExample> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Active?',
+          'Open?',
           style: TextStyle(fontSize: 16),
         ),
         Switch(
