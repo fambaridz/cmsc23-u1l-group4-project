@@ -12,9 +12,10 @@ class FirebaseDonationAPI {
       TaskSnapshot snapshot = await FirebaseStorage.instance.ref("donation_images/$fileName").putFile(file);
       String url = await snapshot.ref.getDownloadURL();
 
-      await db.collection("donations").add(
+      DocumentReference docRef = await db.collection("donations").add(
         {
           "donorId": donation["donorId"],
+          "orgId": donation["orgId"],
           "category": donation["category"],
           "pickupOrDropoff": donation["pickupOrDropoff"],
           "weight": donation["weight"],
@@ -23,10 +24,13 @@ class FirebaseDonationAPI {
           "pickUpDateTime": donation["pickUpDateTime"],
           "dropOffDateTime": donation["dropOffDateTime"],
           "itemPhotoUrl": url,
+          "status": donation["status"],
+          "donationDriveId": donation["donationDriveId"],
         },
       );
+      
       await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
-      return "Successfully added!";
+      return docRef.id;
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
@@ -34,9 +38,9 @@ class FirebaseDonationAPI {
 
   Future<String> addDonation(Map<String, dynamic> donation, Map<String, String> donorAddresses) async {
     try {
-      await db.collection("donations").add(donation);
+      DocumentReference docRef = await db.collection("donations").add(donation);
       await db.collection("users").doc(donation["donorId"]).update({"addresses": donorAddresses});
-      return "Successfully added!";
+      return docRef.id;
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
@@ -44,39 +48,76 @@ class FirebaseDonationAPI {
 
   Future<List<Map<String, dynamic>>> getDonationByUserId(String uid) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donations").where("donorId", isEqualTo: uid).get();
-    
+
     List<Map<String, dynamic>> donations = [];
     for (var doc in querySnapshot.docs) {
       var donationData = doc.data();
-      donationData['uid'] = doc.id;
-      donations.add(donationData);
+      if (donationData['status'] != 5) {
+        donationData['uid'] = doc.id;
+        donations.add(donationData);
+      }
     }
 
     return donations;
   }
 
+  // might delete this if remained unused
   Stream<QuerySnapshot> getAllDonations() {
     return db.collection("donations").snapshots();
   }
 
+  Future<List<Map<String, dynamic>>?> getDonationsList() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection('donations').get();
+
+    if (querySnapshot.size == 0) {
+      return null;
+    } else {
+      List<Map<String, dynamic>> donationList = [];
+      for (var doc in querySnapshot.docs) {
+        donationList.add(doc.data());
+      }
+
+      return donationList;
+    }
+  }
+
+  // might delete this if remained unused
   DocumentReference<Map<String, dynamic>> getDonation(String id) {
     return db.collection("donations").doc(id);
   }
 
-  Future<String> deleteDonation(String id) async {
+  // might delete this if remained unused
+  Future<String> editDonation(String id, int status) async {
     try {
-      await db.collection("donations").doc(id).delete();
-
-      return "Successfully deleted!";
+      await db.collection("donations").doc(id).update({"status": status});
+      return "Successfully edited!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
   }
 
-  Future<String> editDonation(String id, String status) async {
+  Future<List<Map<String, dynamic>>?> getCompleteDonations() async {
+    QuerySnapshot<Map<String, dynamic>> completeDonations = await db.collection('donations').where('status', isEqualTo: 4).get();
+
+    if (completeDonations.size == 0) {
+      // No complete donations found
+      return null;
+    } else {
+      // Put all retrieved complete donations in a list
+      List<Map<String, dynamic>> completeDonationList = [];
+      for (var doc in completeDonations.docs) {
+        completeDonationList.add(doc.data());
+      }
+
+      return completeDonationList;
+    }
+  }
+
+  // might delete this if remained unused
+  Future<String> deleteDonation(String id) async {
     try {
-      await db.collection("donations").doc(id).update({"status": status});
-      return "Successfully edited!";
+      await db.collection("donations").doc(id).delete();
+      return "Successfully deleted!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
@@ -96,16 +137,14 @@ class FirebaseDonationAPI {
   }
 
   Future<List<Map<String, dynamic>>> getUnsortedDonationsByOrgId(String oid) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donations").where((doc) => doc["orgId"] == oid || doc["donationDriveId"] == 'null').get();
-    print(querySnapshot);
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection("donations").where('orgId', isEqualTo: oid).get();
     List<Map<String, dynamic>> donations = [];
     for (var doc in querySnapshot.docs) {
       var donationData = doc.data();
-      donationData['oid'] = doc.id;
-      donations.add(donationData);
+      if (donationData['donationDriveId'] == "") {
+        donations.add(donationData);
+      }
     }
-    print(donations);
     return donations;
   }
-
 }
