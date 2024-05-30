@@ -17,6 +17,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
   late Map<String, dynamic> userData;
   User? user;
   List<Map<String, dynamic>> unsortedDonations = [];
+  Map<String, String> unsortedDonors = {};
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         userData = data!;
       });
       await getUnsortedDonations();
+      await getUnsortedDonationDonors();
     }
   }
 
@@ -47,6 +49,27 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         });
       }
     }
+  }
+
+  Future<void> getUnsortedDonationDonors() async {
+    if (user != null) {
+      List<Map<String, dynamic>>? donorList =
+          await context.read<UserAuthProvider>().getDonors();
+
+      if (donorList != null) {
+        setState(() {
+          unsortedDonors = {};
+          for (var donor in donorList) {
+            unsortedDonors[donor['id']] = donor['name'];
+          }
+        });
+      }
+    }
+  }
+
+  editDonationStatus(String donationId, int status) async {
+    await context.read<DonationListProvider>().editDonation(donationId, status);
+    await getUnsortedDonations();
   }
 
   @override
@@ -65,56 +88,100 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
             : ListView(
                 padding: const EdgeInsets.all(10),
                 children: unsortedDonations
-                  .map((donation) => GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/org-home/donation/details", arguments: donation);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      margin: EdgeInsets.all(10),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(30),
-                        leading: FractionallySizedBox(
-                          heightFactor: 1,
-                          widthFactor: 0.4,
-                          child: TextButton(
-                            onPressed: () {
-                              setState(() {
-                                donation['status'] = donation['status'] == 5 ? 1 : donation['status'] + 1;
-                              });
-                            },
-                            child: Text(
-                              statusMap[donation['status']]!["text"].toString(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
+                    .map((donation) => GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, "/org-home/donation/details",
+                                arguments: donation);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
                             ),
-                            style: TextButton.styleFrom(
-                              backgroundColor: statusMap[donation['status']]!["color"] as Color,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(11),
-                              ),
-                            )
+                            margin: EdgeInsets.all(10),
+                            child: ListTile(
+                                contentPadding: EdgeInsets.all(30),
+                                leading: FractionallySizedBox(
+                                  heightFactor: 1,
+                                  widthFactor: 0.4,
+                                  child: TextButton(
+                                      onPressed: () {
+                                        if (donation['status'] >= 4) {
+                                          return;
+                                        }
+                                        setState(() {
+                                          showDialog<String>(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AlertDialog(
+                                              title: const Text(
+                                                  'Donation Status Change Confirmation'),
+                                              content: const Text(
+                                                  'Are you sure you want to change the status of this donation?'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    if (donation['status'] == 2 && donation['pickupOrDropoff'] == "Drop-off") {
+                                                      //qr code
+                                                      donation['status'] = 3;
+                                                    } 
+                                                    editDonationStatus(
+                                                        donation['id'],
+                                                        ++donation['status']);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('Yes'),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                          // print(donation);
+                                        });
+                                      },
+                                      child: Text(
+                                        statusMap[donation['status']]!["text"]
+                                            .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: statusMap[
+                                                donation['status']]!["color"]
+                                            as Color,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(11),
+                                        ),
+                                      )),
+                                ),
+                                title: Text(
+                                  donation['category'],
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  "Donor: ${unsortedDonors[donation['donorId']] ?? "Unknown"}",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                )),
                           ),
-                        ),
-                        title: Text(
-                          donation['category'],
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ))
-                  .toList(),
-            ),
+                        ))
+                    .toList(),
+              ),
       ),
     );
   }
