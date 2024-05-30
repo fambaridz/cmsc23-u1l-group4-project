@@ -22,7 +22,7 @@ class DonationDrive {
       name: json['name'],
       status: json['status'],
       orgId: json['orgId'],
-      donationList: List<String>.from(json['donationList']),
+      donationList: Map<int, String>.from(json['donationList']),
     );
   }
 
