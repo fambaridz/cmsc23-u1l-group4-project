@@ -1,7 +1,7 @@
-import 'package:cmsc23_project/model/donation.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import '../../GlobalContextService.dart';
+import '../../providers/donation_provider.dart';
+import 'package:provider/provider.dart';
 
 class DonorDonationDetails extends StatefulWidget {
   final Map<String, dynamic> donationData;
@@ -134,7 +134,38 @@ class _DonorDonationDetailsState extends State<DonorDonationDetails> {
               ),
               SizedBox(height: 30.0),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  String? message = await GlobalContextService.navigatorKey.currentContext!
+                    .read<DonationListProvider>()
+                    .editDonation(widget.donationData['uid'], 5);
+                  
+
+                  if (message == "Successfully edited!") {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.lightBlue[400],
+                        content: const Text(
+                          'Donation is successfully cancelled!',
+                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                        ),
+                        duration: const Duration(seconds: 5),
+                      ),
+                    );
+
+                    Navigator.pushNamed(context, '/donor-home');
+
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: const Text(
+                          'Error cancelling donation. Please try again later.',
+                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                        ),
+                        duration: const Duration(seconds: 5),
+                      ),
+                    );
+                  }
                 },
                 child: Text(
                   'Cancel Donation',

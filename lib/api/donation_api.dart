@@ -57,8 +57,10 @@ class FirebaseDonationAPI {
     List<Map<String, dynamic>> donations = [];
     for (var doc in querySnapshot.docs) {
       var donationData = doc.data();
-      donationData['uid'] = doc.id;
-      donations.add(donationData);
+      if (donationData['status'] != 5) {
+        donationData['uid'] = doc.id;
+        donations.add(donationData);
+      }
     }
 
     return donations;
@@ -90,6 +92,16 @@ class FirebaseDonationAPI {
     return db.collection("donations").doc(id);
   }
 
+  // might delete this if remained unused
+  Future<String> editDonation(String id, int status) async {
+    try {
+      await db.collection("donations").doc(id).update({"status": status});
+      return "Successfully edited!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
+
   Future<List<Map<String, dynamic>>?> getCompleteDonations() async {
     QuerySnapshot<Map<String, dynamic>> completeDonations =
         await db.collection('donations').where('status', isEqualTo: 4).get();
@@ -114,16 +126,6 @@ class FirebaseDonationAPI {
       await db.collection("donations").doc(id).delete();
 
       return "Successfully deleted!";
-    } on FirebaseException catch (e) {
-      return "Error in ${e.code}: ${e.message}";
-    }
-  }
-
-  // might delete this if remained unused
-  Future<String> editDonation(String id, String status) async {
-    try {
-      await db.collection("donations").doc(id).update({"status": status});
-      return "Successfully edited!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }

@@ -42,6 +42,12 @@ class DonationListProvider with ChangeNotifier {
     return message;
   }
 
+  Future<String?> editDonation(String donationId, int status) async {
+    String? message = await firebaseService.editDonation(donationId, status);
+    notifyListeners();
+    return message;
+  }
+
   Future<List<Map<String, dynamic>>?> getCompleteDonations() async {
     List<Map<String, dynamic>>? completeDonationList =
         await firebaseService.getCompleteDonations();
