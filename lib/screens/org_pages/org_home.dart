@@ -173,7 +173,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  "Donor: ${unsortedDonors[donation['donorId']] ?? "Unknown"}",
+                                  "${unsortedDonors[donation['donorId']] ?? "Unknown"}\n${donation['pickupOrDropoff']}",
                                   style: TextStyle(
                                     fontSize: 15,
                                   ),
