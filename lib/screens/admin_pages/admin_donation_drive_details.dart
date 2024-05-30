@@ -51,13 +51,13 @@ class _AdminDonationDetailsPageState
             height: 100,
             color: Colors.lightBlue[200],
             child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(20),
                 child: Center(
                     child: Column(
                   children: [
                     Text(
                       "${widget.donationDriveData['name']}",
-                      style: const TextStyle(fontSize: 35, color: Colors.white),
+                      style: const TextStyle(fontSize: 30, color: Colors.white),
                     ),
                   ],
                 )))),

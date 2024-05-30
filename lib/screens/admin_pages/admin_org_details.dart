@@ -264,6 +264,9 @@ class _AdminOrgDetailsPageState extends State<AdminOrgDetailsPage> {
                                       )));
                             },
                           )),
+                  SizedBox(
+                    height: 20,
+                  )
                 ],
               ))),
         ],
