@@ -70,12 +70,12 @@ class FirebaseDonationDriveAPI {
     try {
       final docSnapshot = await db.collection("donationDrives").doc(id).get();
       final donationList = docSnapshot.data()!['donationList'];
-      donationList.add(donationId);
-
+      donationList[(donationList.length).toString()] = donationId;
       await db.collection("donationDrives").doc(id).update({"donationList": donationList});
       return "Successfully edited!";
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
   }
+  
 }
