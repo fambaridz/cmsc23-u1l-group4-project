@@ -1,86 +1,73 @@
-import 'package:cmsc23_project/model/organization.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDrawer extends StatefulWidget {
-  const OrganizationDrawer({Key? key}) : super(key: key);
+  final Map<String, dynamic> userData;
+  const OrganizationDrawer({super.key, required this.userData});
 
   @override
   State<OrganizationDrawer> createState() => _OrganizationDrawerState();
 }
 
 class _OrganizationDrawerState extends State<OrganizationDrawer> {
-  final Organization organization = Organization(
-      id: "1",
-      name: "Organization Name",
-      aboutUs: "We are organization. We do organization things. Please donate",
-      status: true, userType: '', username: '', email: '', addresses: {}, contactNum: '', photoUrl: '', isVerified: false);
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
-          Container(
-            height: 100,
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.lightBlue[200],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          organization.name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+          ConstrainedBox(
+            constraints: BoxConstraints(minHeight: 100, maxHeight: 155),
+            child: IntrinsicHeight(
+              child: Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue[200],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.userData['name'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/org-home/profile",
-                              arguments: {"details": organization});
-                        },
-                        child: Text(
-                          "View Profile",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/org-home/profile", arguments: widget.userData);
+                          },
+                          icon: Icon(Icons.people_outline, color: Colors.white),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightBlue[400],
+                            elevation: 3,
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.lightBlue[400],
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
+          SizedBox(height: 10),
           ListTile(
             leading: Icon(Icons.inventory),
             title: Text("Donations"),
             onTap: () {
-              Navigator.pushNamed(context, "/org-home");
+              Navigator.pushNamed(context, "/org-home", arguments: {"details": widget.userData});
             },
           ),
           ListTile(
             leading: Icon(Icons.local_shipping),
             title: Text("Donation Drives"),
             onTap: () {
-              Navigator.pushNamed(context, "/org-home/donation-drive");
+              Navigator.pushNamed(context, "/org-home/donation-drive", arguments: {"details": widget.userData});
             },
           ),
           ListTile(

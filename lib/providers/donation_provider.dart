@@ -61,4 +61,16 @@ class DonationListProvider with ChangeNotifier {
     notifyListeners();
     return donationList;
   }
+
+  Future<List<Map<String, dynamic>?>> getDonationByOrgId(String oid) async {
+    List<Map<String, dynamic>?> message = await firebaseService.getDonationsByOrgId(oid);
+    notifyListeners();
+    return message;
+  }
+
+  Future<List<Map<String, dynamic>?>> getUnsortedDonationByOrgId(String oid) async {
+    List<Map<String, dynamic>?> message = await firebaseService.getUnsortedDonationsByOrgId(oid);
+    notifyListeners();
+    return message;
+  }
 }

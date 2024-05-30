@@ -5,7 +5,8 @@ import 'package:cmsc23_project/screens/org_pages/org_drawer.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDonationDrivePage extends StatefulWidget {
-  const OrganizationDonationDrivePage({super.key});
+  final Map<String, dynamic> userData;
+  const OrganizationDonationDrivePage({super.key, required this.userData});
 
   @override
   State<OrganizationDonationDrivePage> createState() =>
@@ -14,13 +15,6 @@ class OrganizationDonationDrivePage extends StatefulWidget {
 
 class _OrganizationDonationDrivePageState
     extends State<OrganizationDonationDrivePage> {
-  final statusMap = {
-    1: {"text": "PENDING", "color": Colors.orange},
-    2: {"text": "CONFIRMED", "color": Color.fromARGB(255, 247, 206, 70)},
-    3: {"text": "FOR\n PICK-UP", "color": Color.fromARGB(255, 147, 217, 78)},
-    4: {"text": "COMPLETED", "color": Colors.green},
-    5: {"text": "CANCELLED", "color": Color.fromARGB(255, 215, 63, 63)},
-  };
 
   final List<DonationDrive> donationDriveList = [
     
@@ -29,7 +23,7 @@ class _OrganizationDonationDrivePageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: OrganizationDrawer(),
+      drawer: OrganizationDrawer(userData: widget.userData,),
       appBar: AppBar(
         title: Text("Donation Drives"),
       ),
@@ -58,8 +52,8 @@ class _OrganizationDonationDrivePageState
                                 widthFactor: 0.25,
                                 child: Icon(
                                   donationDrive.status
-                                      ? Icons.check_circle
-                                      : Icons.cancel,
+                                      ? Icons.inventory
+                                      : Icons.local_shipping,
                                   color: donationDrive.status
                                       ? Colors.green
                                       : Colors.red,
