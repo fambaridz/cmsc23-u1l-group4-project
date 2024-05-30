@@ -1,5 +1,10 @@
+import 'package:cmsc23_project/GlobalContextService.dart';
+import 'package:cmsc23_project/providers/auth_provider.dart';
+import 'package:cmsc23_project/providers/donation_provider.dart';
 import 'package:cmsc23_project/screens/admin_pages/admin_drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
@@ -9,10 +14,65 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  late Map<String, dynamic> userData;
+  User? user;
+
+  int orgCount = 0, donorCount = 0, donationCount = 0, approvalCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getCounts();
+  }
+
+  void getCounts() async {
+    // Retrieve all organizations
+    final orgs = await GlobalContextService.navigatorKey.currentContext!
+        .read<UserAuthProvider>()
+        .getOrganizations();
+    // Segregate to verified and nonverified orgs
+    if (orgs != null) {
+      for (var index = 0; index < orgs.length; index++) {
+        var organization = orgs[index];
+        if (organization['isVerified']) {
+          orgCount++;
+        } else if (organization['isVerified'] == false) {
+          approvalCount++;
+        }
+      }
+    }
+
+    // Retrieve all donors
+    final donors = await GlobalContextService.navigatorKey.currentContext!
+        .read<UserAuthProvider>()
+        .getDonors();
+    if (donors != null) {
+      donorCount = donors.length;
+    }
+
+    // Retrieve all completed donations
+    final donations = await GlobalContextService.navigatorKey.currentContext!
+        .read<DonationListProvider>()
+        .getCompleteDonations();
+
+    if (donations != null) {
+      donationCount = donations.length;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    user = context.read<UserAuthProvider>().user;
+    if (user != null) {
+      context.read<UserAuthProvider>().getUserData(user!.uid).then((value) {
+        setState(() {
+          userData = value!;
+        });
+      });
+    }
+
     return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             gradient: LinearGradient(
                 colors: [Color(0xFF29B6F6), Colors.white],
                 begin: FractionalOffset(3.0, 1.0),
@@ -21,7 +81,9 @@ class _AdminHomeState extends State<AdminHome> {
                 tileMode: TileMode.clamp)),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          drawer: const AdminDrawer(),
+          drawer: AdminDrawer(
+            userData: userData,
+          ),
           appBar: AppBar(
             title: const Text("Admin"),
           ),
@@ -57,7 +119,7 @@ class _AdminHomeState extends State<AdminHome> {
                                 offset: Offset(1, 3))
                           ],
                           borderRadius: BorderRadius.circular(30)),
-                      child: const Column(
+                      child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Expanded(
@@ -82,32 +144,25 @@ class _AdminHomeState extends State<AdminHome> {
                                 height: 20,
                               ),
                               Text(
-                                "Total Number of Organizations",
+                                "Total Number of Organizations:",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Text(
-                                "Total Number of Donations",
+                                "$orgCount",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20,
-                                    fontStyle: FontStyle.italic,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.w500),
                               ),
                               SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Text(
                                 "Total Number of Donors",
@@ -115,21 +170,62 @@ class _AdminHomeState extends State<AdminHome> {
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "$donorCount",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.w500),
                               ),
                               SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Text(
-                                "Accounts Waiting for Approval",
+                                "Total Number of Complete Donations",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "$donationCount",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Organizations Waiting for Approval",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "$approvalCount",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 10,
                               ),
                             ],
                           ))

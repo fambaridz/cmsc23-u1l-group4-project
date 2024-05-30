@@ -43,12 +43,7 @@ class _DonorDonationListState extends State<DonorDonationList> {
       ),
       body: Center(
         child: donations.isEmpty
-          ? CircularProgressIndicator(
-              strokeWidth: 3,
-              color: Colors.lightBlue[400],
-            )
-          : donations[0] == null
-              ? Text("No donations found.")
+              ? Text("No ongoing donations found.")
               : ListView.builder(
                   padding: const EdgeInsets.all(10),
                   itemCount: donations.length,
@@ -57,6 +52,7 @@ class _DonorDonationListState extends State<DonorDonationList> {
                     var category = donation?['category'];
                     return GestureDetector(
                       onTap: () {
+                        print(donation);
                         Navigator.pushNamed(context, "/donor-donation-details", arguments: donation);
                       },
                       child: Container(

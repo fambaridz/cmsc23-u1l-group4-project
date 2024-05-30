@@ -77,27 +77,48 @@ class MyApp extends StatelessWidget {
         "/sign-in": (context) => const SignInPage(),
         "/sign-up": (context) => const SignUpPage(),
         // admin routes
-        "/admin-home": (context) => const AdminHome(),
-        "/admin-profile": (context) => const AdminProfile(),
-        "/admin/organizations": (context) => const AdminOrganizationsPage(),
-        "/admin/donations": (context) => const AdminDonationsPage(),
-        "/admin/donors": (context) => const AdminDonorsPage(),
-        "/admin/approvals": (context) => const AdminApprovalsPage(),
-        "/admin/organization-info": (context) => const AdminOrgDetailsPage(),
-        "/admin/donation-info": (context) => const AdminDonationDetailsPage(),
-        "/admin/donor-info": (context) => const AdminDonorDetailsPage(),
-        "/admin/approval-info": (context) => const AdminApprovalDetailsPage(),
+        "/admin-home": (context) => AdminHome(),
+        "/admin-profile": (context) => AdminProfile(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/organizations": (context) => AdminOrganizationsPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/donations": (context) => AdminDonationsPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/donors": (context) => AdminDonorsPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/approvals": (context) => AdminApprovalsPage(
+            userData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/organization-info": (context) => AdminOrgDetailsPage(
+            orgData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/donation-info": (context) => AdminDonationDetailsPage(
+            donationData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/admin/donor-info": (context) => AdminDonorDetailsPage(
+              donorData: ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>,
+            ),
+        "/admin/approval-info": (context) => AdminApprovalDetailsPage(
+            orgData: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
         // donor routes
         "/donor-home": (context) => DonorHomePage(),
         "/donor-profile": (context) => DonorProfile(
             userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
-        "/donor-org-details": (context) => DonorOrgDetailsPage(),
-        "/donor-donation": (context) => DonorDonationPage(
-            userData: ModalRoute.of(context)!.settings.arguments
+        "/donor-org-details": (context) => DonorOrgDetailsPage(
+            orgData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
-        "/donor-donations":(context) => DonorDonationList(
-          userData: ModalRoute.of(context)!.settings.arguments
+        "/donor-donation": (context) => DonorDonationPage(
+            args: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
+        "/donor-donations": (context) => DonorDonationList(
+            userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),
         "/donor-donation-details": (context) => DonorDonationDetails(
             donationData: ModalRoute.of(context)!.settings.arguments

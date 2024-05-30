@@ -10,7 +10,7 @@ class Organization {
   Map<String, String> addresses;
   String? contactNum;
   bool status;
-  bool isVerified = false;
+  bool isVerified;
   String? photoUrl;
 
   Organization({

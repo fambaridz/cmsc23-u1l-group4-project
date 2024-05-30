@@ -14,16 +14,29 @@ class DonorHomePage extends StatefulWidget {
 class _DonorHomePageState extends State<DonorHomePage> {
   late Map<String, dynamic> userData;
   User? user;
-
-  final List<String> organizations = [
-    'Organization A',
-    'Organization B',
-    'Organization C',
-  ];
+  List<Map<String, dynamic>> organizations = [];
 
   @override
   void initState() {
     super.initState();
+    getVerifiedAndOpenOrganizations();
+  }
+
+  void getVerifiedAndOpenOrganizations() async {
+    List<Map<String, dynamic>>? orgList = await context.read<UserAuthProvider>().getOrganizations();
+
+    if (orgList != null) {
+      List<Map<String, dynamic>>? verifiedOrgs = [];
+      for (var org in orgList) {
+        if (org['isVerified'] && org['status'] == true) {
+          verifiedOrgs.add(org);
+        }
+      }
+
+      setState(() {
+        organizations = verifiedOrgs;
+      });
+    }
   }
 
   @override
@@ -43,13 +56,16 @@ class _DonorHomePageState extends State<DonorHomePage> {
       ),
       body: Center(
         child: organizations.isEmpty
-          ? const Text("No organizations available")
+          ? const Text(
+              "No organizations are accepting donations at the moment. Please check back later.",
+              textAlign: TextAlign.center,
+            )
           : ListView(
               padding: const EdgeInsets.all(10),
               children: organizations
                 .map((organization) => GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, "/donor-org-details");
+                    Navigator.pushNamed(context, "/donor-org-details", arguments: organization);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -60,7 +76,7 @@ class _DonorHomePageState extends State<DonorHomePage> {
                     child: ListTile(
                       contentPadding: EdgeInsets.all(20),
                       title: Text(
-                        organization,
+                        organization['name'],
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -68,7 +84,10 @@ class _DonorHomePageState extends State<DonorHomePage> {
                       ),
                       trailing: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/donor-donation", arguments: userData);
+                          Navigator.pushNamed(context, "/donor-donation", arguments: {
+    'userData': userData,
+    'organization': organization,
+  },);
                         },
                         child: Text(
                           "Donate",
