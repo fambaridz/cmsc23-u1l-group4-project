@@ -136,10 +136,9 @@ class MyApp extends StatelessWidget {
                 userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>
             ),
-        "/org-home/donation-drive/details": (context) =>
-            OrganizationDonationDriveDetails(ModalRoute.of(context)!
-                .settings
-                .arguments as Map<String, DonationDrive>),
+        "/org-home/donation-drive/details": (context) => OrganizationDonationDriveDetails(
+            donationDrive: ModalRoute.of(context)!.settings.arguments
+                as Map<String, dynamic>),
         "/org-home/donation-drive/add": (context) => DonationDriveForm(
             userData: ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>),

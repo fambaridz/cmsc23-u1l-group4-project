@@ -1,20 +1,17 @@
 import 'package:cmsc23_project/constants/donation_status_map.dart';
 import 'package:cmsc23_project/model/donation.dart';
 import 'package:cmsc23_project/model/organization.dart';
-import 'package:cmsc23_project/screens/org_pages/org_donation_drive_form.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDonationDriveDetails extends StatefulWidget {
-  final Map info;
-  const OrganizationDonationDriveDetails(this.info, {super.key});
+  final Map<String, dynamic> donationDrive;
+  const OrganizationDonationDriveDetails({super.key, required this.donationDrive});
 
   @override
-  State<OrganizationDonationDriveDetails> createState() =>
-      _OrganizationDonationDriveDetailsPageState();
+  State<OrganizationDonationDriveDetails> createState() => _OrganizationDonationDriveDetailsPageState();
 }
 
-class _OrganizationDonationDriveDetailsPageState
-    extends State<OrganizationDonationDriveDetails> {
+class _OrganizationDonationDriveDetailsPageState extends State<OrganizationDonationDriveDetails> {
 
   final Organization organization = Organization(
       id: "1",
@@ -82,10 +79,9 @@ class _OrganizationDonationDriveDetailsPageState
 
   @override
   Widget build(BuildContext context) {
-    final details = widget.info["details"];
     return Scaffold(
       appBar: AppBar(
-        title: Text(details.name),
+        title: Text(widget.donationDrive['name'] as String),
       ),
       body: Center(
           child: Column(
@@ -103,7 +99,7 @@ class _OrganizationDonationDriveDetailsPageState
                   ),
                 ),
                 Text(
-                  details.status ? "Open" : "Closed",
+                  widget.donationDrive['status'] ? "Open" : "Closed",
                   style: TextStyle(
                     fontSize: 20,
                   ),
@@ -134,7 +130,7 @@ class _OrganizationDonationDriveDetailsPageState
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context, {"remove": details.id});
+                    // Navigator.pop(context, {"remove": details.id});
                   },
                   child: Text("Remove", style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(

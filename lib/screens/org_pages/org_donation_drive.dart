@@ -52,7 +52,7 @@ class _OrganizationDonationDrivePageState extends State<OrganizationDonationDriv
                 var donationDrive = donationDriveList[index];
                 return GestureDetector(
                   onTap: () {
-                    // Navigator.pushNamed(context, "/org-home/donation-drive/details", arguments: {"details": donationDrive});
+                    Navigator.pushNamed(context, "/org-home/donation-drive/details", arguments: donationDrive);
                   },
                   child: Container(
                     decoration: BoxDecoration(
